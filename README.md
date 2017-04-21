@@ -9,6 +9,8 @@
 	* [Self-signed certificate](#self-signed-certificate)
 	* [Advanced SSL use](#advanced-ssl-use)
 * [SMTP configuration for notification delivery](#smtp-configuration-for-notification-delivery)
+	* [Relay notifications to a local SMTP](#relay-notifications-to-a-local-smtp)
+	* [Advanced SMTP configuration](#advanced-smtp-configuration)
 * [Upgrading](#upgrading)
 	* [Dockerising an existing BackupPC v3.x](#dockerising-an-existing-backuppc-v3x)
 * [Shell access](#shell-access)
