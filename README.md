@@ -10,6 +10,7 @@
 	* [Advanced SSL use](#advanced-ssl-use)
 * [Upgrading](#upgrading)
 	* [Dockerising an existing BackupPC v3.x](#dockerising-an-existing-backuppc-v3x)
+* [Shell access](#shell-access)
 
 # Introduction
 
