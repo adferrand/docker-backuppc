@@ -69,7 +69,7 @@ All  your backuppc configuration, backup and keys will survive the container des
 
 ## POSIX rights
 
-The mounted host directory used for data persistency need to be accessible by the host user corresponding to the backuppc user created in container instance. By default, this backuppc user is of `UUID 1000` and `GUID 1000`, which should corresponds to the first non-root user create on your host.
+The mounted host directory used for data persistency need to be accessible by the host user corresponding to the backuppc user created in container instance. By default, this backuppc user is of `UUID 1000` and `GUID 1000`, which should correspond to the first non-root user create on your host.
 
 If you want to use an host user of different UUID/GUID, you can specify the container instance to use these customized values during creation with environment variables: respectively `BACKUPPC_UUID (default: 1000)` and `BACKUPPC_GUID (default: 1000)`.
 
