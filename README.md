@@ -1,4 +1,4 @@
-# adferrand/backuppc:4.1.1
+# adferrand/backuppc [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own image badge on microbadger.com")
 
 * [Introduction](#introduction)
 * [Container functionalities](#container-functionalities)
@@ -25,7 +25,7 @@ This docker is designed to provide a ready-to-go and maintainable BackupPC insta
 * Provides a full-featured BackupPC version 4.1.1 ready to work. In particular, all backup protocols embedded by BackupPC are supported.
 * BackupPC Admin web UI is exposed on 8080 port by an embedded lighttpd server. Available protocols are HTTP or HTTPS through a self-signed SSL certificate.
 * Existing BackupPC configuration & pool are self-upgraded at first run of a newly created container instance. It allows for instance dockerisation of a pre-existing BackupPC v3.X instance.
-* Container image is constructed on top of an Alpine distribution to reduce the footprint. Image size is ~300MB.
+* Container image is constructed on top of an Alpine distribution to reduce the footprint. Image size is below 80MB.
 
 # Basic usage
 
