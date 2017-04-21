@@ -11,7 +11,7 @@ RUN apk --no-cache add \
 # Install backuppc build dependencies
 gcc g++ autoconf automake make git patch perl perl-dev perl-cgi expat expat-dev curl wget \
 # Install backuppc runtime dependencies
-supervisor rsync samba-client iputils openssh openssl rrdtool postfix lighttpd lighttpd-mod_auth gzip apache2-utils \
+supervisor rsync samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils \
 # Compile and install needed perl modules
 && cpan App::cpanminus \
 && cpanm -n Archive::Zip XML::RSS File::Listing \
@@ -30,6 +30,10 @@ supervisor rsync samba-client iputils openssh openssl rrdtool postfix lighttpd l
 # Compile and install PAR2
 && git clone https://github.com/Parchive/par2cmdline.git /root/par2cmdline --branch $PAR2_VERSION \
 && cd /root/par2cmdline && ./automake.sh && ./configure && make && make check && make install \
+
+# Configure MSMTP for mail delivery (initially sendmail is a sym link to busybox)
+&& rm -f /usr/sbin/sendmail \
+&& ln -s /usr/bin/msmtp /usr/sbin/sendmail \
 
 # Get BackupPC, it will be installed at runtime to allow dynamic upgrade of existing config/pool
 && curl -o /root/BackupPC-$BACKUPPC_VERSION.tar.gz -L https://github.com/backuppc/backuppc/releases/download/$BACKUPPC_VERSION/BackupPC-$BACKUPPC_VERSION.tar.gz \

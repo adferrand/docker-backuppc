@@ -8,6 +8,7 @@
 * [UI SSL encryption](#ui-ssl-encryption)
 	* [Self-signed certificate](#self-signed-certificate)
 	* [Advanced SSL use](#advanced-ssl-use)
+* [SMTP configuration for notification delivery](#smtp-configuration-for-notification-delivery)
 * [Upgrading](#upgrading)
 	* [Dockerising an existing BackupPC v3.x](#dockerising-an-existing-backuppc-v3x)
 * [Shell access](#shell-access)
@@ -58,7 +59,7 @@ It is advised to mount these volumes on the host to persist your backups. Assumi
 ```bash
 docker run \
     --name backuppc \
-    --public 80:8080 \
+    --publish 80:8080 \
     --volume /var/docker-data/backuppc/etc:/etc/backuppc \
     --volume /var/docker-data/backuppc/home:/home/backuppc \
     --volume /var/docker-data/backuppc/data:/data/backuppc \
@@ -80,7 +81,7 @@ For example:
 chown -R myUser:myGroup /var/docker-data/backuppc
 docker run \
     --name backuppc \
-    --public 80:8080 \
+    --publish 80:8080 \
     --volume /var/docker-data/backuppc/etc:/etc/backuppc \
     --volume /var/docker-data/backuppc/home:/home/backuppc \
     --volume /var/docker-data/backuppc/data:/data/backuppc \
@@ -100,7 +101,7 @@ Set the environment variable `USE_SSL (default: false)` to `true`, and the embed
 ```bash
 docker run \
     --name backuppc \
-    --public 443:8080
+    --publish 443:8080 \
     --env 'USE_SSL=true'
 ```
 
@@ -111,6 +112,35 @@ Then you can access the UI through the secured URL https://YOUR_SERVER_IP/. Of c
 Instead of providing a very advanced SSL configuration in this Docker, and reinvent the wheel, it is adviced to run your backuppc instance without SSL and without exposing the 8080 port, and launch a second container with a secured SSL reverse-proxy pointing to the BackupPC instance.
 
 You will be able to make routing based on DNS, use certificates signed by Let's Encrypt and so on. See [nginx-proxy](https://github.com/jwilder/nginx-proxy) + [letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion) or [traefik](https://hub.docker.com/_/traefik/) for more information.
+
+# SMTP configuration for notification delivery
+
+BackupPC can send notifications by mail to inform users about backups state. This docker include the MSMTP utility, which basically rely all mails to a pre-existing SMTP server.
+
+Two configuration approaches are available.
+
+## Relay notifications to a local SMTP
+
+If you are using BackupPC to backup your IT architecture, it is likely that you have alreay a SMTP server configured on your host or local network. Or you can instantiate a dockerised full-featured SMTP server (like [namshi/smtp](https://github.com/namshi/docker-smtp)) on the same network than the backuppc container.
+
+In both cases, the SMTP server should be accessible to the backuppc container through YOUR_SMTP_FQDN on port 25. Set the environment variable `SMTP_HOST` (default: mail.example.org) to YOUR_SMTP_FQDN before creating the BackupPC container, and all mails emitted by BackupPC will be relayed on this SMTP server. 
+
+You should also set the _optional_ environment variable `SMTP_MAIL_DOMAIN (default empty)` to the domain you manage, in order to resolve automatically the right part of the email sender to this domain if it is not specified by BackupPC. Indeed by default, sender mail of BackupPC notifications is only 'backuppc', without right part: these emails are likely to be refused by most SMTP servers.
+
+```bash
+docker run \
+    --name backuppc \
+    --publish 80:8080 \
+    --env SMTP_HOST=smtp.my-domain.org \
+    --env SMTP_MAIL_DOMAIN=my-domain.org \
+    adferrand/backuppc:4.1.1
+```
+
+## Advanced SMTP configuration
+
+In more complex scenarios, like sending notifications through a TLS-secured SMTP server with authentication (eg. Google SMTP), you can use any advanced configuration supported by MSMTP. To do so, mount or copy a user-wide SMTP configuration file `.msmtp` in the volume `/home/backuppc`. This configuration will be used for any email sended by BackupPC.
+
+See [MSMTP documentation](http://msmtp.sourceforge.net/doc/msmtp.html), in particular its [configuration examples](http://msmtp.sourceforge.net/doc/msmtp.html#Examples), to see how to build the configuration which suits your needs.
 
 # Upgrading
 
@@ -138,7 +168,7 @@ Then launch a container instance, mounting your existing BackupPC installation a
 ```bash
 docker run \
     --name backuppc \
-    --public 80:8080 \
+    --publish 80:8080 \
     --volume /etc/backuppc:/etc/backuppc \
     --volume /home/backuppc:/home/backuppc \
     --volume /var/lib/backuppc:/data/backuppc \
@@ -155,4 +185,4 @@ For debugging and maintenance purpose, you may need to start a shell in your run
 docker exec -it backuppc /bin/sh
 ```
 
-You will have the standard tools of an Alpine distribution.
+You will obtain a shell with the standard tools of an Alpine distribution.
