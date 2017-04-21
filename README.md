@@ -1,4 +1,4 @@
-# adferrand/backuppc [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own image badge on microbadger.com")
+## adferrand/backuppc [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own image badge on microbadger.com")
 
 * [Introduction](#introduction)
 * [Container functionalities](#container-functionalities)
@@ -15,14 +15,14 @@
 	* [Dockerising an existing BackupPC v3.x](#dockerising-an-existing-backuppc-v3x)
 * [Shell access](#shell-access)
 
-# Introduction
+## Introduction
 
 ![BackupPC Logo](http://backuppc.sourceforge.net/images/icons/BackupPC/mid/logo.gif)
 BackupPC is a free self-hosted backup software which allow to make backup of remote hosts through various ways like rsync, smb or tar. It supports full and incremental backups, and reconstruct automatically a usable verbatim from any backup version. Started with version 4, BackupPC uses a new way to store backups using a reverse delta approach and no hardlinks.
 
 See [BackupPC documentation](http://backuppc.sourceforge.net/BackupPC-4.1.1.html) for further details and how to use it.
 
-# Container functionalities
+## Container functionalities
 
 This docker is designed to provide a ready-to-go and maintainable BackupPC instance for your backups.
 
@@ -31,7 +31,7 @@ This docker is designed to provide a ready-to-go and maintainable BackupPC insta
 * Existing BackupPC configuration & pool are self-upgraded at first run of a newly created container instance. It allows for instance dockerisation of a pre-existing BackupPC v3.X instance.
 * Container image is constructed on top of an Alpine distribution to reduce the footprint. Image size is below 80MB.
 
-# Basic usage
+## Basic usage
 
 For testing purpose, you can create a new BackupPC instance with following command.
 
@@ -46,7 +46,7 @@ Docker image will be downloaded if needed, and started. After starting, browse h
 
 Please note that the basic usage is not suitable for production use. BackupPC configuration and pool are persisted as anonymous data containers (see [Data persistency](#data-persistency)) with a weak control over it. Moreover BackupPC web Admin UI is accessed from the unsecured HTTP protocol, exposing your user/password and data you could retrieve from the UI (see [UI SSL encryption](#ui-ssl-encryption)).
 
-# Data persistency
+## Data persistency
 
 As we are taking about backups, you certainly want to control the data persistency of your docker instance.
 
@@ -70,7 +70,7 @@ docker run \
 
 All  your backuppc configuration, backup and keys will survive the container destroy/re-creation.
 
-## POSIX rights
+### POSIX rights
 
 The mounted host directory used for data persistency need to be accessible by the host user corresponding to the backuppc user created in container instance. By default, this backuppc user is of `UUID 1000` and `GUID 1000`, which should correspond to the first non-root user create on your host.
 
@@ -92,11 +92,11 @@ docker run \
     adferrand/backuppc:4.1.1   
 ```
 
-# UI SSL encryption
+## UI SSL encryption
 
 By default, BackupPC web Admin UI is exposed by the non secured HTTP protocol. Two advised ways to secure this are exposed.
 
-## Self-signed certificate
+### Self-signed certificate
 
 Set the environment variable `USE_SSL (default: false)` to `true`, and the embedded lighttpd server will expose the UI by HTTPS protocol, using a self-signed certificate generated during first run of the container instance.
 
@@ -109,19 +109,19 @@ docker run \
 
 Then you can access the UI through the secured URL https://YOUR_SERVER_IP/. Of course, as the SSL certificate is self-signed, your browser will alert you about this unsecured certificate.
 
-## Advanced SSL use
+### Advanced SSL use
 
 Instead of providing a very advanced SSL configuration in this Docker, and reinvent the wheel, it is adviced to run your backuppc instance without SSL and without exposing the 8080 port, and launch a second container with a secured SSL reverse-proxy pointing to the BackupPC instance.
 
 You will be able to make routing based on DNS, use certificates signed by Let's Encrypt and so on. See [nginx-proxy](https://github.com/jwilder/nginx-proxy) + [letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion) or [traefik](https://hub.docker.com/_/traefik/) for more information.
 
-# SMTP configuration for notification delivery
+## SMTP configuration for notification delivery
 
 BackupPC can send notifications by mail to inform users about backups state. This docker include the MSMTP utility, which basically rely all mails to a pre-existing SMTP server.
 
 Two configuration approaches are available.
 
-## Relay notifications to a local SMTP
+### Relay notifications to a local SMTP
 
 If you are using BackupPC to backup your IT architecture, it is likely that you have alreay a SMTP server configured on your host or local network. Or you can instantiate a dockerised full-featured SMTP server (like [namshi/smtp](https://github.com/namshi/docker-smtp)) on the same network than the backuppc container.
 
@@ -138,13 +138,13 @@ docker run \
     adferrand/backuppc:4.1.1
 ```
 
-## Advanced SMTP configuration
+### Advanced SMTP configuration
 
 In more complex scenarios, like sending notifications through a TLS-secured SMTP server with authentication (eg. Google SMTP), you can use any advanced configuration supported by MSMTP. To do so, mount or copy a user-wide SMTP configuration file `.msmtp` in the volume `/home/backuppc`. This configuration will be used for any email sended by BackupPC.
 
 See [MSMTP documentation](http://msmtp.sourceforge.net/doc/msmtp.html), in particular its [configuration examples](http://msmtp.sourceforge.net/doc/msmtp.html#Examples), to see how to build the configuration which suits your needs.
 
-# Upgrading
+## Upgrading
 
 To update the BackupPC version of this container:
 * pull the new image version of this Docker,
@@ -152,7 +152,7 @@ To update the BackupPC version of this container:
 
 At first start, `configure.pl` script of BackupPC will be called. It will detect your existing configuration (under `/etc/backuppc`), your existing backup pool (under `/data/backuppc`), and will proceed any changes needed to match the new BackupPC version requirement.
 
-## Dockerising an existing BackupPC v3.x
+### Dockerising an existing BackupPC v3.x
 
 This sub-section is under Upgrading section because the process is very similar to a container upgrade.
 
@@ -179,7 +179,7 @@ docker run \
 
 The configure.pl script will detect a v3.x version under /etc/backuppc, and will run appropriate upgrade operations (in particular enabling legacy v3.x pool to access it from a BackupPC v4.x).
 
-# Shell access
+## Shell access
 
 For debugging and maintenance purpose, you may need to start a shell in your running container. With a Docker of version 1.3.0 or higher, you can do:
 
