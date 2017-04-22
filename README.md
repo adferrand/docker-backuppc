@@ -72,7 +72,7 @@ All  your backuppc configuration, backup and keys will survive the container des
 
 ### POSIX rights
 
-The mounted host directory used for data persistency need to be accessible by the host user corresponding to the backuppc user created in container instance. By default, this backuppc user is of `UUID 1000` and `GUID 1000`, which should correspond to the first non-root user create on your host.
+The mounted host directory used for data persistency needs to be accessible by the host user corresponding to the backuppc user created in container instance. By default, this backuppc user is of `UUID 1000` and `GUID 1000`, which should correspond to the first non-root user create on your host.
 
 If you want to use an host user of different UUID/GUID, you can specify the container instance to use these customized values during creation with environment variables: respectively `BACKUPPC_UUID (default: 1000)` and `BACKUPPC_GUID (default: 1000)`.
 
@@ -94,7 +94,7 @@ docker run \
 
 ## UI SSL encryption
 
-By default, BackupPC web Admin UI is exposed by the non secured HTTP protocol. Two advised ways to secure this are exposed.
+By default, BackupPC web Admin UI is exposed by the non secured HTTP protocol. Two advised ways to secure this are proposed.
 
 ### Self-signed certificate
 
@@ -111,13 +111,13 @@ Then you can access the UI through the secured URL https://YOUR_SERVER_IP/. Of c
 
 ### Advanced SSL use
 
-Instead of providing a very advanced SSL configuration in this Docker, and reinvent the wheel, it is adviced to run your backuppc instance without SSL and without exposing the 8080 port, and launch a second container with a secured SSL reverse-proxy pointing to the BackupPC instance.
+Instead of providing a very advanced SSL configuration in this Docker, and reinvent the wheel, it is advised to run your backuppc instance without SSL and without exposing the 8080 port, and launch a second container with a secured SSL reverse-proxy pointing to the BackupPC instance.
 
 You will be able to make routing based on DNS, use certificates signed by Let's Encrypt and so on. See [nginx-proxy](https://github.com/jwilder/nginx-proxy) + [letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion) or [traefik](https://hub.docker.com/_/traefik/) for more information.
 
 ## SMTP configuration for notification delivery
 
-BackupPC can send notifications by mail to inform users about backups state. This docker include the MSMTP utility, which basically rely all mails to a pre-existing SMTP server.
+BackupPC can send notifications by mail to inform users about backups state. This docker include the MSMTP utility, which basically relays all mails to a pre-existing SMTP server.
 
 Two configuration approaches are available.
 
@@ -140,7 +140,7 @@ docker run \
 
 ### Advanced SMTP configuration
 
-In more complex scenarios, like sending notifications through a TLS-secured SMTP server with authentication (eg. Google SMTP), you can use any advanced configuration supported by MSMTP. To do so, mount or copy a user-wide SMTP configuration file `.msmtp` in the volume `/home/backuppc`. This configuration will be used for any email sended by BackupPC.
+In more complex scenarios, like sending notifications through a TLS-secured SMTP server with authentication (eg. Google SMTP), you can use any advanced configuration supported by MSMTP. To do so, mount or copy a user-wide SMTP configuration file `.msmtprc` in the volume `/home/backuppc`. This configuration will be used for any email sended by BackupPC.
 
 See [MSMTP documentation](http://msmtp.sourceforge.net/doc/msmtp.html), in particular its [configuration examples](http://msmtp.sourceforge.net/doc/msmtp.html#Examples), to see how to build the configuration which suits your needs.
 
