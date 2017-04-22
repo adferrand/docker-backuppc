@@ -2,9 +2,9 @@ FROM alpine:3.5
 
 MAINTAINER Adrien Ferrand <ferrand.ad@gmail.com>
 
-ENV BACKUPPC_VERSION 4.1.1
-ENV BACKUPPC_XS_VERSION 0.53
-ENV RSYNC_BPC_VERSION 3.0.9.6
+ENV BACKUPPC_VERSION 4.0.0
+ENV BACKUPPC_XS_VERSION 0.50
+ENV RSYNC_BPC_VERSION 3.0.9.5
 ENV PAR2_VERSION v0.7.0
 
 RUN apk --no-cache add \
@@ -43,7 +43,7 @@ supervisor rsync samba-client iputils openssh openssl rrdtool msmtp lighttpd lig
 && touch /firstrun \
 # Clean
 && rm -rf /root/backuppc-xs /root/rsync-bpc /root/par2cmdline \
-&& apk del gcc g++ autoconf automake make git patch perl-dev expat-dev curl wget
+&& apk --no-cache del gcc g++ autoconf automake make git patch perl-dev expat-dev curl wget
 
 COPY files/lighttpd.conf /etc/lighttpd/lighttpd.conf
 COPY files/entrypoint.sh /entrypoint.sh

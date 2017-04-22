@@ -21,7 +21,7 @@ if [ -f /firstrun ]; then
 	cd /root/BackupPC-$BACKUPPC_VERSION
 
 	# Install BackupPC (existing configuration will be reused and upgraded)
-	./configure.pl \
+	perl configure.pl \
 		--batch \
 		--config-dir /etc/backuppc \
 		--cgi-dir /var/www/cgi-bin/BackupPC \
