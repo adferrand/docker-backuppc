@@ -29,10 +29,10 @@ if [ -f /firstrun ]; then
 		--hostname localhost \
 		--html-dir /var/www/html/BackupPC \
 		--html-dir-url /BackupPC \
-		--install-dir /usr/local/BackupPC \
-		--config-override CgiAdminUsers="'${BACKUPPC_WEB_USER:-backuppc}'"
+		--install-dir /usr/local/BackupPC
 
 	# Configure WEB UI access
+	sed -ie "s/^\$Conf{CgiAdminUsers}\s*=\s*'\w*'/\$Conf{CgiAdminUsers} = '${BACKUPPC_WEB_USER:-backuppc}'/g" /etc/backuppc/config.pl
 	htpasswd -b -c /etc/backuppc/htpasswd ${BACKUPPC_WEB_USER:-backuppc} ${BACKUPPC_WEB_PASSWD:-password}
 
 	# Prepare lighttpd
