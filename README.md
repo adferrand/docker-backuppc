@@ -1,4 +1,6 @@
-# adferrand/backuppc [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own image badge on microbadger.com")
+# adferrand/backuppc 
+* branch v4.x (tags _4_, _latest_): [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own image badge on microbadger.com")
+* branch v3.x (tags _3_, _legacy_): [![](https://images.microbadger.com/badges/version/adferrand/backuppc:3.3.2.svg)](https://microbadger.com/images/adferrand/backuppc:3.3.2 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/adferrand/backuppc:3.3.2.svg)](https://microbadger.com/images/adferrand/backuppc:3.3.2 "Get your own image badge on microbadger.com")
 
 * [Introduction](#introduction)
 * [Container functionalities](#container-functionalities)
@@ -26,7 +28,7 @@ See [BackupPC documentation](http://backuppc.sourceforge.net/BackupPC-4.1.1.html
 
 This docker is designed to provide a ready-to-go and maintainable BackupPC instance for your backups.
 
-* Provides a full-featured BackupPC version 4.1.1 ready to work. In particular, all backup protocols embedded by BackupPC are supported.
+* Provides a full-featured BackupPC version 4.x/3.x ready to work. In particular, all backup protocols embedded by BackupPC are supported.
 * BackupPC Admin web UI is exposed on 8080 port by an embedded lighttpd server. Available protocols are HTTP or HTTPS through a self-signed SSL certificate.
 * Existing BackupPC configuration & pool are self-upgraded at first run of a newly created container instance. It allows for instance dockerisation of a pre-existing BackupPC v3.X instance.
 * Container image is constructed on top of an Alpine distribution to reduce the footprint. Image size is below 80MB.
@@ -39,16 +41,16 @@ For testing purpose, you can create a new BackupPC instance with following comma
 docker run \
     --name backuppc \
     --publish 80:8080 \
-    adferrand/backuppc:4.1.1
+    adferrand/backuppc
 ```
 
-Docker image will be downloaded if needed, and started. After starting, browse http://YOUR_SERVER_IP:8080 to access the BackupPC web Admin UI. A user/password will be asked: they are backuppc/password. You can then test your BackupPC instance.
+Latest BackupPC 4.x docker image will be downloaded if needed, and started. After starting, browse http://YOUR_SERVER_IP:8080 to access the BackupPC web Admin UI. A user/password will be asked: they are backuppc/password. You can then test your BackupPC instance.
 
 Please note that the basic usage is not suitable for production use. BackupPC configuration and pool are persisted as anonymous data containers (see [Data persistency](#data-persistency)) with a weak control over it. Moreover BackupPC web Admin UI is accessed from the unsecured HTTP protocol, exposing your user/password and data you could retrieve from the UI (see [UI SSL encryption](#ui-ssl-encryption)).
 
 ## Data persistency
 
-As we are taking about backups, you certainly want to control the data persistency of your docker instance.
+As we are talking about backups, you certainly want to control the data persistency of your docker instance.
 
 It declares three volumes :
 
@@ -65,7 +67,7 @@ docker run \
     --volume /var/docker-data/backuppc/etc:/etc/backuppc \
     --volume /var/docker-data/backuppc/home:/home/backuppc \
     --volume /var/docker-data/backuppc/data:/data/backuppc \
-    adferrand/backuppc:4.1.1
+    adferrand/backuppc
 ```
 
 All  your backuppc configuration, backup and keys will survive the container destroy/re-creation.
@@ -89,7 +91,7 @@ docker run \
     --volume /var/docker-data/backuppc/data:/data/backuppc \
     --env 'BACKUPPC_UUID=1200' \
     --env 'BACKUPPC_GUID=1300' \
-    adferrand/backuppc:4.1.1   
+    adferrand/backuppc  
 ```
 
 ## UI SSL encryption
@@ -135,7 +137,7 @@ docker run \
     --publish 80:8080 \
     --env SMTP_HOST=smtp.my-domain.org \
     --env SMTP_MAIL_DOMAIN=my-domain.org \
-    adferrand/backuppc:4.1.1
+    adferrand/backuppc
 ```
 
 ### Advanced SMTP configuration
@@ -174,7 +176,7 @@ docker run \
     --volume /etc/backuppc:/etc/backuppc \
     --volume /home/backuppc:/home/backuppc \
     --volume /var/lib/backuppc:/data/backuppc \
-    adferrand/backuppc:4.1.1  
+    adferrand/backuppc  
 ```
 
 The configure.pl script will detect a v3.x version under /etc/backuppc, and will run appropriate upgrade operations (in particular enabling legacy v3.x pool to access it from a BackupPC v4.x).
