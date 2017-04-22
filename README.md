@@ -20,7 +20,7 @@
 ## Introduction
 
 ![BackupPC Logo](https://backuppc.github.io/backuppc/images/logos/logo320.png)
-BackupPC is a free self-hosted backup software which allow to make backup of remote hosts through various ways like rsync, smb or tar. It supports full and incremental backups, and reconstruct automatically a usable verbatim from any backup version. Started with version 4, BackupPC uses a new way to store backups using a reverse delta approach and no hardlinks.
+BackupPC is a free self-hosted backup software which allow to make backup of remote hosts through various ways like rsync, smb or tar. It supports full and incremental backups, and reconstruct automatically a usable verbatim from any backup version. Started with version 4, BackupPC uses a new way to store backups by a reverse delta approach and no hardlinks.
 
 See [BackupPC documentation](http://backuppc.sourceforge.net/BackupPC-4.1.1.html) for further details and how to use it.
 
