@@ -1,6 +1,6 @@
 # adferrand/backuppc 
-* branch v4.x (tags _4_, _latest_): [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own image badge on microbadger.com")
-* branch v3.x (tags _3_, _legacy_): [![](https://images.microbadger.com/badges/version/adferrand/backuppc:3.3.2.svg)](https://microbadger.com/images/adferrand/backuppc:3.3.2 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/adferrand/backuppc:3.3.2.svg)](https://microbadger.com/images/adferrand/backuppc:3.3.2 "Get your own image badge on microbadger.com")
+`branch v4.x (tags '4', 'latest')` [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.1.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.1 "Get your own image badge on microbadger.com")  
+`branch v3.x (tags '3', 'legacy')` [![](https://images.microbadger.com/badges/version/adferrand/backuppc:3.3.2.svg)](https://microbadger.com/images/adferrand/backuppc:3.3.2 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/adferrand/backuppc:3.3.2.svg)](https://microbadger.com/images/adferrand/backuppc:3.3.2 "Get your own image badge on microbadger.com")
 
 * [Introduction](#introduction)
 * [Container functionalities](#container-functionalities)
