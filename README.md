@@ -28,7 +28,7 @@ See [BackupPC documentation](http://backuppc.sourceforge.net/BackupPC-4.1.1.html
 
 This docker is designed to provide a ready-to-go and maintainable BackupPC instance for your backups.
 
-* Provides a full-featured BackupPC version 4.x/3.x ready to work. In particular, all backup protocols embedded by BackupPC are supported.
+* Provides a full-featured BackupPC version 4.x/3.x ready to work. In particular, all backup protocols handled by BackupPC are supported.
 * BackupPC Admin web UI is exposed on 8080 port by an embedded lighttpd server. Available protocols are HTTP or HTTPS through a self-signed SSL certificate.
 * Existing BackupPC configuration & pool are self-upgraded at first run of a newly created container instance. It allows for instance dockerisation of a pre-existing BackupPC v3.X instance.
 * Container image is constructed on top of an Alpine distribution to reduce the footprint. Image size is below 80MB.
