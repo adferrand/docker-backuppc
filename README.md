@@ -1,6 +1,6 @@
 # adferrand/backuppc 
-![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) ![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.2.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.2.svg)  
-![](https://img.shields.io/badge/tags-3%20legacy-lightgrey.svg) ![](https://images.microbadger.com/badges/version/adferrand/backuppc:3.3.2.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:3.3.2.svg)
+![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.2.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.2.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.2)  
+![](https://img.shields.io/badge/tags-3%20legacy-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:3.3.2.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:3.3.2.svg)](https://microbadger.com/images/adferrand/backuppc:3.3.2)
 
 * [Introduction](#introduction)
 * [Container functionalities](#container-functionalities)
@@ -28,9 +28,9 @@ See [BackupPC documentation](http://backuppc.sourceforge.net/BackupPC-4.1.1.html
 
 This docker is designed to provide a ready-to-go and maintainable BackupPC instance for your backups.
 
-* Provides a full-featured BackupPC version 4.x/3.x ready to work. In particular, all backup protocols handled by BackupPC are supported.
-* BackupPC Admin web UI is exposed on 8080 port by an embedded lighttpd server. Available protocols are HTTP or HTTPS through a self-signed SSL certificate.
-* Existing BackupPC configuration & pool are self-upgraded at first run of a newly created container instance. It allows for instance dockerisation of a pre-existing BackupPC v3.X instance.
+* Provides a full-featured and functional BackupPC version 4.x/3.x. In particular, all backup protocols handled by BackupPC are supported.
+* BackupPC Admin Web UI is exposed on 8080 port by an embedded lighttpd server. Available protocols are HTTP or HTTPS through a self-signed SSL certificate.
+* Existing BackupPC configuration & pool are self-upgraded at first run of a newly created container instance. It allows for instance dockerisation of a pre-existing BackupPC v3.x instance.
 * Container image is constructed on top of an Alpine distribution to reduce the footprint. Image size is below 80MB.
 
 ## Basic usage
@@ -46,7 +46,7 @@ docker run \
 
 Latest BackupPC 4.x docker image will be downloaded if needed, and started. After starting, browse http://YOUR_SERVER_IP:8080 to access the BackupPC web Admin UI. A user/password will be asked: they are backuppc/password. You can then test your BackupPC instance.
 
-Please note that the basic usage is not suitable for production use. BackupPC configuration and pool are persisted as anonymous data containers (see [Data persistency](#data-persistency)) with a weak control over it. Moreover BackupPC web Admin UI is accessed from the unsecured HTTP protocol, exposing your user/password and data you could retrieve from the UI (see [UI SSL encryption](#ui-ssl-encryption)).
+Please note that the basic usage is not suitable for production use. BackupPC configuration and pool are persisted as anonymous data containers (see [Data persistency](#data-persistency)) with a weak control over it. Moreover BackupPC Admin Web UI is accessed from the unsecured HTTP protocol, exposing your user/password and data you could retrieve from the UI (see [UI SSL encryption](#ui-ssl-encryption)).
 
 ## Data persistency
 
@@ -58,7 +58,7 @@ It declares three volumes :
 * `/home/backuppc`: home of the backuppc user, running your BackucPC instance, and contains in particular a .ssh directory with the SSH keys used to make backups through SSH protocol (see [SSH Keys](#ssh-keys)).
 * `/data/backuppc`: contains the BackupPC pool, so your backups themselves.
 
-It is advised to mount these volumes on the host to persist your backups. Assuming a host directory `/var/docker-data/backuppc{etc,home,data}`, mounted on a big filesystem, you can do for instance :
+It is advised to mount these volumes on the host in order to persist your backups. Assuming a host directory `/var/docker-data/backuppc{etc,home,data}`, mounted on a big filesystem, you can do for instance :
 
 ```bash
 docker run \
@@ -70,7 +70,7 @@ docker run \
     adferrand/backuppc
 ```
 
-All  your backuppc configuration, backup and keys will survive the container destroy/re-creation.
+All your backuppc configuration, backup and keys will survive the container destroy/re-creation.
 
 ### POSIX rights
 
@@ -96,7 +96,7 @@ docker run \
 
 ## UI SSL encryption
 
-By default, BackupPC web Admin UI is exposed by the non secured HTTP protocol. Two advised ways to secure this are proposed.
+By default, BackupPC Admin Web UI is exposed on the non secured HTTP protocol. Two advised ways to secure this are proposed.
 
 ### Self-signed certificate
 
@@ -125,7 +125,7 @@ Two configuration approaches are available.
 
 ### Relay notifications to a local SMTP
 
-If you are using BackupPC to backup your IT architecture, it is likely that you have alreay a SMTP server configured on your host or local network. Or you can instantiate a dockerised full-featured SMTP server (like [namshi/smtp](https://github.com/namshi/docker-smtp)) on the same network than the backuppc container.
+If you are using BackupPC to backup your IT architecture, it is likely that you have already a SMTP server configured on your host or local network. Or you can instantiate a dockerised full-featured SMTP server (like [namshi/smtp](https://github.com/namshi/docker-smtp)) on the same network than the backuppc container.
 
 In both cases, the SMTP server should be accessible to the backuppc container through YOUR_SMTP_FQDN on port 25. Set the environment variable `SMTP_HOST` (default: mail.example.org) to YOUR_SMTP_FQDN before creating the BackupPC container, and all mails emitted by BackupPC will be relayed on this SMTP server. 
 
