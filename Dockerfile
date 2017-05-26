@@ -3,8 +3,8 @@ FROM alpine:3.5
 MAINTAINER Adrien Ferrand <ferrand.ad@gmail.com>
 
 ENV BACKUPPC_VERSION 4.1.2
-ENV BACKUPPC_XS_VERSION 0.53
-ENV RSYNC_BPC_VERSION 3.0.9.6
+ENV BACKUPPC_XS_VERSION 0.54
+ENV RSYNC_BPC_VERSION 3.0.9.7
 ENV PAR2_VERSION v0.7.0
 
 RUN apk --no-cache add \
@@ -19,8 +19,6 @@ supervisor rsync samba-client iputils openssh openssl rrdtool msmtp lighttpd lig
 # Compile and install BackupPC:XS
 && git clone https://github.com/backuppc/backuppc-xs.git /root/backuppc-xs --branch $BACKUPPC_XS_VERSION \
 && cd /root/backuppc-xs \
-# => temporary correction on version 0.53, already done on master: can be removed with version 0.54
-&& printf "\n#define ACCESSPERMS 0777" >> rsync.h \
 && perl Makefile.PL && make && make test && make install \
 
 # Compile and install Rsync (BPC version)
@@ -34,6 +32,10 @@ supervisor rsync samba-client iputils openssh openssl rrdtool msmtp lighttpd lig
 # Configure MSMTP for mail delivery (initially sendmail is a sym link to busybox)
 && rm -f /usr/sbin/sendmail \
 && ln -s /usr/bin/msmtp /usr/sbin/sendmail \
+
+# Disable strict host key checking
+&& sed -i -e 's/^# Host \*/Host */g' /etc/ssh/ssh_config \
+&& sed -i -e 's/^#   StrictHostKeyChecking ask/    StrictHostKeyChecking yes/g' /etc/ssh/ssh_config \
 
 # Get BackupPC, it will be installed at runtime to allow dynamic upgrade of existing config/pool
 && curl -o /root/BackupPC-$BACKUPPC_VERSION.tar.gz -L https://github.com/backuppc/backuppc/releases/download/$BACKUPPC_VERSION/BackupPC-$BACKUPPC_VERSION.tar.gz \
