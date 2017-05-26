@@ -35,6 +35,10 @@ supervisor rsync samba-client iputils openssh openssl rrdtool msmtp lighttpd lig
 && rm -f /usr/sbin/sendmail \
 && ln -s /usr/bin/msmtp /usr/sbin/sendmail \
 
+# Disable strict host key checking
+&& sed -i -e 's/^# Host \*/Host */g' /etc/ssh/ssh_config \
+&& sed -i -e 's/^#   StrictHostKeyChecking ask/    StrictHostKeyChecking yes/g' /etc/ssh/ssh_config \
+
 # Get BackupPC, it will be installed at runtime to allow dynamic upgrade of existing config/pool
 && curl -o /root/BackupPC-$BACKUPPC_VERSION.tar.gz -L https://github.com/backuppc/backuppc/releases/download/$BACKUPPC_VERSION/BackupPC-$BACKUPPC_VERSION.tar.gz \
 # Prepare backuppc home
