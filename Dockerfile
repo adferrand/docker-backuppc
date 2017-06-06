@@ -2,10 +2,10 @@ FROM alpine:3.5
 
 MAINTAINER Adrien Ferrand <ferrand.ad@gmail.com>
 
-ENV BACKUPPC_VERSION 4.1.2
-ENV BACKUPPC_XS_VERSION 0.54
+ENV BACKUPPC_VERSION 4.1.3
+ENV BACKUPPC_XS_VERSION 0.55
 ENV RSYNC_BPC_VERSION 3.0.9.7
-ENV PAR2_VERSION v0.7.0
+ENV PAR2_VERSION v0.7.2
 
 RUN apk --no-cache add \
 # Install backuppc build dependencies
