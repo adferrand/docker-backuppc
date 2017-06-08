@@ -97,11 +97,39 @@ docker run \
 
 ## UI authentication/authorization
 
-By default, a single user with admin rights is created during the first start of the container. Its username is *backuppc* and its password is *password*. The credentials are stored in the file `/etc/backuppc/htpasswd` to allow the embedded lighttpd server to handle Basic Authentication, and the Backuppc config variable `$Conf{CgiAdminUsers}` is setted to this username to instruct Backuppc to give it admin rights. 
+By default, a single user with admin rights is created during the first start of the container. Its username is *backuppc* and its password is *password*. The credentials are stored in the file `/etc/backuppc/htpasswd` to allow the embedded lighttpd server to handle Basic Authentication, and the Backuppc config variable `$Conf{CgiAdminUsers}` is setted to this username to instruct BackupPC to give it admin rights. 
 
 You can modify the admin user credentials by setting the environment variables `BACKUPPC_WEB_USER (default backuppc)` and `BACKUPPC_WEB_PASSWD (default password)` when creating the container.
 
 The admin user credentials can be modified on an existing container by modifying the relevant environment variables, then re-creating the container. However please note that if you modify the username, you will need to manually remove the old username from the file `/etc/backuppc/htpasswd` in the container after its re-creation.
+
+### Advanced UI authentication/authorization
+
+One may need more advanced authentication/authorization on Backuppc Web UI, for instance several *normal* users allowing operations on backups, and an *admin* user to parameterize BackupPC.
+
+In theses cases, authentication and admin granting must be configured manually.
+* Authentication is configured by providing credentials in the file `/etc/backuppc/htpasswd` of the container. You should use Apache `htpasswd` utility to fill it.
+* All authenticated users are considered as *normal* users if not telling otherwise. Add a username in the `$Conf{CgiAdminUsers}` variable of `/etc/backuppc/config.pl` file to grant this user admin rights.
+* Then default admin user creation is not needed : unset environment variables `BACKUPPC_WEB_USER` and `BACKUPPC_WEB_PASSWD` to avoid adding an additional user in the `htpasswd` file, and reconfigure admin rights in `config.pl`.
+
+For instance, with two *normal* users `user1` and `user2` + one *admin* user `admin`, you can do the following steps on the host. It is assumed that `/etc/backuppc` is mounted on `/var/docker-data/backuppc/etc` on the host and Apache `htpasswd` utility is installed on it.
+
+```bash
+htpasswd -b -c /var/docker-data/backuppc/etc/htpasswd admin admin_password
+htpasswd -b /var/docker-data/backuppc/etc/htpasswd user1 user1_password
+htpasswd -b /var/docker-data/backuppc/etc/htpasswd user2 user2_password
+sed -ie "s/^\$Conf{CgiAdminUsers}\s*=\s*'\w*'/\$Conf{CgiAdminUsers} = 'admin'/g" /var/docker-data/backuppc/etc/config.pl
+
+docker run \
+    --name backuppc \
+    --publish 80:8080 \
+    --volume /var/docker-data/backuppc/etc:/etc/backuppc \
+    --volume /var/docker-data/backuppc/home:/home/backuppc \
+    --volume /var/docker-data/backuppc/data:/data/backuppc \
+    adferrand/backuppc  
+```
+
+Please note that Basic Authentication is still done unencrypted on HTTP port. See [UI SSL encryption](#ui-ssl-encryption) to secure the authentication.
 
 ## UI SSL encryption
 
