@@ -34,7 +34,11 @@ if [ -f /firstrun ]; then
 
 	# Configure WEB UI access
 	if [ ! -f /etc/backuppc/htpasswd ]; then
-		htpasswd -b -c /etc/backuppc/htpasswd ${BACKUPPC_WEB_USER:-backuppc} ${BACKUPPC_WEB_PASSWD:-password}
+		htpasswd -b -c /etc/backuppc/htpasswd "${BACKUPPC_WEB_USER:-backuppc}" "${BACKUPPC_WEB_PASSWD:-password}"
+
+	elif [ -n "$BACKUPPC_WEB_USER" -a -n "$BACKUPPC_WEB_PASSWD" ]; then
+		touch /etc/backuppc/htpasswd
+		htpasswd -b /etc/backuppc/htpasswd "${BACKUPPC_WEB_USER}" "${BACKUPPC_WEB_PASSWD}"
 	fi
 
 	# Prepare lighttpd
