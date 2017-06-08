@@ -94,6 +94,12 @@ docker run \
     adferrand/backuppc  
 ```
 
+## UI Authentication
+
+By default, a single user with admin rights is created during the first start of the container. Its username is *backuppc* and its password is *password*. You can modify this by setting the environment variables `BACKUPPC_WEB_USER (default backuppc)` and `BACKUPPC_WEB_PASSWD (default password)` when creating the container.
+
+This admin user can be modified on an existing container by modifying the relevant environment variables, then re-creating the container. However please note that if you modify the username, you will need to manually remove the old username from the file `/etc/backuppc/htpasswd` in the container after its re-creation.
+
 ## UI SSL encryption
 
 By default, BackupPC Admin Web UI is exposed on the non secured HTTP protocol. Two advised ways to secure this are proposed.
