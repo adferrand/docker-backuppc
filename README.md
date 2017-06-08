@@ -8,6 +8,7 @@
 * [Data persistency](#data-persistency)
 	* [POSIX rights](#posix-rights)
 * [UI authentication/authorization](#ui-authenticationauthorization)
+	* [Advanced UI authentication/authorization](#advanced-ui-authenticationauthorization)
 * [UI SSL encryption](#ui-ssl-encryption)
 	* [Self-signed certificate](#self-signed-certificate)
 	* [Advanced SSL use](#advanced-ssl-use)
@@ -118,7 +119,8 @@ For instance, with two *normal* users `user1` and `user2` + one *admin* user `ad
 htpasswd -b -c /var/docker-data/backuppc/etc/htpasswd admin admin_password
 htpasswd -b /var/docker-data/backuppc/etc/htpasswd user1 user1_password
 htpasswd -b /var/docker-data/backuppc/etc/htpasswd user2 user2_password
-sed -ie "s/^\$Conf{CgiAdminUsers}\s*=\s*'\w*'/\$Conf{CgiAdminUsers} = 'admin'/g" /var/docker-data/backuppc/etc/config.pl
+sed -ie "s/^\$Conf{CgiAdminUsers}\s*=\s*'\w*'/\$Conf{CgiAdminUsers} = 'admin'/g" \
+    /var/docker-data/backuppc/etc/config.pl
 
 docker run \
     --name backuppc \
