@@ -7,6 +7,7 @@
 * [Basic usage](#basic-usage)
 * [Data persistency](#data-persistency)
 	* [POSIX rights](#posix-rights)
+* [UI authentication/authorization](#ui-authenticationauthorization)
 * [UI SSL encryption](#ui-ssl-encryption)
 	* [Self-signed certificate](#self-signed-certificate)
 	* [Advanced SSL use](#advanced-ssl-use)
@@ -94,11 +95,13 @@ docker run \
     adferrand/backuppc  
 ```
 
-## UI Authentication
+## UI authentication/authorization
 
-By default, a single user with admin rights is created during the first start of the container. Its username is *backuppc* and its password is *password*. You can modify this by setting the environment variables `BACKUPPC_WEB_USER (default backuppc)` and `BACKUPPC_WEB_PASSWD (default password)` when creating the container.
+By default, a single user with admin rights is created during the first start of the container. Its username is *backuppc* and its password is *password*. The credentials are stored in the file `/etc/backuppc/htpasswd` to allow the embedded lighttpd server to handle Basic Authentication, and the Backuppc config variable `$Conf{CgiAdminUsers}` is setted to this username to instruct Backuppc to give it admin rights. 
 
-This admin user can be modified on an existing container by modifying the relevant environment variables, then re-creating the container. However please note that if you modify the username, you will need to manually remove the old username from the file `/etc/backuppc/htpasswd` in the container after its re-creation.
+You can modify the admin user credentials by setting the environment variables `BACKUPPC_WEB_USER (default backuppc)` and `BACKUPPC_WEB_PASSWD (default password)` when creating the container.
+
+The admin user credentials can be modified on an existing container by modifying the relevant environment variables, then re-creating the container. However please note that if you modify the username, you will need to manually remove the old username from the file `/etc/backuppc/htpasswd` in the container after its re-creation.
 
 ## UI SSL encryption
 
