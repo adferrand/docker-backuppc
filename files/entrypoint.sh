@@ -20,6 +20,17 @@ if [ -f /firstrun ]; then
 	tar xf BackupPC-$BACKUPPC_VERSION.tar.gz
 	cd /root/BackupPC-$BACKUPPC_VERSION
 
+	# Configure WEB UI access
+	configure_admin=""
+	if [ ! -f /etc/backuppc/htpasswd ]; then
+		htpasswd -b -c /etc/backuppc/htpasswd "${BACKUPPC_WEB_USER:-backuppc}" "${BACKUPPC_WEB_PASSWD:-password}"
+		configure_admin="--config-override CgiAdminUsers='${BACKUPPC_WEB_USER:-backuppc}'"
+	elif [ -n "$BACKUPPC_WEB_USER" -a -n "$BACKUPPC_WEB_PASSWD" ]; then
+		touch /etc/backuppc/htpasswd
+		htpasswd -b /etc/backuppc/htpasswd "${BACKUPPC_WEB_USER}" "${BACKUPPC_WEB_PASSWD}"
+		configure_admin="--config-override CgiAdminUsers='$BACKUPPC_WEB_USER'"
+	fi
+
 	# Install BackupPC (existing configuration will be reused and upgraded)
 	perl configure.pl \
 		--batch \
@@ -30,10 +41,7 @@ if [ -f /firstrun ]; then
 		--html-dir /var/www/html/BackupPC \
 		--html-dir-url /BackupPC \
 		--install-dir /usr/local/BackupPC \
-		--config-override CgiAdminUsers="'${BACKUPPC_WEB_USER:-backuppc}'"
-
-	# Configure WEB UI access
-	htpasswd -b -c /etc/backuppc/htpasswd ${BACKUPPC_WEB_USER:-backuppc} ${BACKUPPC_WEB_PASSWD:-password}
+		$configure_admin
 
 	# Prepare lighttpd
 	if [ "$USE_SSL" = true ]; then
@@ -59,8 +67,8 @@ if [ -f /firstrun ]; then
 	echo "host ${SMTP_HOST:-mail.example.org}" >> /etc/msmtprc
 	echo "auto_from on" >> /etc/msmtprc
 	if [ "${SMTP_MAIL_DOMAIN:-}" != "" ]; then
-	       echo "maildomain ${SMTP_MAIL_DOMAIN}" >> /etc/msmtprc
-       	fi
+		echo "maildomain ${SMTP_MAIL_DOMAIN}" >> /etc/msmtprc
+	fi
 
 	# Clean
 	rm -rf /root/BackupPC-$BACKUPPC_VERSION.tar.gz /root/BackupPC-$BACKUPPC_VERSION /firstrun
