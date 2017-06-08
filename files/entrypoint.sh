@@ -33,7 +33,9 @@ if [ -f /firstrun ]; then
 		--config-override CgiAdminUsers="'${BACKUPPC_WEB_USER:-backuppc}'"
 
 	# Configure WEB UI access
-	htpasswd -b -c /etc/backuppc/htpasswd ${BACKUPPC_WEB_USER:-backuppc} ${BACKUPPC_WEB_PASSWD:-password}
+	if [ ! -f /etc/backuppc/htpasswd ]; then
+		htpasswd -b -c /etc/backuppc/htpasswd ${BACKUPPC_WEB_USER:-backuppc} ${BACKUPPC_WEB_PASSWD:-password}
+	fi
 
 	# Prepare lighttpd
 	if [ "$USE_SSL" = true ]; then
@@ -59,8 +61,8 @@ if [ -f /firstrun ]; then
 	echo "host ${SMTP_HOST:-mail.example.org}" >> /etc/msmtprc
 	echo "auto_from on" >> /etc/msmtprc
 	if [ "${SMTP_MAIL_DOMAIN:-}" != "" ]; then
-	       echo "maildomain ${SMTP_MAIL_DOMAIN}" >> /etc/msmtprc
-       	fi
+		echo "maildomain ${SMTP_MAIL_DOMAIN}" >> /etc/msmtprc
+	fi
 
 	# Clean
 	rm -rf /root/BackupPC-$BACKUPPC_VERSION.tar.gz /root/BackupPC-$BACKUPPC_VERSION /firstrun
