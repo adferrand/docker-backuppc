@@ -37,6 +37,7 @@ if [ -f /firstrun ]; then
 		--config-dir /etc/backuppc \
 		--cgi-dir /var/www/cgi-bin/BackupPC \
 		--data-dir /data/backuppc \
+		--log-dir /data/backuppc/log \
 		--hostname localhost \
 		--html-dir /var/www/html/BackupPC \
 		--html-dir-url /BackupPC \

@@ -58,7 +58,7 @@ It declares three volumes :
 
 * `/etc/backuppc`: stores the BackupPC configuration, in particular config.pl and hosts configuration.
 * `/home/backuppc`: home of the backuppc user, running your BackucPC instance, and contains in particular a .ssh directory with the SSH keys used to make backups through SSH protocol (see [SSH Keys](#ssh-keys)).
-* `/data/backuppc`: contains the BackupPC pool, so your backups themselves.
+* `/data/backuppc`: contains the BackupPC pool, so your backups themselves, and the logs.
 
 It is advised to mount these volumes on the host in order to persist your backups. Assuming a host directory `/var/docker-data/backuppc{etc,home,data}`, mounted on a big filesystem, you can do for instance :
 
@@ -199,10 +199,11 @@ This sub-section is under Upgrading section because the process is very similar 
 
 Because configure.pl script is called on first run of your container instance, you can dockerise and upgrade to v4.X a pre-existing BackupPC v3.x installation.
 
-Do to so, let's assume that your BackupPC v3.x installed on your host:
+To do so, let's assume that your BackupPC v3.x installed on your host:
 * has its configuration in `/etc/backuppc`
 * has its backup pool in `/var/lib/backuppc`
 * has the user home running your BackupPC (typically backuppc) in `/home/backuppc`
+* has its log files in `/var/log/backuppc`
 
 Check UUID/GUID of your backuppc user on host. If they are not 1000/1000, you will need to put environment variables to customize theses values in the container instance (see [POSIX rights](#posix-rights)).
 
@@ -215,6 +216,7 @@ docker run \
     --volume /etc/backuppc:/etc/backuppc \
     --volume /home/backuppc:/home/backuppc \
     --volume /var/lib/backuppc:/data/backuppc \
+    --volume /var/log/backuppc:/data/backuppc/log \
     adferrand/backuppc  
 ```
 
