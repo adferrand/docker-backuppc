@@ -11,7 +11,7 @@ RUN apk --no-cache add \
 # Install backuppc build dependencies
 gcc g++ autoconf automake make git patch perl perl-dev perl-cgi expat expat-dev curl wget \
 # Install backuppc runtime dependencies
-supervisor rsync samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils \
+supervisor rsync samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata \
 # Compile and install needed perl modules
 && cpan App::cpanminus \
 && cpanm -n Archive::Zip XML::RSS File::Listing \

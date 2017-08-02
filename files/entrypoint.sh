@@ -5,6 +5,11 @@ if [ -f /firstrun ]; then
 	echo 'First run of the container. BackupPC will be installed.'
 	echo 'If exist, configuration and data will be reused and upgraded as needed.'
 
+	# Configure timezone if needed
+	if [ -z "$TZ" ]; then
+		cp /usr/share/zoneinfo/$TZ /etc/localtime 
+	fi
+
 	# Create backuppc user
 	addgroup -S -g ${BACKUPPC_GUID:-1000} backuppc
 	adduser -D -S -h /home/backuppc -G backuppc -u ${BACKUPPC_UUID:-1000} backuppc

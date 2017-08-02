@@ -1,5 +1,5 @@
 # adferrand/backuppc 
-![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.3-4.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.3-4.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.3-4)  
+![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.3-6.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.3-6.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.3-6)<br/>
 ![](https://img.shields.io/badge/tags-3-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:3.3.2.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:3.3.2.svg)](https://microbadger.com/images/adferrand/backuppc:3.3.2)
 
 * [Introduction](#introduction)
@@ -17,7 +17,9 @@
 	* [Advanced SMTP configuration](#advanced-smtp-configuration)
 * [Upgrading](#upgrading)
 	* [Dockerising an existing BackupPC v3.x](#dockerising-an-existing-backuppc-v3x)
-* [Shell access](#shell-access)
+* [Miscellaneous](#miscellaneous)
+    * [Timezone](#timezone)
+    * [Shell access](#shell-access)
 
 ## Introduction
 
@@ -221,6 +223,31 @@ docker run \
 ```
 
 The configure.pl script will detect a v3.x version under /etc/backuppc, and will run appropriate upgrade operations (in particular enabling legacy v3.x pool to access it from a BackupPC v4.x).
+
+## Miscellaneous
+
+### Timezone
+
+By default the timezone of this docker is set to UTC. To modify it, you can specify a tzdata-compatible timezone in the environment variable `TZ`.
+
+```bash
+# For Paris time (including daylight)
+docker run \
+    --name backuppc \
+    --publish 80:8080 \
+    --env TZ=Europe/Paris \
+    adferrand/backuppc
+```
+
+Alternatively, you can sync the container timezone to its host by mounting the host file `/etc/localtime` to the container path `/etc/localtime`.
+
+```bash
+docker run \
+    --name backuppc \
+    --publish 80:8080 \
+    --mount /etc/localtime:/etc/localtime:ro \
+    adferrand/backuppc
+```
 
 ## Shell access
 
