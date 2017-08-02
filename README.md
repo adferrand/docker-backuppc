@@ -19,6 +19,7 @@
 * [Miscellaneous](#miscellaneous)
     * [Timezone](#timezone)
     * [Shell access](#shell-access)
+    * [Legacy version](#legacy-version)
 
 ## Introduction
 
