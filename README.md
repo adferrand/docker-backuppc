@@ -1,6 +1,5 @@
 # adferrand/backuppc 
-![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.3-6.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.3-6.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.3-6)<br/>
-![](https://img.shields.io/badge/tags-3-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:3.3.2.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:3.3.2.svg)](https://microbadger.com/images/adferrand/backuppc:3.3.2)
+![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.3-6.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.3-6.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.3-6)
 
 * [Introduction](#introduction)
 * [Container functionalities](#container-functionalities)
@@ -258,3 +257,14 @@ docker exec -it backuppc /bin/sh
 ```
 
 You will obtain a shell with the standard tools of an Alpine distribution.
+
+## Legacy version
+
+Legacy version of BackupPC (v3.x) is available on the legacy tag `3`, or with explicit version tag (eg. `3.3.2`).
+
+```bash
+docker run \
+    --name backuppc \
+    --publish 80:8080 \
+    adferrand/backuppc:3
+```
