@@ -249,7 +249,7 @@ docker run \
     adferrand/backuppc
 ```
 
-## Shell access
+### Shell access
 
 For debugging and maintenance purpose, you may need to start a shell in your running container. With a Docker of version 1.3.0 or higher, you can do:
 
@@ -259,7 +259,7 @@ docker exec -it backuppc /bin/sh
 
 You will obtain a shell with the standard tools of an Alpine distribution.
 
-## Legacy version
+### Legacy version
 
 Legacy version of BackupPC (v3.x) is available on the legacy tag `3`, or with explicit version tag (eg. `3.3.2`).
 
