@@ -1,5 +1,5 @@
 # adferrand/backuppc 
-![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.3-5.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.3-5.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.3-5)  
+![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.3-6.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.3-6.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.3-6)  
 ![](https://img.shields.io/badge/tags-3-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:3.3.2.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:3.3.2.svg)](https://microbadger.com/images/adferrand/backuppc:3.3.2)
 
 * [Introduction](#introduction)
@@ -242,7 +242,6 @@ docker run \
 Alternatively, you can sync the container timezone to its host by mounting the host file `/etc/localtime` to the container path `/etc/localtime`.
 
 ```bash
-# For Paris time (including daylight)
 docker run \
     --name backuppc \
     --publish 80:8080 \
