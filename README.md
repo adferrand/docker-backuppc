@@ -1,8 +1,8 @@
 # adferrand/backuppc 
 ![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.1.3-7.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.1.3-7.svg)](https://microbadger.com/images/adferrand/backuppc:4.1.3-7)
 
-* [Introduction](#introduction)
 * [Container functionalities](#container-functionalities)
+* [About BackupPC](#about-backuppc)
 * [Basic usage](#basic-usage)
 * [Data persistency](#data-persistency)
 	* [POSIX rights](#posix-rights)
@@ -21,13 +21,6 @@
     * [Shell access](#shell-access)
     * [Legacy version](#legacy-version)
 
-## Introduction
-
-![BackupPC Logo](https://backuppc.github.io/backuppc/images/logos/logo320.png)
-BackupPC is a free self-hosted backup software able to backup remote hosts through various ways like rsync, smb or tar. It supports full and incremental backups, and reconstruct automatically a usable verbatim from any backup version. Started with version 4, BackupPC uses a new way to store backups by a reverse delta approach and no hardlinks.
-
-See [BackupPC documentation](http://backuppc.sourceforge.net/BackupPC-4.1.1.html) for further details and how to use it.
-
 ## Container functionalities
 
 This docker is designed to provide a ready-to-go and maintainable BackupPC instance for your backups.
@@ -36,6 +29,13 @@ This docker is designed to provide a ready-to-go and maintainable BackupPC insta
 * BackupPC Admin Web UI is exposed on 8080 port by an embedded lighttpd server. Available protocols are HTTP or HTTPS through a self-signed SSL certificate.
 * Existing BackupPC configuration & pool are self-upgraded at first run of a newly created container instance. It allows for instance dockerisation of a pre-existing BackupPC v3.x instance.
 * Container image is constructed on top of an Alpine distribution to reduce the footprint. Image size is below 80MB.
+
+## About BackupPC
+
+![BackupPC Logo](https://backuppc.github.io/backuppc/images/logos/logo320.png)
+BackupPC is a free self-hosted backup software able to backup remote hosts through various ways like rsync, smb or tar. It supports full and incremental backups, and reconstruct automatically a usable verbatim from any backup version. Started with version 4, BackupPC uses a new way to store backups by a reverse delta approach and no hardlinks.
+
+See [BackupPC documentation](http://backuppc.sourceforge.net/BackupPC-4.1.1.html) for further details and how to use it.
 
 ## Basic usage
 
