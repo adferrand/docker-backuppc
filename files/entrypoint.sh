@@ -6,7 +6,7 @@ if [ -f /firstrun ]; then
 	echo 'If exist, configuration and data will be reused and upgraded as needed.'
 
 	# Configure timezone if needed
-	if [ -z "$TZ" ]; then
+	if [ -n "$TZ" ]; then
 		cp /usr/share/zoneinfo/$TZ /etc/localtime 
 	fi
 

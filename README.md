@@ -239,7 +239,7 @@ docker run \
     adferrand/backuppc
 ```
 
-Alternatively, you can sync the container timezone to its host by mounting the host file `/etc/localtime` to the container path `/etc/localtime`.
+Alternatively, depending on the host OS, you can sync the container timezone to its host by mounting the host file `/etc/localtime` to the container path `/etc/localtime`.
 
 ```bash
 docker run \
