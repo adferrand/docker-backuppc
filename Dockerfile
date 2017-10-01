@@ -1,17 +1,17 @@
 FROM alpine:3.6
 
-MAINTAINER Adrien Ferrand <ferrand.ad@gmail.com>
+LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
 ENV BACKUPPC_VERSION 4.1.3
 ENV BACKUPPC_XS_VERSION 0.56
 ENV RSYNC_BPC_VERSION 3.0.9.8
-ENV PAR2_VERSION v0.7.3
+ENV PAR2_VERSION v0.7.4
 
 RUN apk --no-cache add \
 # Install backuppc build dependencies
 gcc g++ autoconf automake make git patch perl perl-dev perl-cgi expat expat-dev curl wget \
 # Install backuppc runtime dependencies
-supervisor rsync samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata \
+supervisor rsync samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp libgcc \
 # Compile and install needed perl modules
 && cpan App::cpanminus \
 && cpanm -n Archive::Zip XML::RSS File::Listing \
