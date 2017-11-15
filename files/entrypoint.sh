@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+BACKUPPC_USERNAME=`getent passwd "${BACKUPPC_UUID:-1000}" | cut -d: -f1`
+BACKUPPC_GROUPNAME=`getent group "${BACKUPPC_GUID:-1000}" | cut -d: -f1`
+
 if [ -f /firstrun ]; then
 	echo 'First run of the container. BackupPC will be installed.'
 	echo 'If exist, configuration and data will be reused and upgraded as needed.'
@@ -10,14 +13,22 @@ if [ -f /firstrun ]; then
 		cp /usr/share/zoneinfo/$TZ /etc/localtime 
 	fi
 
-	# Create backuppc user
-	addgroup -S -g ${BACKUPPC_GUID:-1000} backuppc
-	adduser -D -S -h /home/backuppc -G backuppc -u ${BACKUPPC_UUID:-1000} backuppc
-	chown backuppc:backuppc /home/backuppc
+	# Create backuppc user/group if needed
+	if [ -z "$BACKUPPC_GROUPNAME" ]; then
+		groupadd -r -g "${BACKUPPC_GUID:-1000}" backuppc
+		BACKUPPC_GROUPNAME="backuppc"
+	fi
+	if [ -z "$BACKUPPC_USERNAME" ]; then
+		useradd -r -d /home/backuppc -g "${BACKUPPC_GUID:-1000}" -u ${BACKUPPC_UUID:-1000} -M -N backuppc
+		BACKUPPC_USERNAME="backuppc"
+	else
+		usermod -d /home/backuppc "$BACKUPPC_USERNAME"
+	fi
+	chown "$BACKUPPC_USERNAME":"$BACKUPPC_GROUPNAME" /home/backuppc
 
 	# Generate cryptographic key
 	if [ ! -f /home/backuppc/.ssh/id_rsa ]; then
-		su backuppc -s /bin/sh -c "ssh-keygen -t rsa -N '' -f /home/backuppc/.ssh/id_rsa"
+		su "$BACKUPPC_USERNAME" -s /bin/sh -c "ssh-keygen -t rsa -N '' -f /home/backuppc/.ssh/id_rsa"
 	fi
 
 	# Extract BackupPC
@@ -47,6 +58,7 @@ if [ -f /firstrun ]; then
 		--html-dir /var/www/html/BackupPC \
 		--html-dir-url /BackupPC \
 		--install-dir /usr/local/BackupPC \
+		--backuppc-user "$BACKUPPC_USERNAME" \
 		$configure_admin
 
 	# Prepare lighttpd
@@ -59,14 +71,14 @@ if [ -f /firstrun ]; then
 			-subj "/C=UK/ST=Warwickshire/L=Leamington/O=OrgName/OU=IT Department/CN=example.com"
 		openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 		cat server.key server.crt > server.pem
-		chown backuppc:backuppc server.pem
+		chown "$BACKUPPC_USERNAME":"$BACKUPPC_GROUPNAME" server.pem
 		chmod 0600 server.pem
 		rm -f server.pass.key server.key server.csr server.crt
 		# Reconfigure lighttpd to use ssl
 		echo "ssl.engine = \"enable\"" >> /etc/lighttpd/lighttpd.conf
 		echo "ssl.pemfile = \"/etc/lighttpd/server.pem\"" >> /etc/lighttpd/lighttpd.conf
 	fi
-	touch /var/log/lighttpd/error.log && chown -R backuppc:backuppc /var/log/lighttpd
+	touch /var/log/lighttpd/error.log && chown -R "$BACKUPPC_USERNAME":"$BACKUPPC_GROUPNAME" /var/log/lighttpd
 
 	# Configure standard mail delivery parameters (may be overriden by backuppc user-wide config)
 	echo "account default" > /etc/msmtprc
@@ -79,6 +91,9 @@ if [ -f /firstrun ]; then
 	# Clean
 	rm -rf /root/BackupPC-$BACKUPPC_VERSION.tar.gz /root/BackupPC-$BACKUPPC_VERSION /firstrun
 fi
+
+export BACKUPPC_USERNAME
+export BACKUPPC_GROUPNAME
 
 # Exec given CMD in Dockerfile
 exec "$@"
