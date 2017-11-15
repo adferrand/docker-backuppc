@@ -16,7 +16,7 @@ if [ -f /firstrun ]; then
 		groupadd -r -g "${BACKUPPC_GUID:-1000}" backuppc
 		BACKUPPC_GROUPNAME="backuppc"
 	fi
-	BACKUPPC_USERNAME=`getent group "${BACKUPPC_UUID:-1000}" | cut -d: -f1`
+	BACKUPPC_USERNAME=`getent passwd "${BACKUPPC_UUID:-1000}" | cut -d: -f1`
 	if [ -z "$BACKUPPC_USERNAME" ]; then
 		useradd -r -d /home/backuppc -g "${BACKUPPC_GUID:-1000}" -u ${BACKUPPC_UUID:-1000} -M -N backuppc
 		BACKUPPC_USERNAME="backuppc"
