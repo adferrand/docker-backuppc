@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+BACKUPPC_USERNAME=`getent passwd "${BACKUPPC_UUID:-1000}" | cut -d: -f1`
+BACKUPPC_GROUPNAME=`getent group "${BACKUPPC_GUID:-1000}" | cut -d: -f1`
+
 if [ -f /firstrun ]; then
 	echo 'First run of the container. BackupPC will be installed.'
 	echo 'If exist, configuration and data will be reused and upgraded as needed.'
@@ -11,12 +14,10 @@ if [ -f /firstrun ]; then
 	fi
 
 	# Create backuppc user/group if needed
-	BACKUPPC_GROUPNAME=`getent group "${BACKUPPC_GUID:-1000}" | cut -d: -f1`
 	if [ -z "$BACKUPPC_GROUPNAME" ]; then
 		groupadd -r -g "${BACKUPPC_GUID:-1000}" backuppc
 		BACKUPPC_GROUPNAME="backuppc"
 	fi
-	BACKUPPC_USERNAME=`getent passwd "${BACKUPPC_UUID:-1000}" | cut -d: -f1`
 	if [ -z "$BACKUPPC_USERNAME" ]; then
 		useradd -r -d /home/backuppc -g "${BACKUPPC_GUID:-1000}" -u ${BACKUPPC_UUID:-1000} -M -N backuppc
 		BACKUPPC_USERNAME="backuppc"
@@ -24,8 +25,6 @@ if [ -f /firstrun ]; then
 		usermod -d /home/backuppc "$BACKUPPC_USERNAME"
 	fi
 	chown "$BACKUPPC_USERNAME":"$BACKUPPC_GROUPNAME" /home/backuppc
-	export BACKUPPC_USERNAME
-	export BACKUPPC_GROUPNAME
 
 	# Generate cryptographic key
 	if [ ! -f /home/backuppc/.ssh/id_rsa ]; then
@@ -91,6 +90,9 @@ if [ -f /firstrun ]; then
 	# Clean
 	rm -rf /root/BackupPC-$BACKUPPC_VERSION.tar.gz /root/BackupPC-$BACKUPPC_VERSION /firstrun
 fi
+
+export BACKUPPC_USERNAME
+export BACKUPPC_GROUPNAME
 
 # Exec given CMD in Dockerfile
 exec "$@"
