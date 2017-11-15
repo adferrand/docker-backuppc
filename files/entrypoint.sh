@@ -58,6 +58,7 @@ if [ -f /firstrun ]; then
 		--html-dir /var/www/html/BackupPC \
 		--html-dir-url /BackupPC \
 		--install-dir /usr/local/BackupPC \
+		--backuppc-user "$BACKUPPC_USERNAME" \
 		$configure_admin
 
 	# Prepare lighttpd
