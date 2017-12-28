@@ -4,8 +4,8 @@ LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
 ENV BACKUPPC_VERSION 4.1.5
 ENV BACKUPPC_XS_VERSION 0.57
-ENV RSYNC_BPC_VERSION 3.0.9.9
-ENV PAR2_VERSION v0.7.4
+ENV RSYNC_BPC_VERSION 3.0.9.11
+ENV PAR2_VERSION v0.8.0
 
 RUN apk --no-cache add \
 # Install backuppc build dependencies
