@@ -52,7 +52,7 @@ docker run \
 Latest BackupPC 4.x docker image will be downloaded if needed, and started. 
 After starting, browse http://YOUR_SERVER_IP:8080 to access the BackupPC web Admin UI. 
 
-The default credentials is
+The default credentials are:
 - **username:** backuppc
 - **password:** password
 
