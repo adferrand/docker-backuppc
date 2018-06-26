@@ -56,7 +56,7 @@ The default credentials are:
 - **username:** backuppc
 - **password:** password
 
-You can then test your BackupPC instance.
+Then you can test your BackupPC instance.
 
 BackupPC configuration and pool are persisted as anonymous data containers (see [Data persistency](#data-persistency)) with a weak control over it. Moreover BackupPC Admin Web UI is accessed from the unsecured HTTP protocol, exposing your user/password and data you could retrieve from the UI (see [UI SSL encryption](#ui-ssl-encryption)).
 
