@@ -40,6 +40,7 @@ See [BackupPC documentation](http://backuppc.sourceforge.net/BackupPC-4.1.1.html
 ## Basic usage
 
 For testing purpose, you can create a new BackupPC instance with following command.
+**Please note that the basic usage is not suitable for production use.**
 
 ```bash
 docker run \
@@ -48,9 +49,16 @@ docker run \
     adferrand/backuppc
 ```
 
-Latest BackupPC 4.x docker image will be downloaded if needed, and started. After starting, browse http://YOUR_SERVER_IP:8080 to access the BackupPC web Admin UI. A user/password will be asked: they are backuppc/password. You can then test your BackupPC instance.
+Latest BackupPC 4.x docker image will be downloaded if needed, and started. 
+After starting, browse http://YOUR_SERVER_IP:8080 to access the BackupPC web Admin UI. 
 
-Please note that the basic usage is not suitable for production use. BackupPC configuration and pool are persisted as anonymous data containers (see [Data persistency](#data-persistency)) with a weak control over it. Moreover BackupPC Admin Web UI is accessed from the unsecured HTTP protocol, exposing your user/password and data you could retrieve from the UI (see [UI SSL encryption](#ui-ssl-encryption)).
+The default credentials are:
+- **username:** backuppc
+- **password:** password
+
+Then you can test your BackupPC instance.
+
+BackupPC configuration and pool are persisted as anonymous data containers (see [Data persistency](#data-persistency)) with a weak control over it. Moreover BackupPC Admin Web UI is accessed from the unsecured HTTP protocol, exposing your user/password and data you could retrieve from the UI (see [UI SSL encryption](#ui-ssl-encryption)).
 
 ## Data persistency
 
