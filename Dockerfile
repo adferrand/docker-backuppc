@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM bitnami/minideb:stretch
 
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
@@ -7,14 +7,11 @@ ENV BACKUPPC_XS_VERSION 0.57
 ENV RSYNC_BPC_VERSION 3.0.9.12
 ENV PAR2_VERSION v0.8.0
 
-RUN apk --no-cache add \
+RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
 # Install backuppc build dependencies
-gcc g++ autoconf automake make git patch perl perl-dev perl-cgi expat expat-dev curl wget \
+gcc g++ autoconf automake make git patch libexpat1-dev curl wget ca-certificates \
 # Install backuppc runtime dependencies
-supervisor rsync samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp libgcc shadow \
-# Compile and install needed perl modules
-&& cpan App::cpanminus \
-&& cpanm -n Archive::Zip XML::RSS File::Listing \
+supervisor rsync samba-client samba-common-bin openssh-client openssl rrdtool msmtp iputils-ping bzip2 lighttpd apache2-utils libexpat1 libperl-version-perl libfile-listing-perl libcgi-pm-perl \
 # Compile and install BackupPC:XS
 && git clone https://github.com/backuppc/backuppc-xs.git /root/backuppc-xs --branch $BACKUPPC_XS_VERSION \
 && cd /root/backuppc-xs \
@@ -39,7 +36,8 @@ supervisor rsync samba-client iputils openssh openssl rrdtool msmtp lighttpd lig
 && touch /firstrun \
 # Clean
 && rm -rf /root/backuppc-xs /root/rsync-bpc /root/par2cmdline \
-&& apk --no-cache del gcc g++ autoconf automake make git patch perl-dev expat-dev curl wget
+&& apt-get remove --purge --auto-remove -y gcc g++ autoconf automake make git patch libexpat1-dev curl wget ca-certificates \
+&& apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY files/lighttpd.conf /etc/lighttpd/lighttpd.conf
 COPY files/entrypoint.sh /entrypoint.sh
@@ -50,5 +48,7 @@ EXPOSE 8080
 VOLUME ["/etc/backuppc", "/home/backuppc", "/data/backuppc"]
 
 ENTRYPOINT ["/entrypoint.sh"]
+
+WORKDIR ["/home/backuppc"]
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]

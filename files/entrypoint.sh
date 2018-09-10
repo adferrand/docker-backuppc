@@ -28,7 +28,7 @@ if [ -f /firstrun ]; then
 
 	# Generate cryptographic key
 	if [ ! -f /home/backuppc/.ssh/id_rsa ]; then
-		su "$BACKUPPC_USERNAME" -s /bin/sh -c "ssh-keygen -t rsa -N '' -f /home/backuppc/.ssh/id_rsa"
+		su "$BACKUPPC_USERNAME" -s /bin/sh -c "/usr/bin/ssh-keygen -t rsa -N '' -f /home/backuppc/.ssh/id_rsa"
 	fi
 
 	# Extract BackupPC
