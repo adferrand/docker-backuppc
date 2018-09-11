@@ -1,4 +1,4 @@
-FROM bitnami/minideb:stretch
+FROM debian:stretch-slim
 
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
@@ -36,8 +36,8 @@ supervisor rsync samba-client samba-common-bin openssh-client openssl rrdtool ms
 && touch /firstrun \
 # Clean
 && rm -rf /root/backuppc-xs /root/rsync-bpc /root/par2cmdline \
-&& apt-get remove --purge --auto-remove -y gcc g++ autoconf automake make git patch libexpat1-dev curl wget ca-certificates \
-&& apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+&& DEBIAN_FRONTEND=noninteractive apt-get remove --purge --auto-remove -y gcc g++ autoconf automake make git patch libexpat1-dev curl wget ca-certificates \
+&& DEBIAN_FRONTEND=noninteractive apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY files/lighttpd.conf /etc/lighttpd/lighttpd.conf
 COPY files/entrypoint.sh /entrypoint.sh
