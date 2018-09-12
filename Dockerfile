@@ -6,15 +6,13 @@ ENV BACKUPPC_VERSION 4.2.1
 ENV BACKUPPC_XS_VERSION 0.57
 ENV RSYNC_BPC_VERSION 3.0.9.12
 ENV PAR2_VERSION v0.8.0
-ENV SUPERVISOR_COMMIT_HASH abef0a2be35f4aae4a4edeceadb7a213b729ef8d
 
-# Install backuppc runtime dependencies
 RUN apk --no-cache --update add python3 rsync perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing expat samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp shadow \
 # Install backuppc build dependencies
  && apk --no-cache --update --virtual build-dependencies add gcc g++ libgcc autoconf automake make git patch perl-dev expat-dev curl wget \
 # Install supervisor
  && python3 -m ensurepip \
- && pip3 install --upgrade pip git+https://github.com/Supervisor/supervisor@$SUPERVISOR_COMMIT_HASH \
+ && pip3 install --upgrade pip circus \
 # Compile and install BackupPC:XS
  && git clone https://github.com/backuppc/backuppc-xs.git /root/backuppc-xs --branch $BACKUPPC_XS_VERSION \
  && cd /root/backuppc-xs \
@@ -43,7 +41,7 @@ RUN apk --no-cache --update add python3 rsync perl perl-archive-zip perl-xml-rss
 
 COPY files/lighttpd.conf /etc/lighttpd/lighttpd.conf
 COPY files/entrypoint.sh /entrypoint.sh
-COPY files/supervisord.conf /etc/supervisord.conf
+COPY files/circus.ini /etc/circus.ini
 
 EXPOSE 8080
 
@@ -51,4 +49,4 @@ VOLUME ["/etc/backuppc", "/home/backuppc", "/data/backuppc"]
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/circusd", "/etc/circus.ini"]
