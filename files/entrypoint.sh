@@ -1,8 +1,10 @@
 #!/bin/sh
 set -e
 
-BACKUPPC_USERNAME=`getent passwd "${BACKUPPC_UUID:-1000}" | cut -d: -f1`
-BACKUPPC_GROUPNAME=`getent group "${BACKUPPC_GUID:-1000}" | cut -d: -f1`
+BACKUPPC_UUID="${BACKUPPC_UUID:-1000}"
+BACKUPPC_GUID="${BACKUPPC_GUID:-1000}"
+BACKUPPC_USERNAME=`getent passwd "$BACKUPPC_UUID" | cut -d: -f1`
+BACKUPPC_GROUPNAME=`getent group "$BACKUPPC_GUID" | cut -d: -f1`
 
 if [ -f /firstrun ]; then
 	echo 'First run of the container. BackupPC will be installed.'
@@ -15,11 +17,11 @@ if [ -f /firstrun ]; then
 
 	# Create backuppc user/group if needed
 	if [ -z "$BACKUPPC_GROUPNAME" ]; then
-		groupadd -r -g "${BACKUPPC_GUID:-1000}" backuppc
+		groupadd -r -g "$BACKUPPC_GUID" backuppc
 		BACKUPPC_GROUPNAME="backuppc"
 	fi
 	if [ -z "$BACKUPPC_USERNAME" ]; then
-		useradd -r -d /home/backuppc -g "${BACKUPPC_GUID:-1000}" -u ${BACKUPPC_UUID:-1000} -M -N backuppc
+		useradd -r -d /home/backuppc -g "$BACKUPPC_GUID" -u "$BACKUPPC_UUID" -M -N backuppc
 		BACKUPPC_USERNAME="backuppc"
 	else
 		usermod -d /home/backuppc "$BACKUPPC_USERNAME"
@@ -92,8 +94,14 @@ if [ -f /firstrun ]; then
 	rm -rf /root/BackupPC-$BACKUPPC_VERSION.tar.gz /root/BackupPC-$BACKUPPC_VERSION /firstrun
 fi
 
+export BACKUPPC_UUID
+export BACKUPPC_GUID
 export BACKUPPC_USERNAME
 export BACKUPPC_GROUPNAME
 
+# Executable bzip2 seems to have been moved into /usr/bin in latest Alpine version. Fix that.
+ln -s /usr/bin/bzip2 /bin/bzip2
+
 # Exec given CMD in Dockerfile
+cd /home/backuppc
 exec "$@"

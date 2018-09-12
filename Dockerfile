@@ -7,9 +7,10 @@ ENV BACKUPPC_XS_VERSION 0.57
 ENV RSYNC_BPC_VERSION 3.0.9.12
 ENV PAR2_VERSION v0.8.0
 
-RUN apk --no-cache --update add python3 rsync perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing expat samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp shadow \
+# Install backuppc runtime dependencies
+RUN apk --no-cache --update add python3 rsync bash perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing expat samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp shadow \
 # Install backuppc build dependencies
- && apk --no-cache --update --virtual build-dependencies add gcc g++ libgcc autoconf automake make git patch perl-dev expat-dev curl wget \
+ && apk --no-cache --update --virtual build-dependencies add gcc g++ libgcc linux-headers autoconf automake make git patch perl-dev python3-dev expat-dev curl wget \
 # Install supervisor
  && python3 -m ensurepip \
  && pip3 install --upgrade pip circus \
@@ -32,8 +33,8 @@ RUN apk --no-cache --update add python3 rsync perl perl-archive-zip perl-xml-rss
 # Get BackupPC, it will be installed at runtime to allow dynamic upgrade of existing config/pool
  && curl -o /root/BackupPC-$BACKUPPC_VERSION.tar.gz -L https://github.com/backuppc/backuppc/releases/download/$BACKUPPC_VERSION/BackupPC-$BACKUPPC_VERSION.tar.gz \
 # Prepare backuppc home
- && mkdir -p /home/backuppc \
-# Mark the docker as not runned yet, to allow entrypoint to do its stuff
+ && mkdir -p /home/backuppc && cd /home/backuppc \
+# Mark the docker as not run yet, to allow entrypoint to do its stuff
  && touch /firstrun \
 # Clean
  && rm -rf /root/backuppc-xs /root/rsync-bpc /root/par2cmdline \
@@ -41,12 +42,15 @@ RUN apk --no-cache --update add python3 rsync perl perl-archive-zip perl-xml-rss
 
 COPY files/lighttpd.conf /etc/lighttpd/lighttpd.conf
 COPY files/entrypoint.sh /entrypoint.sh
+COPY files/run.sh /run.sh
 COPY files/circus.ini /etc/circus.ini
 
 EXPOSE 8080
+
+WORKDIR /home/backuppc
 
 VOLUME ["/etc/backuppc", "/home/backuppc", "/data/backuppc"]
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["/usr/bin/circusd", "/etc/circus.ini"]
+CMD ["/run.sh"]
