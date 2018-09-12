@@ -6,34 +6,38 @@ ENV BACKUPPC_VERSION 4.2.1
 ENV BACKUPPC_XS_VERSION 0.57
 ENV RSYNC_BPC_VERSION 3.0.9.12
 ENV PAR2_VERSION v0.8.0
+ENV SUPERVISOR_COMMIT_HASH abef0a2be35f4aae4a4edeceadb7a213b729ef8d
 
 # Install backuppc runtime dependencies
-RUN apk --no-cache --update add supervisor rsync perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing expat samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp shadow \
+RUN apk --no-cache --update add python3 rsync perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing expat samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp shadow \
 # Install backuppc build dependencies
- && apk --no-cache --update --virtual add gcc g++ libgcc autoconf automake make git patch expat-dev curl wget \
- # Compile and install BackupPC:XS
+ && apk --no-cache --update --virtual build-dependencies add gcc g++ libgcc autoconf automake make git patch perl-dev expat-dev curl wget \
+# Install supervisor
+ && python3 -m ensurepip \
+ && pip3 install --upgrade pip git+https://github.com/Supervisor/supervisor@$SUPERVISOR_COMMIT_HASH \
+# Compile and install BackupPC:XS
  && git clone https://github.com/backuppc/backuppc-xs.git /root/backuppc-xs --branch $BACKUPPC_XS_VERSION \
  && cd /root/backuppc-xs \
  && perl Makefile.PL && make && make test && make install \
- # Compile and install Rsync (BPC version)
+# Compile and install Rsync (BPC version)
  && git clone https://github.com/backuppc/rsync-bpc.git /root/rsync-bpc --branch $RSYNC_BPC_VERSION \
  && cd /root/rsync-bpc && ./configure && make reconfigure && make && make install \
- # Compile and install PAR2
+# Compile and install PAR2
  && git clone https://github.com/Parchive/par2cmdline.git /root/par2cmdline --branch $PAR2_VERSION \
  && cd /root/par2cmdline && ./automake.sh && ./configure && make && make check && make install \
- # Configure MSMTP for mail delivery (initially sendmail is a sym link to busybox)
+# Configure MSMTP for mail delivery (initially sendmail is a sym link to busybox)
  && rm -f /usr/sbin/sendmail \
  && ln -s /usr/bin/msmtp /usr/sbin/sendmail \
- # Disable strict host key checking
+# Disable strict host key checking
  && sed -i -e 's/^# Host \*/Host */g' /etc/ssh/ssh_config \
  && sed -i -e 's/^#   StrictHostKeyChecking ask/    StrictHostKeyChecking no/g' /etc/ssh/ssh_config \
- # Get BackupPC, it will be installed at runtime to allow dynamic upgrade of existing config/pool
+# Get BackupPC, it will be installed at runtime to allow dynamic upgrade of existing config/pool
  && curl -o /root/BackupPC-$BACKUPPC_VERSION.tar.gz -L https://github.com/backuppc/backuppc/releases/download/$BACKUPPC_VERSION/BackupPC-$BACKUPPC_VERSION.tar.gz \
- # Prepare backuppc home
+# Prepare backuppc home
  && mkdir -p /home/backuppc \
- # Mark the docker as not runned yet, to allow entrypoint to do its stuff
+# Mark the docker as not runned yet, to allow entrypoint to do its stuff
  && touch /firstrun \
- # Clean
+# Clean
  && rm -rf /root/backuppc-xs /root/rsync-bpc /root/par2cmdline \
  && apk del build-dependencies
 
