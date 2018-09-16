@@ -7,11 +7,11 @@ jobs:
       - checkout
       - run: 
           command:
-            docker build -t adferrand/backuppc:${CIRCLE_TAG} .
+            docker build -t adferrand/backuppc .
       - run:
           command: |
             mkdir -p workspace
-            docker save adferrand/backuppc:${CIRCLE_TAG} > workspace/docker-backuppc.tar
+            docker save adferrand/backuppc > workspace/docker-backuppc.tar
       - persist_to_workspace:
           root: workspace
           paths:
@@ -23,13 +23,19 @@ jobs:
           at: /tmp/workspace
       - run:
           command:
+            echo 'if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}} fi; export DOCKER_TAG' >> $BASH_ENV
+      - run:
+          command:
             docker load < /tmp/workspace/docker-backuppc.tar
       - run: 
           command:
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run:
+          command:
+            docker tag adferrand/backuppc adferrand/backuppc:${DOCKER_TAG}
       - deploy: 
           command:
-            docker push adferrand/backuppc:${CIRCLE_TAG}
+            docker push adferrand/backuppc:${DOCKER_TAG}
 workflows:
   version: 2
   build-n-deploy:
