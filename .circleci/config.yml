@@ -26,7 +26,7 @@ jobs:
             docker load < /tmp/workspace/docker-backuppc.tar
       - run:
           command:
-            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+            echo "${DOCKER_PASS}" | docker login -u ${DOCKER_USER} --password-stdin
       - deploy: 
           command: |
             if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest; else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}; fi
