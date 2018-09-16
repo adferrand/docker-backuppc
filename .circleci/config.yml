@@ -5,8 +5,9 @@ jobs:
     steps:
       - checkout
       - run: 
-          command:
-            docker build -t adferrand/backuppc .
+          command: |
+            docker pull adferrand/backuppc || true
+            docker build -t --cache-from adferrand/backuppc adferrand/backuppc .
       - run:
           command: |
             mkdir -p workspace
