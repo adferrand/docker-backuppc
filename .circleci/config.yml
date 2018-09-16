@@ -7,7 +7,7 @@ jobs:
       - run: 
           command: |
             docker pull adferrand/backuppc || true
-            docker build -t --cache-from adferrand/backuppc adferrand/backuppc .
+            docker build --cache-from adferrand/backuppc -t adferrand/backuppc .
       - run:
           command: |
             mkdir -p workspace
@@ -24,6 +24,9 @@ jobs:
       - run:
           command:
             docker load < /tmp/workspace/docker-backuppc.tar
+      - run:
+          command:
+            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
       - deploy: 
           command: |
             if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest; else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}; fi
