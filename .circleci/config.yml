@@ -12,9 +12,11 @@ jobs:
           command:
             docker build -t adferrand/backuppc:${CIRCLE_TAG} .
       - run:
-          command:
-            docker save adferrand/backuppc:${CIRCLE_TAG} > docker-backuppc.tar
+          command: |
+            mkdir -p workspace
+            docker save adferrand/backuppc:${CIRCLE_TAG} > workspace/docker-backuppc.tar
       - persist_to_workspace:
+          root: workspace
           paths:
             - docker-backuppc.tar
   deploy:
