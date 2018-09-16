@@ -20,6 +20,8 @@ jobs:
           paths:
             - docker-backuppc.tar
   deploy:
+    docker:
+      - image: 17.07.0-ce-git
     steps:
       - attach_workspace:
           at: /tmp/workspace
