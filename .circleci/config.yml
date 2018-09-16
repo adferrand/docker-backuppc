@@ -5,8 +5,6 @@ jobs:
     machine: true
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
       - run: 
           command:
             docker build -t adferrand/backuppc:${CIRCLE_TAG} .
@@ -23,8 +21,6 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
-      - setup_remote_docker:
-          docker_layer_caching: true
       - run:
           command:
             docker load < /tmp/workspace/docker-backuppc.tar
