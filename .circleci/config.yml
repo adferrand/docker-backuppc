@@ -2,8 +2,7 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: 17.05.0-ce-git
+    machine: true
     steps:
       - checkout
       - setup_remote_docker:
@@ -20,8 +19,7 @@ jobs:
           paths:
             - docker-backuppc.tar
   deploy:
-    docker:
-      - image: 17.05.0-ce-git
+    machine: true
     steps:
       - attach_workspace:
           at: /tmp/workspace
