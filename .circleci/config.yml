@@ -1,4 +1,3 @@
-# Configure CircleCI
 version: 2
 jobs:
   build:
@@ -23,14 +22,12 @@ jobs:
           at: /tmp/workspace
       - run:
           command:
-            echo 'if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}} fi; export DOCKER_TAG' >> $BASH_ENV
-      - run:
-          command:
             docker load < /tmp/workspace/docker-backuppc.tar
       - deploy: 
           command: |
-            DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}
-            echo ${DOCKER_TAG}
+            if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest; else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}; fi
+            docker tag adferrand/backuppc adferrand/backuppc:${DOCKER_TAG}
+            docker push adferrand/backuppc:${DOCKER_TAG}
 workflows:
   version: 2
   build-n-deploy:
