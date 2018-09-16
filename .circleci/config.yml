@@ -27,14 +27,10 @@ jobs:
       - run:
           command:
             docker load < /tmp/workspace/docker-backuppc.tar
-      - run: 
-          command:
-            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-      - run:
-          command:
-            docker tag adferrand/backuppc adferrand/backuppc:${DOCKER_TAG}
       - deploy: 
-          command:
+          command: |
+            if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}} fi
+            docker tag adferrand/backuppc adferrand/backuppc:${DOCKER_TAG}
             docker push adferrand/backuppc:${DOCKER_TAG}
 workflows:
   version: 2
