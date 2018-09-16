@@ -38,11 +38,11 @@ workflows:
     jobs:
       - build:
           filters:
-            branches:
-              only: ^circleci$
+            tags:
+              only: ^[0-9.]+
       - deploy:
           requires: 
             - build
           filters:
-            branches:
-              only: ^circleci$
+            tags:
+              only: ^[0-9.]+
