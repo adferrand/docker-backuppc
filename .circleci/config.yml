@@ -7,7 +7,7 @@ jobs:
       - run: 
           command: |
             docker pull adferrand/backuppc || true
-            docker build --cache-from adferrand/backuppc -t adferrand/backuppc .
+            docker build --pull --cache-from adferrand/backuppc -t adferrand/backuppc .
       - run:
           command: |
             mkdir -p workspace
