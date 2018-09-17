@@ -1,14 +1,22 @@
 version: 2
 jobs:
-  build:
+  build-n-test:
     machine: true
     steps:
       - checkout
-      - run: 
+      - run:
+          name: Build container
           command: |
             docker pull adferrand/backuppc || true
             docker build --pull --cache-from adferrand/backuppc -t adferrand/backuppc .
       - run:
+          name: Test container
+          command: |
+            mkdir -p ./bin
+            curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
+            GOSS_PATH=./bin/goss GOSS_SLEEP=1 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_STAGING=true adferrand/backuppc
+      - run:
+          name: Save container
           command: |
             mkdir -p workspace
             docker save adferrand/backuppc > workspace/docker-backuppc.tar
@@ -16,29 +24,21 @@ jobs:
           root: workspace
           paths:
             - docker-backuppc.tar
-  test:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          command:
-            docker load < /tmp/workspace/docker-backuppc.tar
-      - run:
-          command:
-            docker run --rm adferrand/backuppc echo 'Hello World!'
   deploy:
     machine: true
     steps:
       - attach_workspace:
           at: /tmp/workspace
       - run:
+          name: Load container
           command:
             docker load < /tmp/workspace/docker-backuppc.tar
       - run:
+          name: Login to DockerHub
           command:
             echo "${DOCKER_PASS}" | docker login -u ${DOCKER_USER} --password-stdin
-      - deploy: 
+      - deploy:
+          name: Deploy to DockerHub
           command: |
             if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest; else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}; fi
             docker tag adferrand/backuppc adferrand/backuppc:${DOCKER_TAG}
@@ -47,13 +47,7 @@ workflows:
   version: 2
   main-pipeline:
     jobs:
-      - build:
-          filters:
-            tags:
-              only: /^[0-9.]+/
-      - test:
-          requires: 
-            - build
+      - build-n-test:
           filters:
             tags:
               only: /^[0-9.]+/
