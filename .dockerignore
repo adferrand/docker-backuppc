@@ -1,4 +1,6 @@
 .git
+.circleci
+tests
 images
 LICENSE
 VERSION

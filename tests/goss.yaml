@@ -1,0 +1,81 @@
+file:
+  /data/backuppc/cpool:
+    exists: true
+    mode: "0750"
+    size: 4096
+    owner: backuppc
+    group: backuppc
+    filetype: directory
+    contains: []
+  /data/backuppc/log:
+    exists: true
+    mode: "0750"
+    size: 4096
+    owner: backuppc
+    group: backuppc
+    filetype: directory
+    contains: []
+  /data/backuppc/pc:
+    exists: true
+    mode: "0750"
+    size: 4096
+    owner: backuppc
+    group: backuppc
+    filetype: directory
+    contains: []
+  /data/backuppc/pool:
+    exists: true
+    mode: "0750"
+    size: 4096
+    owner: backuppc
+    group: backuppc
+    filetype: directory
+    contains: []
+  /etc/backuppc/config.pl:
+    exists: true
+    mode: "0640"
+    size: 86003
+    owner: backuppc
+    group: backuppc
+    filetype: file
+    contains: []
+  /etc/backuppc/hosts:
+    exists: true
+    mode: "0644"
+    size: 2214
+    owner: backuppc
+    group: backuppc
+    filetype: file
+    contains: []
+  /etc/backuppc/htpasswd:
+    exists: true
+    mode: "0644"
+    size: 47
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /usr/sbin/lighttpd:
+    exists: true
+    mode: "0755"
+    size: 254584
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+port:
+  udp:12027:
+    listening: true
+    ip:
+    - 0.0.0.0
+  tcp:8080:
+    listening: true
+    ip:
+    - 0.0.0.0
+process:
+  BackupPC:
+    running: true
+  circusd:
+    running: true
+  lighttpd:
+    running: true
