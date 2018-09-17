@@ -50,18 +50,18 @@ workflows:
       - build:
           filters:
             tags:
-              only: ^[0-9.]+
+              only: /^[0-9.]+/
       - test:
           requires: 
             - build
           filters:
             tags:
-              only: ^[0-9.]+            
+              only: /^[0-9.]+/
       - deploy:
           requires: 
             - test
           filters:
             branches:
-              only: ^(master|4|3)$
+              only: /^(master|4|3)$/
             tags:
-              only: ^[0-9.]+
+              only: /^[0-9.]+/
