@@ -16,6 +16,17 @@ jobs:
           root: workspace
           paths:
             - docker-backuppc.tar
+  test:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          command:
+            docker load < /tmp/workspace/docker-backuppc.tar
+      - run:
+          command:
+            docker run --rm adferrand/backuppc echo 'Hello World!'
   deploy:
     machine: true
     steps:
@@ -40,9 +51,17 @@ workflows:
           filters:
             tags:
               only: ^[0-9.]+
-      - deploy:
+      - test:
           requires: 
             - build
           filters:
+            tags:
+              only: ^[0-9.]+            
+      - deploy:
+          requires: 
+            - test
+          filters:
+            branches:
+              only: ^(master|4|3)$
             tags:
               only: ^[0-9.]+
