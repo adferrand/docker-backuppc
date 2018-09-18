@@ -53,7 +53,7 @@ workflows:
               only: /^[0-9.]+/
       - deploy:
           requires: 
-            - test
+            - build-n-test
           filters:
             branches:
               only: /^(master|4|3)$/
