@@ -43,11 +43,11 @@ jobs:
           name: Save container
           command: |
             mkdir -p workspace
-            docker save adferrand/backuppc > workspace/docker-backuppc.tar
+            docker save adferrand/backuppc | gzip -c -1 > workspace/docker-backuppc.tar.gz
       - persist_to_workspace:
           root: workspace
           paths:
-            - docker-backuppc.tar
+            - docker-backuppc.tar.gz
   deploy:
     machine: true
     steps:
@@ -56,7 +56,7 @@ jobs:
       - run:
           name: Load container
           command:
-            docker load < /tmp/workspace/docker-backuppc.tar
+            docker load < /tmp/workspace/docker-backuppc.tar.gz
       - run:
           name: Login to DockerHub
           command:
