@@ -1,4 +1,28 @@
 version: 2
+
+workflows:
+  version: 2
+  main-pipeline:
+    jobs:
+      - build-n-test:
+          filters:
+            tags:
+              only: /^[0-9.]+/
+      - deploy:
+          requires: 
+            - build-n-test
+          filters:
+            branches:
+              only: /^(master|4|3)$/
+            tags:
+              only: /^[0-9.]+/
+      - trigger-dockerhub:
+          requires: 
+            - build-n-test
+          filters:
+            branches:
+              only: master
+
 jobs:
   build-n-test:
     machine: true
@@ -43,19 +67,10 @@ jobs:
             if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest; else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}; fi
             docker tag adferrand/backuppc adferrand/backuppc:${DOCKER_TAG}
             docker push adferrand/backuppc:${DOCKER_TAG}
-workflows:
-  version: 2
-  main-pipeline:
-    jobs:
-      - build-n-test:
-          filters:
-            tags:
-              only: /^[0-9.]+/
+  trigger-dockerhub:
+    machine: true
+    steps:
       - deploy:
-          requires: 
-            - build-n-test
-          filters:
-            branches:
-              only: /^(master|4|3)$/
-            tags:
-              only: /^[0-9.]+/
+          name: Trigger DockerHub build
+          command: |
+            curl -H "Content-Type: application/json" --data '{"docker_tag": "master"}' -X POST https://registry.hub.docker.com/u/adferrand/backuppc/trigger/463a9d6d-4293-42bb-861f-72e450a22656/
