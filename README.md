@@ -1,5 +1,5 @@
 # &nbsp;![](https://raw.githubusercontent.com/adferrand/docker-backuppc/master/images/logo_200px.png) adferrand/backuppc
-![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.2.1-1.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.2.1-1.svg)](https://microbadger.com/images/adferrand/backuppc:4.2.1-1)
+![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.2.1-2.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.2.1-2.svg)](https://microbadger.com/images/adferrand/backuppc:4.2.1-2)
 
 * [Container functionalities](#container-functionalities)
 * [About BackupPC](#about-backuppc)

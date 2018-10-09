@@ -10,6 +10,9 @@ if [ -f /firstrun ]; then
 	echo 'First run of the container. BackupPC will be installed.'
 	echo 'If exist, configuration and data will be reused and upgraded as needed.'
 
+	# Executable bzip2 seems to have been moved into /usr/bin in latest Alpine version. Fix that.
+	ln -s /usr/bin/bzip2 /bin/bzip2
+
 	# Configure timezone if needed
 	if [ -n "$TZ" ]; then
 		cp /usr/share/zoneinfo/$TZ /etc/localtime 
@@ -98,9 +101,6 @@ export BACKUPPC_UUID
 export BACKUPPC_GUID
 export BACKUPPC_USERNAME
 export BACKUPPC_GROUPNAME
-
-# Executable bzip2 seems to have been moved into /usr/bin in latest Alpine version. Fix that.
-ln -s /usr/bin/bzip2 /bin/bzip2
 
 # Exec given CMD in Dockerfile
 cd /home/backuppc
