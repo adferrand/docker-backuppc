@@ -4,7 +4,13 @@
 
 ## [4.2.1-1] - 14/05/2018
 ### Added
-* Create this CHANGELOG.md
+* Set up a complete CI/CD system for this Docker, using CircleCI: docker is noz automatically packaged, tested and deployed to Docker Hub
+
+### Changed
+* Hotfix for BZIP2 binary, due to latest Alpine layout modifications, is now applied when the container is created, removing the error `n: /bin/bzip2: File exists` when container is restarted.
+
+## [4.2.1-1] - 14/05/2018
+### Added
 * Add and configure circus, an alternative to supervisor, compatible with Python 3, with better control over environment variables propagation, and network sockets supervision (not used yet here)
 * Mandatory perl modules for Backuppc are now installed as pre-compiled binaries from Alpine repos
 
