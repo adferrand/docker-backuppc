@@ -7,7 +7,7 @@ workflows:
       - build-n-test:
           filters:
             tags:
-              only: /^[0-9.]+/
+              only: /.*/
       - deploy:
           requires: 
             - build-n-test
@@ -15,7 +15,7 @@ workflows:
             branches:
               only: /^(master|4|3)$/
             tags:
-              only: /^[0-9.]+/
+              only: /.*/
       - trigger-dockerhub:
           requires: 
             - build-n-test
