@@ -2,7 +2,6 @@ file:
   /data/backuppc/cpool:
     exists: true
     mode: "0750"
-    size: 4096
     owner: backuppc
     group: backuppc
     filetype: directory
@@ -10,7 +9,6 @@ file:
   /data/backuppc/log:
     exists: true
     mode: "0750"
-    size: 4096
     owner: backuppc
     group: backuppc
     filetype: directory
@@ -18,7 +16,6 @@ file:
   /data/backuppc/pc:
     exists: true
     mode: "0750"
-    size: 4096
     owner: backuppc
     group: backuppc
     filetype: directory
@@ -26,7 +23,6 @@ file:
   /data/backuppc/pool:
     exists: true
     mode: "0750"
-    size: 4096
     owner: backuppc
     group: backuppc
     filetype: directory
@@ -34,7 +30,6 @@ file:
   /etc/backuppc/config.pl:
     exists: true
     mode: "0640"
-    size: 86003
     owner: backuppc
     group: backuppc
     filetype: file
@@ -42,7 +37,6 @@ file:
   /etc/backuppc/hosts:
     exists: true
     mode: "0644"
-    size: 2214
     owner: backuppc
     group: backuppc
     filetype: file
@@ -50,7 +44,6 @@ file:
   /etc/backuppc/htpasswd:
     exists: true
     mode: "0644"
-    size: 47
     owner: root
     group: root
     filetype: file
@@ -58,7 +51,6 @@ file:
   /usr/sbin/lighttpd:
     exists: true
     mode: "0755"
-    size: 254584
     owner: root
     group: root
     filetype: file
