@@ -10,7 +10,7 @@ ENV PAR2_VERSION v0.8.0
 # Install backuppc runtime dependencies
 RUN apk --no-cache --update add python3 rsync bash perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing expat samba-client iputils openssh openssl rrdtool msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp shadow \
 # Install backuppc build dependencies
- && apk --no-cache --update --virtual build-dependencies add gcc g++ libgcc linux-headers autoconf automake make git patch perl-dev python3-dev expat-dev curl wget \
+ && apk --no-cache --update --virtual build-dependencies add gcc g++ libgcc linux-headers autoconf automake make git patch perl-dev python3-dev expat-dev acl-dev attr-dev popt-dev curl wget \
 # Install supervisor
  && python3 -m ensurepip \
  && pip3 install --upgrade pip circus \
