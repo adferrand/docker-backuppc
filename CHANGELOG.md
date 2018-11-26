@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## [4.2.1-3] - 26/11/2018
+### Added
+* Add support for ACL to rsync-bpc (from @JoelLinn in #9)
+
 ## [4.2.1-2] - 09/10/2018
 ### Added
 * Set up a complete CI/CD system for this Docker, using CircleCI: docker is now automatically packaged, tested and deployed to Docker Hub
