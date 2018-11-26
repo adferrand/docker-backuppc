@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [4.3.0] - 26/11/2018
+### Changed
+* Update BackupPC to 4.2.0
+* Update perl lib BackupPC::XS to 0.58
+* Update rsync-bpc to 3.0.9.13
+
 ## [4.2.1-3] - 26/11/2018
 ### Added
 * Add support for ACL to rsync-bpc (from @JoelLinn in #9)
