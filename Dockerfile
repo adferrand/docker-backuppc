@@ -3,8 +3,8 @@ FROM alpine:3.8
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
 ENV BACKUPPC_VERSION 4.3.0
-ENV BACKUPPC_XS_VERSION 0.57
-ENV RSYNC_BPC_VERSION 3.0.9.12
+ENV BACKUPPC_XS_VERSION 0.58
+ENV RSYNC_BPC_VERSION 3.0.9.13
 ENV PAR2_VERSION v0.8.0
 
 # Install backuppc runtime dependencies
