@@ -68,17 +68,20 @@ if [ -f /firstrun ]; then
 
 	# Prepare lighttpd
 	if [ "$USE_SSL" = true ]; then
-		# Generate certificate file as needed
-		cd /etc/lighttpd
-		openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
-		openssl rsa -passin pass:x -in server.pass.key -out server.key
-		openssl req -new -key server.key -out server.csr \
-			-subj "/C=UK/ST=Warwickshire/L=Leamington/O=OrgName/OU=IT Department/CN=example.com"
-		openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
-		cat server.key server.crt > server.pem
-		chown "$BACKUPPC_USERNAME":"$BACKUPPC_GROUPNAME" server.pem
-		chmod 0600 server.pem
-		rm -f server.pass.key server.key server.csr server.crt
+		# Do not generate a certificate if user already mapped the file with docker --volume
+		if [ ! -e /etc/lighttpd/server.pem ]; then
+			# Generate certificate file as needed
+			cd /etc/lighttpd
+			openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
+			openssl rsa -passin pass:x -in server.pass.key -out server.key
+			openssl req -new -key server.key -out server.csr \
+				-subj "/C=UK/ST=Warwickshire/L=Leamington/O=OrgName/OU=IT Department/CN=example.com"
+			openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+			cat server.key server.crt > server.pem
+			chown "$BACKUPPC_USERNAME":"$BACKUPPC_GROUPNAME" server.pem
+			chmod 0600 server.pem
+			rm -f server.pass.key server.key server.csr server.crt
+		fi
 		# Reconfigure lighttpd to use ssl
 		echo "ssl.engine = \"enable\"" >> /etc/lighttpd/lighttpd.conf
 		echo "ssl.pemfile = \"/etc/lighttpd/server.pem\"" >> /etc/lighttpd/lighttpd.conf

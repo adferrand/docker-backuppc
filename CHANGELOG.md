@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## [4.3.0-1] - 26/11/2018
+### Added
+* Allow to use a pre-existing `server.pem` file mounted into the container to serve the BackupPC UI over https
+
 ## [4.3.0] - 26/11/2018
 ### Changed
 * Update BackupPC to 4.2.0

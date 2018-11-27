@@ -160,6 +160,8 @@ docker run \
 
 Then you can access the UI through the secured URL https://YOUR_SERVER_IP/. Of course, as the SSL certificate is self-signed, your browser will alert you about this unsecured certificate.
 
+_NB: You can also use your own SSL certificate: merge together the private key and the certificate into a `server.pem` file (eg. `cat server.key server.crt > server.pem`), and mount `certificate.pem` on the container path `/etc/lighttpd/server.pem` (eg. `--volume /you/path/to/certificate.pem:/etc/lighttpd/server.pem`)._
+
 ### Advanced SSL use
 
 Instead of providing a very advanced SSL configuration in this Docker, and reinvent the wheel, it is advised to run your backuppc instance without SSL and without exposing the 8080 port, and launch a second container with a secured SSL reverse-proxy pointing to the BackupPC instance.
