@@ -13,7 +13,7 @@ workflows:
             - build-n-test
           filters:
             branches:
-              only: /^(master|4|3)$/
+              only: /^(master|4|3|broken-.*)$/
             tags:
               only: /.*/
       - trigger-dockerhub:
