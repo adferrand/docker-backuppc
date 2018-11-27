@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## [4.3.0-2] - 27/11/2018
+### Modified
+* Bugfix: fallback to rsync-bpc to 3.0.9.12 and BackupPC::XS 0.57 because upstream is broken
+* Versions 4.3.0-1 and 4.3.0 are also patched with this bugfix
+
 ## [4.3.0-1] - 26/11/2018
 ### Added
 * Allow to use a pre-existing `server.pem` file mounted into the container to serve the BackupPC UI over https
