@@ -236,6 +236,18 @@ The configure.pl script will detect a v3.x version under /etc/backuppc, and will
 
 ## Miscellaneous
 
+### Hostname
+
+The backuppc host name will default to the container's hostname. You can modify this by setting `--hostname` in your `docker run` command like so:
+
+```bash
+docker run \
+    --name backuppc \
+    --hostname backuppc.example.org \
+    --publish 80:8080 \
+    adferrand/backuppc
+```
+
 ### Timezone
 
 By default the timezone of this docker is set to UTC. To modify it, you can specify a tzdata-compatible timezone in the environment variable `TZ`.
