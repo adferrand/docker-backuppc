@@ -17,6 +17,7 @@
 * [Upgrading](#upgrading)
 	* [Dockerising an existing BackupPC v3.x](#dockerising-an-existing-backuppc-v3x)
 * [Miscellaneous](#miscellaneous)
+    * [Hostname](#hostname)
     * [Timezone](#timezone)
     * [Shell access](#shell-access)
     * [Legacy version](#legacy-version)
