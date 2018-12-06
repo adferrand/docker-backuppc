@@ -6,6 +6,8 @@ workflows:
     jobs:
       - build-n-test:
           filters:
+            branches:
+              only: /.*/
             tags:
               only: /.*/
       - deploy:
