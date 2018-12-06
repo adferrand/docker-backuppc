@@ -2,8 +2,17 @@
 
 ## Unreleased
 
+## [4.3.0-3] - 06/12/2018
+### Added
+* Hostname in BackupPC instance is now in sync with the container hostname, and can be set using `--hostname` at container start (#12 @Alveel)
+* Add basic integration tests during the CI
+
+### Changed
+* Update perl lib BackupPC::XS to 0.58
+* Update rsync-bpc to 3.1.2.0
+
 ## [4.3.0-2] - 27/11/2018
-### Modified
+### Changed
 * Bugfix: fallback to rsync-bpc to 3.0.9.12 and BackupPC::XS 0.57 because upstream is broken
 * Versions 4.3.0-1 and 4.3.0 are also patched with this bugfix
 
