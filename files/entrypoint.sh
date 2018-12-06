@@ -59,7 +59,7 @@ if [ -f /firstrun ]; then
 		--cgi-dir /var/www/cgi-bin/BackupPC \
 		--data-dir /data/backuppc \
 		--log-dir /data/backuppc/log \
-		--hostname $(</etc/hostname) \
+		--hostname "$HOSTNAME" \
 		--html-dir /var/www/html/BackupPC \
 		--html-dir-url /BackupPC \
 		--install-dir /usr/local/BackupPC \
