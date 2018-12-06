@@ -17,6 +17,7 @@
 * [Upgrading](#upgrading)
 	* [Dockerising an existing BackupPC v3.x](#dockerising-an-existing-backuppc-v3x)
 * [Miscellaneous](#miscellaneous)
+    * [Hostname](#hostname)
     * [Timezone](#timezone)
     * [Shell access](#shell-access)
     * [Legacy version](#legacy-version)
@@ -235,6 +236,18 @@ docker run \
 The configure.pl script will detect a v3.x version under /etc/backuppc, and will run appropriate upgrade operations (in particular enabling legacy v3.x pool to access it from a BackupPC v4.x).
 
 ## Miscellaneous
+
+### Hostname
+
+The backuppc host name will default to the container's hostname. You can modify this by setting `--hostname` in your `docker run` command like so:
+
+```bash
+docker run \
+    --name backuppc \
+    --hostname backuppc.example.org \
+    --publish 80:8080 \
+    adferrand/backuppc
+```
 
 ### Timezone
 
