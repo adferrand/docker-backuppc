@@ -34,6 +34,10 @@ if [ -f /firstrun ]; then
 	# Configure WEB UI access
 	sed -ie "s/^\$Conf{CgiAdminUsers}\s*=\s*'\w*'/\$Conf{CgiAdminUsers} = '${BACKUPPC_WEB_USER:-backuppc}'/g" /etc/backuppc/config.pl
 	htpasswd -b -c /etc/backuppc/htpasswd ${BACKUPPC_WEB_USER:-backuppc} ${BACKUPPC_WEB_PASSWD:-password}
+	
+	# Workaround bug which causes BackupPC v3 fail to start when container launched with existing configuration.
+	# See https://github.com/adferrand/docker-backuppc/pull/18 for details.
+	sed -ie "s|^\$Conf{CgiURL}\s*=\s*''\(.*\)''|\$Conf{CgiURL} = '\1'|g" /etc/backuppc/config.pl
 
 	# Prepare lighttpd
 	if [ "$USE_SSL" = true ]; then
