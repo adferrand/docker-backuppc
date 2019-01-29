@@ -32,8 +32,14 @@ if [ -f /firstrun ]; then
 		--install-dir /usr/local/BackupPC
 
 	# Configure WEB UI access
-	sed -ie "s/^\$Conf{CgiAdminUsers}\s*=\s*'\w*'/\$Conf{CgiAdminUsers} = '${BACKUPPC_WEB_USER:-backuppc}'/g" /etc/backuppc/config.pl
-	htpasswd -b -c /etc/backuppc/htpasswd ${BACKUPPC_WEB_USER:-backuppc} ${BACKUPPC_WEB_PASSWD:-password}
+	if [ ! -f /etc/backuppc/htpasswd ]; then
+	    htpasswd -b -c /etc/backuppc/htpasswd ${BACKUPPC_WEB_USER:-backuppc} ${BACKUPPC_WEB_PASSWD:-password}
+	    sed -ie "s/^\$Conf{CgiAdminUsers}\s*=\s*'\w*'/\$Conf{CgiAdminUsers} = '${BACKUPPC_WEB_USER:-backuppc}'/g" /etc/backuppc/config.pl
+	elif [ -n "$BACKUPPC_WEB_USER" -a -n "$BACKUPPC_WEB_PASSWD" ]; then
+	    touch /etc/backuppc/htpasswd
+	    htpasswd -b /etc/backuppc/htpasswd "${BACKUPPC_WEB_USER}" "${BACKUPPC_WEB_PASSWD}"
+	    sed -ie "s/^\$Conf{CgiAdminUsers}\s*=\s*'\w*'/\$Conf{CgiAdminUsers} = '${BACKUPPC_WEB_USER:-backuppc}'/g" /etc/backuppc/config.pl
+	fi
 
 	# Prepare lighttpd
 	if [ "$USE_SSL" = true ]; then
