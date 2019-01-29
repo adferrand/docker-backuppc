@@ -36,7 +36,7 @@ if [ -f /firstrun ]; then
 	htpasswd -b -c /etc/backuppc/htpasswd ${BACKUPPC_WEB_USER:-backuppc} ${BACKUPPC_WEB_PASSWD:-password}
 	
 	# Workaround bug which causes BackupPC fail to start when container launched with existing configuration
-	sed -ie "s|^\$Conf{CgiURL}\s*=\s*''http://localhost/cgi-bin/BackupPC/BackupPC_Admin''|\$Conf{CgiURL} = 'http://localhost/cgi-bin/BackupPC/BackupPC_Admin'|g" /etc/backuppc/config.pl
+	sed -ie "s|^\$Conf{CgiURL}\s*=\s*''\(.*\)''|\$Conf{CgiURL} = '\1'|g" /etc/backuppc/config.pl
 
 	# Prepare lighttpd
 	if [ "$USE_SSL" = true ]; then
