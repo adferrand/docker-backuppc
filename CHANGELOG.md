@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## [4.3.0-4] - 09/03/2019
+### Changed
+* Update Alpine base image to 3.9
+
 ## [4.3.0-3] - 06/12/2018
 ### Added
 * Hostname in BackupPC instance is now in sync with the container hostname, and can be set using `--hostname` at container start (#12 @Alveel)
