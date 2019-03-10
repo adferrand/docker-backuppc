@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## [4.3.0-5] - 10/03/2019
+### Changed
+* Use a passphrase of 4 characters (instead of 1) when generating self-signed certificates (`USE_SSL=true`) to be accepted by newest versions of OpenSSL.
+
 ## [4.3.0-4] - 09/03/2019
 ### Changed
 * Update Alpine base image to 3.9
