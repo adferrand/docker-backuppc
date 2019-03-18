@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## [4.3.0-6] - 18/03/2019
+### Added
+* Install DejaVu font for a better look and readability of generated RRD graphs in BackupPC UI (#21 from @jkroepke)
+
 ## [4.3.0-5] - 10/03/2019
 ### Changed
 * Use a passphrase of 4 characters (instead of 1) when generating self-signed certificates (`USE_SSL=true`) to be accepted by newest versions of OpenSSL.
