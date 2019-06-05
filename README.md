@@ -148,7 +148,7 @@ docker run \
 You can also authorize against an Active Directory / LDAP. The following Parameter are required to use this authorize method:
 
 | ENV Parameter | Description | Example |
-| --- | --- |
+| --- | --- | --- |
 | `AUTH_METHOD` | possible auth method, empty for normal, possible value at this time only ldap | ldap |
 | `LDAP_HOSTNAME` | LDAP Hostname / IP with Port | ad.example.com:389 |
 | `LDAP_BASE_DN` | LDAP Base DN | DC=example,DC=com | 
