@@ -41,6 +41,8 @@ RUN apk --no-cache --update add python3 rsync bash perl perl-archive-zip perl-xm
  && apk del build-dependencies
 
 COPY files/lighttpd.conf /etc/lighttpd/lighttpd.conf
+COPY files/auth.conf /etc/lighttpd/auth.conf
+COPY files/auth-ldap.conf /etc/lighttpd/auth-ldap.conf
 COPY files/entrypoint.sh /entrypoint.sh
 COPY files/run.sh /run.sh
 COPY files/circus.ini /etc/circus.ini

@@ -86,6 +86,21 @@ if [ -f /firstrun ]; then
 		echo "ssl.engine = \"enable\"" >> /etc/lighttpd/lighttpd.conf
 		echo "ssl.pemfile = \"/etc/lighttpd/server.pem\"" >> /etc/lighttpd/lighttpd.conf
 	fi
+
+	if [ "$AUTH_METHOD" == "ldap" ]; then
+
+		sed -i 's#LDAP_HOSTNAME#'"$LDAP_HOSTNAME"'#g' /etc/lighttpd/auth-ldap.conf
+		sed -i 's#LDAP_BASE_DN#'"$LDAP_BASE_DN"'#g' /etc/lighttpd/auth-ldap.conf
+		sed -i 's#LDAP_FILTER#'"$LDAP_FILTER"'#g' /etc/lighttpd/auth-ldap.conf
+		sed -i 's#LDAP_BIND_DN#'"$LDAP_BIND_DN"'#g' /etc/lighttpd/auth-ldap.conf
+		sed -i 's#LDAP_BIND_PW#'"$LDAP_BIND_PW"'#g' /etc/lighttpd/auth-ldap.conf
+		sed -ie "s#^\$Conf{CgiAdminUsers}\s*=\s*'\w*'#\$Conf{CgiAdminUsers} = '$LDAP_BACKUPPC_ADMIN'#g" /etc/backuppc/config.pl
+
+		echo "include \"auth-ldap.conf\"" >> /etc/lighttpd/lighttpd.conf
+	else
+		echo "include \"auth.conf\"" >> /etc/lighttpd/lighttpd.conf
+	fi
+
 	touch /var/log/lighttpd/error.log && chown -R "$BACKUPPC_USERNAME":"$BACKUPPC_GROUPNAME" /var/log/lighttpd
 
 	# Configure standard mail delivery parameters (may be overriden by backuppc user-wide config)
