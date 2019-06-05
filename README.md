@@ -143,6 +143,8 @@ docker run \
     adferrand/backuppc  
 ```
 
+Please note that Basic Authentication is still done unencrypted on HTTP port. See [UI SSL encryption](#ui-ssl-encryption) to secure the authentication.
+
 ### Active Directory / LDAP
 
 You can also authorize against an Active Directory / LDAP. The following Parameter are required to use this authorize method:
@@ -156,8 +158,6 @@ You can also authorize against an Active Directory / LDAP. The following Paramet
 | `LDAP_BIND_DN` | LDAP Bind DN | cn=backuppc,cn=users,DC==example,DC=com |
 | `LDAP_BIND_PW` | LDAP Password | SuperSecretPassword |
 | `LDAP_BACKUPPC_ADMIN` | LDAP user with with backuppc admin rights | backuppcadmin |
-
-Please note that Basic Authentication is still done unencrypted on HTTP port. See [UI SSL encryption](#ui-ssl-encryption) to secure the authentication.
 
 ## UI SSL encryption
 
