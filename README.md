@@ -8,7 +8,7 @@
 	* [POSIX rights](#posix-rights)
 * [UI authentication/authorization](#ui-authenticationauthorization)
 	* [Advanced UI authentication/authorization](#advanced-ui-authenticationauthorization)
-	* [Active Directory/LDAP](#active-directoryldap)
+	* [Active Directory/LDAP](#active-directory--ldap)
 * [UI SSL encryption](#ui-ssl-encryption)
 	* [Self-signed certificate](#self-signed-certificate)
 	* [Advanced SSL use](#advanced-ssl-use)
