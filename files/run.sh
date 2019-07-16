@@ -5,4 +5,4 @@ mkdir -p /var/circus
 touch /var/circus/endpoint /var/circus/pubsub /var/circus/stats
 
 # Launch circus
-/usr/bin/circusd /etc/circus.ini
+exec /usr/bin/circusd /etc/circus.ini
