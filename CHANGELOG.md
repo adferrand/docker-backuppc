@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## [4.3.1-1] - 07/12/2019
+### Changed
+* Update base image to Alpine 3.10.3
+
 ## [4.3.1] - 17/07/2019
 ### Added
 * Proper Docker signal handling (eg. SIGINT) by making Circus be the PID 1
