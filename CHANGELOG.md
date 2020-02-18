@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [4.3.2] - 18/02/2020
+### Changed
+* Update to BackupPC 4.3.2
+* Update base image to Alpine 3.11.3
+* Update Par2Cmdline to 0.8.1
+
 ## [4.3.1-1] - 07/12/2019
 ### Changed
 * Update base image to Alpine 3.10.3

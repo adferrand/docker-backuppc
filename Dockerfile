@@ -1,11 +1,11 @@
-FROM alpine:3.10.3
+FROM alpine:3.11.3
 
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
-ENV BACKUPPC_VERSION 4.3.1
+ENV BACKUPPC_VERSION 4.3.2
 ENV BACKUPPC_XS_VERSION 0.59
 ENV RSYNC_BPC_VERSION 3.1.2.1
-ENV PAR2_VERSION v0.8.0
+ENV PAR2_VERSION v0.8.1
 
 # Install backuppc runtime dependencies
 RUN apk --no-cache --update add python3 rsync bash perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing expat samba-client iputils openssh openssl rrdtool ttf-dejavu msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp shadow ca-certificates \
