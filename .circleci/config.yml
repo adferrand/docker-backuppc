@@ -46,10 +46,6 @@ jobs:
           command: |
             docker run --name backuppc-integration --detach -p 8080:8080 adferrand/backuppc
             sleep 5
-            status=`docker exec backuppc-integration su backuppc -c "/usr/local/BackupPC/bin/BackupPC_serverMesg status"`
-            pattern="Got reply:"" ok"
-            echo "Expect following reply => '$pattern'"
-            grep "$pattern" <(echo $status)
             output=`curl http://backuppc:password@localhost:8080/BackupPC_Admin`
             echo "Expect the backupp configuration page without errors"
             grep "The servers PID is" <(echo $output)
