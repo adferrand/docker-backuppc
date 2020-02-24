@@ -11,9 +11,9 @@ ENV PAR2_VERSION v0.8.1
 RUN apk --no-cache --update add python3 rsync bash perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing expat samba-client iputils openssh openssl rrdtool ttf-dejavu msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp shadow ca-certificates \
 # Install backuppc build dependencies
  && apk --no-cache --update --virtual build-dependencies add gcc g++ libgcc linux-headers autoconf automake make git patch perl-dev python3-dev expat-dev acl-dev attr-dev popt-dev curl wget \
-# Install supervisor
+# Install circusd (version 0.15.0 since 0.16.x appears to consume 100% of a CPU)
  && python3 -m ensurepip \
- && pip3 install --upgrade pip circus \
+ && pip3 install --upgrade pip circus==0.15.0 \
 # Compile and install BackupPC:XS
  && git clone https://github.com/backuppc/backuppc-xs.git /root/backuppc-xs --branch $BACKUPPC_XS_VERSION \
  && cd /root/backuppc-xs \
