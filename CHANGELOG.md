@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## [4.3.2-1 - 24/02/2020]
+### Changed
+* Fallback to circus 0.15.0 since 0.16.x is consuming 100% of a CPU in current environment
+
 ## [4.3.2] - 18/02/2020
 ### Changed
 * Update to BackupPC 4.3.2
