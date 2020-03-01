@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## [4.3.2-3 - 01/03/2020]
+### Added
+* Provide GNU tar
+
+### Removed
+* Remove BusyBox tar
+
 ## [4.3.2-2 - 01/03/2020]
 ### Changed
 * Switch from circus to supervisor to handle the container processes
