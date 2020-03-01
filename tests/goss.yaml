@@ -56,10 +56,6 @@ file:
     filetype: file
     contains: []
 port:
-  udp:12027:
-    listening: true
-    ip:
-    - 0.0.0.0
   tcp:8080:
     listening: true
     ip:

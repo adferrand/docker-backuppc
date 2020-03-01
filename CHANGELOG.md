@@ -7,6 +7,7 @@
 * Switch from circus to supervisor to handle the container processes
 * Install par2cmdline from Alpine packages
 * Clean build dependencies
+* Align tests
 
 ## [4.3.2-1 - 24/02/2020]
 ### Changed
