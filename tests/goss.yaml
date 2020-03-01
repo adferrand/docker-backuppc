@@ -65,7 +65,7 @@ file:
   /var/log/msmtp.log:
     exists: true
     mode: "0644"
-    owner: backupp
+    owner: backuppc
     group: backuppc
     filetype: file
     contains: []
