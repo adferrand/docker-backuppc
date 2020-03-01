@@ -11,10 +11,10 @@ ENV PAR2_VERSION v0.8.1
 RUN apk --no-cache --update add python3 rsync bash perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing expat samba-client iputils openssh openssl rrdtool ttf-dejavu msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp shadow ca-certificates \
 # Install backuppc build dependencies
  && apk --no-cache --update --virtual build-dependencies add gcc g++ libgcc linux-headers autoconf automake make git patch perl-dev python3-dev expat-dev acl-dev attr-dev popt-dev curl wget \
-# Install circusd (version 0.15.0 since 0.16.x appears to consume 100% of a CPU)
+# Install supervisor
  && python3 -m venv /srv/venv \
  && /srv/venv/bin/pip install --upgrade pip wheel \
- && /srv/venv/bin/pip install --upgrade pip circus==0.15.0 \
+ && /srv/venv/bin/pip install --upgrade pip supervisor==4.1.0 \
 # Compile and install BackupPC:XS
  && git clone https://github.com/backuppc/backuppc-xs.git /root/backuppc-xs --branch $BACKUPPC_XS_VERSION \
  && cd /root/backuppc-xs \
@@ -44,7 +44,7 @@ RUN apk --no-cache --update add python3 rsync bash perl perl-archive-zip perl-xm
 COPY files/lighttpd.conf /etc/lighttpd/lighttpd.conf
 COPY files/entrypoint.sh /entrypoint.sh
 COPY files/run.sh /run.sh
-COPY files/circus.ini /etc/circus.ini
+COPY files/supervisord.conf /etc/supervisord.conf
 
 EXPOSE 8080
 
@@ -54,4 +54,4 @@ VOLUME ["/etc/backuppc", "/home/backuppc", "/data/backuppc"]
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["/run.sh"]
+CMD ["/srv/venv/bin/supervisord", "-c", "/etc/supervisord.conf"]
