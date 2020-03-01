@@ -9,7 +9,7 @@ ENV PAR2_VERSION v0.8.1
 
 # Install backuppc runtime dependencies
 RUN apk --no-cache --update add \
-        rsync bash shadow ca-certificates \
+        rsync tar bash shadow ca-certificates \
         supervisor \
         perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing \
         expat samba-client iputils openssh openssl rrdtool ttf-dejavu \
