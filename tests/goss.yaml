@@ -55,6 +55,20 @@ file:
     group: root
     filetype: file
     contains: []
+  /etc/msmtprc:
+    exists: true
+    mode: "0644"
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /var/log/msmtp.log:
+    exists: true
+    mode: "0644"
+    owner: backupp
+    group: backuppc
+    filetype: file
+    contains: []
 port:
   tcp:8080:
     listening: true
@@ -66,4 +80,6 @@ process:
   supervisord:
     running: true
   lighttpd:
+    running: true
+  tail:
     running: true
