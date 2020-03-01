@@ -67,7 +67,7 @@ port:
 process:
   BackupPC:
     running: true
-  circusd:
+  supervisord:
     running: true
   lighttpd:
     running: true

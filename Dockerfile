@@ -8,13 +8,16 @@ ENV RSYNC_BPC_VERSION 3.1.2.1
 ENV PAR2_VERSION v0.8.1
 
 # Install backuppc runtime dependencies
-RUN apk --no-cache --update add python3 rsync bash perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing expat samba-client iputils openssh openssl rrdtool ttf-dejavu msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp shadow ca-certificates \
+RUN apk --no-cache --update add \
+        rsync bash shadow ca-certificates \
+        supervisor \
+        perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing \
+        expat samba-client iputils openssh openssl rrdtool ttf-dejavu \
+        msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp \
+ && apk --no-cache --update -X http://dl-cdn.alpinelinux.org/alpine/edge/testing add par2cmdline \
 # Install backuppc build dependencies
- && apk --no-cache --update --virtual build-dependencies add gcc g++ libgcc linux-headers autoconf automake make git patch perl-dev python3-dev expat-dev acl-dev attr-dev popt-dev curl wget \
-# Install supervisor
- && python3 -m venv /srv/venv \
- && /srv/venv/bin/pip install --upgrade pip wheel \
- && /srv/venv/bin/pip install --upgrade pip supervisor==4.1.0 \
+ && apk --no-cache --update --virtual build-dependencies add \
+        gcc g++ autoconf automake make git perl-dev acl-dev curl \
 # Compile and install BackupPC:XS
  && git clone https://github.com/backuppc/backuppc-xs.git /root/backuppc-xs --branch $BACKUPPC_XS_VERSION \
  && cd /root/backuppc-xs \
@@ -22,9 +25,6 @@ RUN apk --no-cache --update add python3 rsync bash perl perl-archive-zip perl-xm
 # Compile and install Rsync (BPC version)
  && git clone https://github.com/backuppc/rsync-bpc.git /root/rsync-bpc --branch $RSYNC_BPC_VERSION \
  && cd /root/rsync-bpc && ./configure && make reconfigure && make && make install \
-# Compile and install PAR2
- && git clone https://github.com/Parchive/par2cmdline.git /root/par2cmdline --branch $PAR2_VERSION \
- && cd /root/par2cmdline && ./automake.sh && ./configure && make && make check && make install \
 # Configure MSMTP for mail delivery (initially sendmail is a sym link to busybox)
  && rm -f /usr/sbin/sendmail \
  && ln -s /usr/bin/msmtp /usr/sbin/sendmail \
@@ -43,7 +43,6 @@ RUN apk --no-cache --update add python3 rsync bash perl perl-archive-zip perl-xm
 
 COPY files/lighttpd.conf /etc/lighttpd/lighttpd.conf
 COPY files/entrypoint.sh /entrypoint.sh
-COPY files/run.sh /run.sh
 COPY files/supervisord.conf /etc/supervisord.conf
 
 EXPOSE 8080
@@ -54,4 +53,4 @@ VOLUME ["/etc/backuppc", "/home/backuppc", "/data/backuppc"]
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["/srv/venv/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
