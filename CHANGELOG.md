@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [4.3.2-2 - 01/03/2020]
+### Changed
+* Switch from circus to supervisor to handle the container processes
+* Install par2cmdline from Alpine packages
+* Clean build dependencies
+
 ## [4.3.2-1 - 24/02/2020]
 ### Changed
 * Fallback to circus 0.15.0 since 0.16.x is consuming 100% of a CPU in current environment
