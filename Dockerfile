@@ -44,8 +44,10 @@ RUN apk --no-cache --update add \
 COPY files/lighttpd.conf /etc/lighttpd/lighttpd.conf
 COPY files/entrypoint.sh /entrypoint.sh
 COPY files/supervisord.conf /etc/supervisord.conf
+COPY files/backuppc_exporter /usr/local/bin/backuppc_exporter
 
 EXPOSE 8080
+EXPOSE 8888
 
 WORKDIR /home/backuppc
 
