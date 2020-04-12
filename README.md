@@ -8,6 +8,7 @@
 	* [POSIX rights](#posix-rights)
 * [UI authentication/authorization](#ui-authenticationauthorization)
 	* [Advanced UI authentication/authorization](#advanced-ui-authenticationauthorization)
+	* [Active Directory/LDAP](#active-directory--ldap)
 * [UI SSL encryption](#ui-ssl-encryption)
 	* [Self-signed certificate](#self-signed-certificate)
 	* [Advanced SSL use](#advanced-ssl-use)
@@ -143,6 +144,20 @@ docker run \
 ```
 
 Please note that Basic Authentication is still done unencrypted on HTTP port. See [UI SSL encryption](#ui-ssl-encryption) to secure the authentication.
+
+### Active Directory / LDAP
+
+You can also authorize against an Active Directory / LDAP. The following Parameter are required to use this authorize method:
+
+| ENV Parameter | Description | Example |
+| --- | --- | --- |
+| `AUTH_METHOD` | possible auth method, empty for normal, possible value at this time only ldap | ldap |
+| `LDAP_HOSTNAME` | LDAP Hostname / IP with Port | ad.example.com:389 |
+| `LDAP_BASE_DN` | LDAP Base DN | DC=example,DC=com | 
+| `LDAP_FILTER` | LDAP Filter | (\&(objectClass=user)(sAMAccountName=$))' |
+| `LDAP_BIND_DN` | LDAP Bind DN | cn=backuppc,cn=users,DC==example,DC=com |
+| `LDAP_BIND_PW` | LDAP Password | SuperSecretPassword |
+| `LDAP_BACKUPPC_ADMIN` | LDAP user with with backuppc admin rights | backuppcadmin |
 
 ## UI SSL encryption
 

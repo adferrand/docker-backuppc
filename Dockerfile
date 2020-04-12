@@ -42,6 +42,8 @@ RUN apk --no-cache --update add \
  && apk del build-dependencies
 
 COPY files/lighttpd.conf /etc/lighttpd/lighttpd.conf
+COPY files/auth.conf /etc/lighttpd/auth.conf
+COPY files/auth-ldap.conf /etc/lighttpd/auth-ldap.conf
 COPY files/entrypoint.sh /entrypoint.sh
 COPY files/supervisord.conf /etc/supervisord.conf
 
