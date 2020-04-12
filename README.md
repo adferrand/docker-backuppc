@@ -7,8 +7,9 @@
 * [Data persistency](#data-persistency)
 	* [POSIX rights](#posix-rights)
 * [UI authentication/authorization](#ui-authenticationauthorization)
-	* [Advanced UI authentication/authorization](#advanced-ui-authenticationauthorization)
+    * [File authentication](#file-authentication)
 	* [Active Directory/LDAP](#active-directory--ldap)
+    * [Advanced configuration](#advanced-configuration)
 * [UI SSL encryption](#ui-ssl-encryption)
 	* [Self-signed certificate](#self-signed-certificate)
 	* [Advanced SSL use](#advanced-ssl-use)
@@ -110,22 +111,51 @@ docker run \
 
 ## UI authentication/authorization
 
-By default, a single user with admin rights is created during the first start of the container. Its username is *backuppc* and its password is *password*. The credentials are stored in the file `/etc/backuppc/htpasswd` to allow the embedded lighttpd server to handle Basic Authentication, and the Backuppc config variable `$Conf{CgiAdminUsers}` is setted to this username to instruct BackupPC to give it admin rights. 
+BackupPC can use different methods to authenticate and authorize users to access the BackupPC Admin Web UI. The method
+used is controlled by the value of the `AUTHENTICATION_METHOD (default file)` environment variable.
+
+At this time there are two methods:
+* Credentials are defined in a httpasswd-like file. This is the default one.
+* Credentials are stored in a LDAP database or an Active Directory instance, and `docker-backuppc` connects to it to
+  validate the accesses.
+
+In all cases the authentication process is done through the HTTP Basic Auth. If BackupPC is served through the unsecured HTTP protocol, credentials are exposed in plain text. See [UI SSL encryption](#ui-ssl-encryption) to secure the authentication data.
+
+### File authentication
+
+This method is enabled with `AUTHENTICATION_METHOD=file`.
+
+Out of the box with this authentication method enabled, a single user with admin rights is created during the first start of
+the container. Its username is *backuppc* and its password is *password*. The credentials are stored in the file `/etc/backuppc/htpasswd` to allow the embedded lighttpd server to handle Basic Authentication, and the Backuppc config variable `$Conf{CgiAdminUsers}` is setted to this username to instruct BackupPC to give it admin rights. 
 
 You can modify the admin user credentials by setting the environment variables `BACKUPPC_WEB_USER (default backuppc)` and `BACKUPPC_WEB_PASSWD (default password)` when creating the container.
 
 The admin user credentials can be modified on an existing container by modifying the relevant environment variables, then re-creating the container. However please note that if you modify the username, you will need to manually remove the old username from the file `/etc/backuppc/htpasswd` in the container after its re-creation.
 
-### Advanced UI authentication/authorization
+### Active Directory / LDAP
+
+This method is enabled with `AUTHENTICATION_METHOD=ldap`.
+
+You can also authorize against an Active Directory / LDAP. The following Parameter are required to use this authorize method:
+
+| ENV Parameter | Description | Example |
+| --- | --- | --- |
+| `LDAP_HOSTNAME` | LDAP Hostname / IP with Port | ad.example.com:389 |
+| `LDAP_BASE_DN` | LDAP Base DN | DC=example,DC=com | 
+| `LDAP_FILTER` | LDAP Filter | (\&(objectClass=user)(sAMAccountName=$))' |
+| `LDAP_BIND_DN` | LDAP Bind DN | cn=backuppc,cn=users,DC==example,DC=com |
+| `LDAP_BIND_PW` | LDAP Password | SuperSecretPassword |
+| `LDAP_BACKUPPC_ADMIN` | LDAP user with with backuppc admin rights | backuppcadmin |
+
+### Advanced configuration
 
 One may need more advanced authentication/authorization on Backuppc Web UI, for instance several *normal* users allowing operations on backups, and an *admin* user to parameterize BackupPC.
 
 In theses cases, authentication and admin granting must be configured manually.
-* Authentication is configured by providing credentials in the file `/etc/backuppc/htpasswd` of the container. You should use Apache `htpasswd` utility to fill it.
+* If `file` authentication method is used, you should use Apache `htpasswd` utility to fill content of the file `/etc/backuppc/htpasswd`. You can also disable the default admin user creation by unsetting environment variables `BACKUPPC_WEB_USER` and `BACKUPPC_WEB_PASSWD`, and reconfigure admin rights in `config.pl`.
 * All authenticated users are considered as *normal* users if not telling otherwise. Add a username in the `$Conf{CgiAdminUsers}` variable of `/etc/backuppc/config.pl` file to grant this user admin rights.
-* Then default admin user creation is not needed : unset environment variables `BACKUPPC_WEB_USER` and `BACKUPPC_WEB_PASSWD` to avoid adding an additional user in the `htpasswd` file, and reconfigure admin rights in `config.pl`.
 
-For instance, with two *normal* users `user1` and `user2` + one *admin* user `admin`, you can do the following steps on the host. It is assumed that `/etc/backuppc` is mounted on `/var/docker-data/backuppc/etc` on the host and Apache `htpasswd` utility is installed on it.
+For instance, with two *normal* users `user1` and `user2` + one *admin* user `admin`, using the `file` authentication method, you can do the following steps on the host. It is assumed that `/etc/backuppc` is mounted on `/var/docker-data/backuppc/etc` on the host and Apache `htpasswd` utility is installed on it.
 
 ```bash
 htpasswd -b -c /var/docker-data/backuppc/etc/htpasswd admin admin_password
@@ -142,22 +172,6 @@ docker run \
     --volume /var/docker-data/backuppc/data:/data/backuppc \
     adferrand/backuppc  
 ```
-
-Please note that Basic Authentication is still done unencrypted on HTTP port. See [UI SSL encryption](#ui-ssl-encryption) to secure the authentication.
-
-### Active Directory / LDAP
-
-You can also authorize against an Active Directory / LDAP. The following Parameter are required to use this authorize method:
-
-| ENV Parameter | Description | Example |
-| --- | --- | --- |
-| `AUTH_METHOD` | possible auth method, empty for normal, possible value at this time only ldap | ldap |
-| `LDAP_HOSTNAME` | LDAP Hostname / IP with Port | ad.example.com:389 |
-| `LDAP_BASE_DN` | LDAP Base DN | DC=example,DC=com | 
-| `LDAP_FILTER` | LDAP Filter | (\&(objectClass=user)(sAMAccountName=$))' |
-| `LDAP_BIND_DN` | LDAP Bind DN | cn=backuppc,cn=users,DC==example,DC=com |
-| `LDAP_BIND_PW` | LDAP Password | SuperSecretPassword |
-| `LDAP_BACKUPPC_ADMIN` | LDAP user with with backuppc admin rights | backuppcadmin |
 
 ## UI SSL encryption
 
