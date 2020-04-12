@@ -40,16 +40,12 @@ jobs:
           command: |
             mkdir -p ./bin
             curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
-            GOSS_PATH=./bin/goss GOSS_SLEEP=2 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_STAGING=true adferrand/backuppc
+            GOSS_PATH=./bin/goss GOSS_SLEEP=2 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/backuppc
       - run:
           name: Test container (integration tests)
           command: |
             docker run --name backuppc-integration --detach -p 8080:8080 adferrand/backuppc
             sleep 5
-            status=`docker exec backuppc-integration su backuppc -c "/usr/local/BackupPC/bin/BackupPC_serverMesg status"`
-            pattern="Got reply:"" ok"
-            echo "Expect following reply => '$pattern'"
-            grep "$pattern" <(echo $status)
             output=`curl http://backuppc:password@localhost:8080/BackupPC_Admin`
             echo "Expect the backupp configuration page without errors"
             grep "The servers PID is" <(echo $output)
