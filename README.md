@@ -153,7 +153,7 @@ One may need more advanced authentication/authorization on Backuppc Web UI, for 
 
 In theses cases, authentication and admin granting must be configured manually.
 * If `file` authentication method is used, you should use Apache `htpasswd` utility to fill content of the file `/etc/backuppc/htpasswd`. You can also disable the default admin user creation by unsetting environment variables `BACKUPPC_WEB_USER` and `BACKUPPC_WEB_PASSWD`, and reconfigure admin rights in `config.pl`.
-* All authenticated users are considered as *normal* users if not telling otherwise. Add a username in the `$Conf{CgiAdminUsers}` variable of `/etc/backuppc/config.pl` file to grant this user admin rights.
+* All authenticated users are considered as *normal* users if not telling otherwise. Add a username in the `$Conf{CgiAdminUsers}` variable of `/etc/backuppc/config.pl` file to grant this user admin rights, or use `LDAP_BACKUPPC_ADMIN` with the `ldap` authentication method.
 
 For instance, with two *normal* users `user1` and `user2` + one *admin* user `admin`, using the `file` authentication method, you can do the following steps on the host. It is assumed that `/etc/backuppc` is mounted on `/var/docker-data/backuppc/etc` on the host and Apache `htpasswd` utility is installed on it.
 
