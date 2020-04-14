@@ -3,6 +3,7 @@ set -e
 
 BACKUPPC_UUID="${BACKUPPC_UUID:-1000}"
 BACKUPPC_GUID="${BACKUPPC_GUID:-1000}"
+BACKUPPC_MONITORING_PORT="${BACKUPPC_MONITORING_PORT:-9999}"
 BACKUPPC_USERNAME=`getent passwd "$BACKUPPC_UUID" | cut -d: -f1`
 BACKUPPC_GROUPNAME=`getent group "$BACKUPPC_GUID" | cut -d: -f1`
 
@@ -15,7 +16,7 @@ if [ -f /firstrun ]; then
 
 	# Configure timezone if needed
 	if [ -n "$TZ" ]; then
-		cp /usr/share/zoneinfo/$TZ /etc/localtime 
+		cp /usr/share/zoneinfo/$TZ /etc/localtime
 	fi
 
 	# Create backuppc user/group if needed
@@ -121,6 +122,7 @@ export BACKUPPC_UUID
 export BACKUPPC_GUID
 export BACKUPPC_USERNAME
 export BACKUPPC_GROUPNAME
+export BACKUPPC_MONITORING_PORT
 
 # Exec given CMD in Dockerfile
 cd /home/backuppc
