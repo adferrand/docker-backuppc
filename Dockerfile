@@ -47,6 +47,7 @@ COPY files/auth-ldap.conf /etc/lighttpd/auth-ldap.conf
 COPY files/entrypoint.sh /entrypoint.sh
 COPY files/supervisord.conf /etc/supervisord.conf
 COPY files/backuppc_exporter /usr/local/bin/backuppc_exporter
+COPY files/node_exporter /usr/local/bin/node_exporter
 
 EXPOSE 8080
 
