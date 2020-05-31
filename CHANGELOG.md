@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## [4.3.2-6 - 01/06/2020]
+### Changed
+* Update base docker to Alpine 3.12
+* Update perl lib BackupPC::XS to 0.60
+
 ## [4.3.2-5 - 12/04/2020]
 ### Added
 * Introduce the Active Directory / LDAP authentication for the BackupPC Web UI. Authentication method

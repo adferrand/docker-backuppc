@@ -1,5 +1,5 @@
 # &nbsp;![](https://raw.githubusercontent.com/adferrand/docker-backuppc/master/images/logo_200px.png) adferrand/backuppc
-![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.3.2-5.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.3.2-5.svg)](https://microbadger.com/images/adferrand/backuppc:4.3.2-5) [![CircleCI](https://circleci.com/gh/adferrand/docker-backuppc/tree/master.svg?style=shield)](https://circleci.com/gh/adferrand/docker-backuppc/tree/master)
+![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.3.2-6.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.3.2-6.svg)](https://microbadger.com/images/adferrand/backuppc:4.3.2-6) [![CircleCI](https://circleci.com/gh/adferrand/docker-backuppc/tree/master.svg?style=shield)](https://circleci.com/gh/adferrand/docker-backuppc/tree/master)
 
 * [Container functionalities](#container-functionalities)
 * [About BackupPC](#about-backuppc)
