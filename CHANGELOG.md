@@ -1,6 +1,11 @@
 # Changelog
 
 ## Unreleased
+* Update BackupPC to 4.4.0
+* Update perl lib BackupPC::XS to 0.62
+* Update rsync-bpc to 3.1.2.2
+* Add JSON::RS perl dependency to allow BackupPC metrics in JSON format
+* Update documentation about metrics
 
 ## [4.3.2-6 - 01/06/2020]
 ### Changed

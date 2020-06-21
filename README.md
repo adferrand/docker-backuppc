@@ -53,7 +53,7 @@ docker run \
 ```
 
 Latest BackupPC 4.x docker image will be downloaded if needed, and started. 
-After starting, browse http://YOUR_SERVER_IP:8080 to access the BackupPC web Admin UI. 
+After starting, browse http://YOUR_SERVER_IP:8080 to access the BackupPC Admin Web UI. 
 
 The default credentials are:
 - **username:** backuppc
@@ -277,6 +277,13 @@ docker run \
     --publish 80:8080 \
     adferrand/backuppc
 ```
+
+### Metrics
+
+Metrics are available on a dedicated endpoint. For example, if the URL to access the BackupPC Admin Web UI is `http://YOUR_SERVER_IP:8080`, then use:
+* `http://YOUR_SERVER_IP:8080/BackupPC_Admin?action=metrics&format=json` to get the metrics in JSON format
+* `http://YOUR_SERVER_IP:8080/BackupPC_Admin?action=metrics&format=rss` to get the metrics in RSS format
+* `http://YOUR_SERVER_IP:8080/BackupPC_Admin?action=metrics&format=prometheus` to get the metrics in Prometheus format
 
 ### Timezone
 

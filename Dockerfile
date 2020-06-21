@@ -11,7 +11,7 @@ ENV PAR2_VERSION v0.8.1
 RUN apk --no-cache --update add \
         rsync tar bash shadow ca-certificates \
         supervisor \
-        perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing \
+        perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing perl-json-xs \
         expat samba-client iputils openssh openssl rrdtool ttf-dejavu \
         msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp \
  && apk --no-cache --update -X http://dl-cdn.alpinelinux.org/alpine/edge/testing add par2cmdline \
