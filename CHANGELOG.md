@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## [4.4.0 - 21/06/2020]
 * Update BackupPC to 4.4.0
 * Update perl lib BackupPC::XS to 0.62
 * Update rsync-bpc to 3.1.2.2
