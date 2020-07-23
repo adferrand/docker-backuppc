@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## [4.4.1 - 24/07/2020]
+# Modified
+* Conditionnally create the symlink /bin/bzip2 to prevent regressions
+
 ## [4.4.0 - 21/06/2020]
 # Added
 * Add JSON::RS perl dependency to allow BackupPC metrics in JSON format

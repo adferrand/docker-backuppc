@@ -1,17 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 BACKUPPC_UUID="${BACKUPPC_UUID:-1000}"
 BACKUPPC_GUID="${BACKUPPC_GUID:-1000}"
-BACKUPPC_USERNAME=`getent passwd "$BACKUPPC_UUID" | cut -d: -f1`
-BACKUPPC_GROUPNAME=`getent group "$BACKUPPC_GUID" | cut -d: -f1`
+BACKUPPC_USERNAME=$(getent passwd "$BACKUPPC_UUID" | cut -d: -f1)
+BACKUPPC_GROUPNAME=$(getent group "$BACKUPPC_GUID" | cut -d: -f1)
 
 if [ -f /firstrun ]; then
 	echo 'First run of the container. BackupPC will be installed.'
 	echo 'If exist, configuration and data will be reused and upgraded as needed.'
 
 	# Executable bzip2 seems to have been moved into /usr/bin in latest Alpine version. Fix that.
-	ln -s /usr/bin/bzip2 /bin/bzip2
+	if [ ! -f /bin/bzip2 ]; then
+		ln -s /usr/bin/bzip2 /bin/bzip2
+	fi
 
 	# Configure timezone if needed
 	if [ -n "$TZ" ]; then
@@ -38,15 +40,15 @@ if [ -f /firstrun ]; then
 
 	# Extract BackupPC
 	cd /root
-	tar xf BackupPC-$BACKUPPC_VERSION.tar.gz
-	cd /root/BackupPC-$BACKUPPC_VERSION
+	tar xf "BackupPC-$BACKUPPC_VERSION.tar.gz"
+	cd "/root/BackupPC-$BACKUPPC_VERSION"
 
 	# Configure WEB UI access
 	configure_admin=""
 	if [ ! -f /etc/backuppc/htpasswd ]; then
 		htpasswd -b -c /etc/backuppc/htpasswd "${BACKUPPC_WEB_USER:-backuppc}" "${BACKUPPC_WEB_PASSWD:-password}"
 		configure_admin="--config-override CgiAdminUsers='${BACKUPPC_WEB_USER:-backuppc}'"
-	elif [ -n "$BACKUPPC_WEB_USER" -a -n "$BACKUPPC_WEB_PASSWD" ]; then
+	elif [[ -n "$BACKUPPC_WEB_USER" && -n "$BACKUPPC_WEB_PASSWD" ]]; then
 		touch /etc/backuppc/htpasswd
 		htpasswd -b /etc/backuppc/htpasswd "${BACKUPPC_WEB_USER}" "${BACKUPPC_WEB_PASSWD}"
 		configure_admin="--config-override CgiAdminUsers='$BACKUPPC_WEB_USER'"
@@ -114,7 +116,7 @@ if [ -f /firstrun ]; then
 	chown "${BACKUPPC_USERNAME}:${BACKUPPC_GROUPNAME}" /var/log/msmtp.log
 
 	# Clean
-	rm -rf /root/BackupPC-$BACKUPPC_VERSION.tar.gz /root/BackupPC-$BACKUPPC_VERSION /firstrun
+	rm -rf "/root/BackupPC-$BACKUPPC_VERSION.tar.gz" "/root/BackupPC-$BACKUPPC_VERSION /firstrun"
 fi
 
 export BACKUPPC_UUID
