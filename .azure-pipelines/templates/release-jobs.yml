@@ -1,0 +1,45 @@
+jobs:
+  - job: docker
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: docker
+          path: $(Build.SourcesDirectory)
+        displayName: Retrieve Docker artifact
+      - task: Docker@2
+        inputs:
+          command: login
+          containerRegistry: docker-hub
+        displayName: Login to DockerHub
+      - script: |
+          docker load < docker-backuppc.tar.gz
+          VERSION=`cat VERSION`
+          echo "Docker tag is: ${VERSION}"
+          docker tag adferrand/backuppc adferrand/backuppc:4
+          docker tag adferrand/backuppc "adferrand/backuppc:${VERSION}"
+        displayName: Tag and push Docker images to DockerHub
+  - job: github
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: 3.8
+          addToPath: true
+        displayName: Install Python
+      - script: |
+          VERSION=`cat VERSION`
+          echo "Version is: $version"
+          echo "##vso[task.setvariable variable=ReleaseVersion;]${VERSION}"
+        displayVersion: Get version
+      - script: |
+          python utils/extract_changelog.py $(ReleaseVersion) > release_$(ReleaseVersion).md
+      - task: GithubRelease@0
+        inputs:
+          gitHubConnection: github.com_adferrand
+          title: Docker BackupPC $(ReleaseVersion)
+          releaseNotesFile: $(Build.SourcesDirectory)/release_$(ReleaseVersion).md
+          addChangeLog: false
+        displayName: Create GitHub Release
