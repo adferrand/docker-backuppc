@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## [4.4.2 - 13/08/2020]
+# Modified
+* Fixed an error about docker instance failing to restart after first run (thanks @tadr0 and @csibbitt with #40)
+
 ## [4.4.1 - 24/07/2020]
 # Modified
 * Conditionnally create the symlink /bin/bzip2 to prevent regressions
