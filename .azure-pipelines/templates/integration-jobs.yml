@@ -13,7 +13,7 @@ jobs:
           path: $(Build.ArtifactStagingDirectory)
           artifact: docker
         displayName: Store Docker artifact
-  - job: unit-tests
+  - job: unit_tests
     dependsOn: build
     pool:
       vmImage: ubuntu-18.04
@@ -28,7 +28,7 @@ jobs:
           mkdir -p ./bin
           curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
           GOSS_PATH=./bin/goss GOSS_SLEEP=2 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/backuppc
-  - job: integration-tests
+  - job: integration_tests
     dependsOn: build
     pool:
       vmImage: ubuntu-18.04

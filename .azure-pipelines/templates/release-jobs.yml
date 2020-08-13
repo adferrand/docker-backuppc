@@ -43,3 +43,10 @@ jobs:
           releaseNotesFile: $(Build.SourcesDirectory)/release_$(ReleaseVersion).md
           addChangeLog: false
         displayName: Create GitHub Release
+  - job: trigger-dockerhub
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - script: |
+          curl -H "Content-Type: application/json" --data '{"docker_tag": "master"}' -X POST https://registry.hub.docker.com/u/adferrand/backuppc/trigger/$(DOCKERHUB_TRIGGER_ID)/
+        displayName: Trigger DockerHub build
