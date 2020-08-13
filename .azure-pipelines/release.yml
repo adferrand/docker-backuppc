@@ -4,13 +4,12 @@ trigger:
       - "*"
   tags:
     include:
-      - "3.*"
       - "4.*"
 
 pr: none
 
 stages:
-  - stage: Test
+  - stage: Build-And-Test
     jobs:
       - template: templates/integration-jobs.yml
   - stage: Release
