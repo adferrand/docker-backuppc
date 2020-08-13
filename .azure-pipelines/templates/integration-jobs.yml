@@ -1,0 +1,48 @@
+jobs:
+  - job: build
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - script: |
+          docker pull adferrand/backuppc || true
+          docker build --pull --cache-from adferrand/backuppc -t adferrand/backuppc .
+          docker save adferrand/backuppc | gzip -c -1 > $(Build.ArtifactStagingDirectory)/docker-backuppc.tar.gz
+        displayName: Build container
+      - task: PublishPipelineArtifact@1
+        inputs:
+          path: $(Build.ArtifactStagingDirectory)
+          artifact: docker
+        displayName: Store Docker artifact
+  - job: unit-tests
+    dependsOn: build
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: docker
+          path: $(Build.SourcesDirectory)
+        displayName: Retrieve Docker artifact
+      - script: |
+          docker load < docker-backuppc.tar.gz
+          mkdir -p ./bin
+          curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
+          GOSS_PATH=./bin/goss GOSS_SLEEP=2 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/backuppc
+  - job: integration-tests
+    dependsOn: build
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: docker
+          path: $(Build.SourcesDirectory)
+        displayName: Retrieve Docker artifact
+      - script: |
+          docker load < docker-backuppc.tar.gz
+          docker run --name backuppc-integration --detach -p 8080:8080 adferrand/backuppc
+          sleep 5
+          output=`curl http://backuppc:password@localhost:8080/BackupPC_Admin`
+          echo "Expect the backupp configuration page without errors"
+          grep "The servers PID is" <(echo $output)
+          docker rm -f backuppc-integration
