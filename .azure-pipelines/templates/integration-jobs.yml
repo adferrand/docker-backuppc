@@ -28,6 +28,7 @@ jobs:
           mkdir -p ./bin
           curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
           GOSS_PATH=./bin/goss GOSS_SLEEP=2 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/backuppc
+        displayName: Run unit tests
   - job: integration_tests
     dependsOn: build
     pool:
@@ -46,3 +47,4 @@ jobs:
           echo "Expect the backupp configuration page without errors"
           grep "The servers PID is" <(echo $output)
           docker rm -f backuppc-integration
+        displayName: Run integration tests
