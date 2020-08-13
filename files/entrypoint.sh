@@ -116,7 +116,7 @@ if [ -f /firstrun ]; then
 	chown "${BACKUPPC_USERNAME}:${BACKUPPC_GROUPNAME}" /var/log/msmtp.log
 
 	# Clean
-	rm -rf "/root/BackupPC-$BACKUPPC_VERSION.tar.gz" "/root/BackupPC-$BACKUPPC_VERSION /firstrun"
+	rm -rf "/root/BackupPC-$BACKUPPC_VERSION.tar.gz" "/root/BackupPC-$BACKUPPC_VERSION" /firstrun
 fi
 
 export BACKUPPC_UUID
