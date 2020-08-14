@@ -3,7 +3,7 @@ import datetime
 import os
 import subprocess
 import sys
-from distutils.version import StrictVersion
+from distutils.version import LooseVersion
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
@@ -22,7 +22,7 @@ def main():
     print("Please insert new version:")
     new_version = str(input())
 
-    if StrictVersion(new_version) <= StrictVersion(current_version):
+    if LooseVersion(new_version) <= LooseVersion(current_version):
         raise RuntimeError(
             "Error new version is below current version: {0} < {1}".format(
                 new_version, current_version
@@ -53,13 +53,13 @@ def main():
         subprocess.check_call(
             'git commit -a -m "Version {0}"'.format(new_version), shell=True
         )
-        subprocess.check_call("git tag v{0}".format(new_version), shell=True)
+        subprocess.check_call("git tag {0}".format(new_version), shell=True)
         subprocess.check_call("git push --tags", shell=True)
         subprocess.check_call("git push", shell=True)
 
     except subprocess.CalledProcessError as e:
         print("Error detected, cleaning state.")
-        subprocess.call("git tag -d v{0}".format(new_version), shell=True)
+        subprocess.call("git tag -d {0}".format(new_version), shell=True)
         subprocess.check_call("git reset --hard", shell=True)
         raise e
 
