@@ -112,7 +112,7 @@ docker run \
 ## UI authentication/authorization
 
 BackupPC can use different methods to authenticate and authorize users to access the BackupPC Admin Web UI. The method
-used is controlled by the value of the `AUTHENTICATION_METHOD (default file)` environment variable.
+used is controlled by the value of the `AUTH_METHOD (default file)` environment variable.
 
 At this time there are two methods:
 * Credentials are defined in a httpasswd-like file. This is the default one.
@@ -123,7 +123,7 @@ In all cases the authentication process is done through the HTTP Basic Auth. If 
 
 ### File authentication
 
-This method is enabled with `AUTHENTICATION_METHOD=file`.
+This method is enabled with `AUTH_METHOD=file`.
 
 Out of the box with this authentication method enabled, a single user with admin rights is created during the first start of
 the container. Its username is *backuppc* and its password is *password*. The credentials are stored in the file `/etc/backuppc/htpasswd` to allow the embedded lighttpd server to handle Basic Authentication, and the Backuppc config variable `$Conf{CgiAdminUsers}` is setted to this username to instruct BackupPC to give it admin rights. 
@@ -134,7 +134,7 @@ The admin user credentials can be modified on an existing container by modifying
 
 ### Active Directory / LDAP
 
-This method is enabled with `AUTHENTICATION_METHOD=ldap`.
+This method is enabled with `AUTH_METHOD=ldap`.
 
 You can also authorize against an Active Directory / LDAP. The following Parameter are required to use this authorize method:
 
