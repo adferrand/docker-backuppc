@@ -33,7 +33,7 @@ jobs:
           VERSION=`cat VERSION`
           echo "Version is: $version"
           echo "##vso[task.setvariable variable=ReleaseVersion;]${VERSION}"
-        displayVersion: Get version
+        displayName: Get version
       - script: |
           python utils/extract_changelog.py $(ReleaseVersion) > release_$(ReleaseVersion).md
       - task: GithubRelease@0
