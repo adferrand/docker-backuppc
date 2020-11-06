@@ -1,21 +1,23 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Update base image to Alpine 3.12.1
 
 ## 4.4.0-2 - 13/08/2020
-# Modified
+### Modified
 * Fixed an error about docker instance failing to restart after first run (thanks @tadr0 and @csibbitt with #40)
 
 ## 4.4.0-1 - 24/07/2020
-# Modified
+### Modified
 * Conditionnally create the symlink /bin/bzip2 to prevent regressions
 
 ## 4.4.0 - 21/06/2020
-# Added
+### Added
 * Add JSON::RS perl dependency to allow BackupPC metrics in JSON format
 * Update documentation about metrics
 
-# Changed
+### Changed
 * Update BackupPC to 4.4.0
 * Update perl lib BackupPC::XS to 0.62
 * Update rsync-bpc to 3.1.2.2
