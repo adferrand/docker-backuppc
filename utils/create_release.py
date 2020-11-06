@@ -38,6 +38,7 @@ def main():
             "## master - CURRENT\n",
             """\
 ## master - CURRENT
+
 ## {0} - {1}
 """.format(
                 new_version, today.strftime("%d/%m/%Y")

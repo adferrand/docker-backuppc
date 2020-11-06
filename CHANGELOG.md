@@ -1,6 +1,10 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* The system configuration file `/etc/msmtprc` for `msmtprc` is not overwritten
+  if it already exists at container initialization.
+
 ## 4.4.0-3 - 06/11/2020
 ### Modified
 * Update base image to Alpine 3.12.1

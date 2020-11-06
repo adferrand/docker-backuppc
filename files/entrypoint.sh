@@ -106,14 +106,16 @@ if [ -f /firstrun ]; then
 	touch /var/log/lighttpd/error.log && chown -R "$BACKUPPC_USERNAME":"$BACKUPPC_GROUPNAME" /var/log/lighttpd
 
 	# Configure standard mail delivery parameters (may be overriden by backuppc user-wide config)
-	echo "account default" > /etc/msmtprc
-	echo "logfile /var/log/msmtp.log" >> /etc/msmtprc
-	echo "host ${SMTP_HOST:-mail.example.org}" >> /etc/msmtprc
-	if [ "${SMTP_MAIL_DOMAIN:-}" != "" ]; then
-		echo "from %U@${SMTP_MAIL_DOMAIN}" >> /etc/msmtprc
+	if [ ! -f /etc/msmtprc ]; then
+		echo "account default" > /etc/msmtprc
+		echo "logfile /var/log/msmtp.log" >> /etc/msmtprc
+		echo "host ${SMTP_HOST:-mail.example.org}" >> /etc/msmtprc
+		if [ "${SMTP_MAIL_DOMAIN:-}" != "" ]; then
+			echo "from %U@${SMTP_MAIL_DOMAIN}" >> /etc/msmtprc
+		fi
+		touch /var/log/msmtp.log
+		chown "${BACKUPPC_USERNAME}:${BACKUPPC_GROUPNAME}" /var/log/msmtp.log
 	fi
-	touch /var/log/msmtp.log
-	chown "${BACKUPPC_USERNAME}:${BACKUPPC_GROUPNAME}" /var/log/msmtp.log
 
 	# Clean
 	rm -rf "/root/BackupPC-$BACKUPPC_VERSION.tar.gz" "/root/BackupPC-$BACKUPPC_VERSION" /firstrun
