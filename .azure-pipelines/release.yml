@@ -9,9 +9,9 @@ trigger:
 pr: none
 
 stages:
-  - stage: Build-And-Test
+  - stage: build_test
     jobs:
       - template: templates/integration-jobs.yml
-  - stage: Release
+  - stage: release
     jobs:
       - template: templates/release-jobs.yml

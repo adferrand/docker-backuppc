@@ -43,7 +43,7 @@ jobs:
           releaseNotesFile: $(Build.SourcesDirectory)/release_$(ReleaseVersion).md
           addChangeLog: false
         displayName: Create GitHub Release
-  - job: trigger-dockerhub
+  - job: trigger_dockerhub
     pool:
       vmImage: ubuntu-18.04
     steps:
