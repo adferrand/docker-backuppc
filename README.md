@@ -223,7 +223,7 @@ docker run \
 
 ### Advanced SMTP configuration
 
-In more complex scenarios, like sending notifications through a TLS-secured SMTP server with authentication (eg. Google SMTP), you can use any advanced configuration supported by MSMTP. To do so, mount or copy a user-wide SMTP configuration file `.msmtprc` in the volume `/home/backuppc`. This configuration will be used for any email sended by BackupPC.
+In more complex scenarios, like sending notifications through a TLS-secured SMTP server with authentication (eg. Google SMTP), you can use any advanced configuration supported by MSMTP. To do so, mount your custom `msmtprc` configuration file on the Docker path `/etc/msmtprc`. This configuration will be used for any email sent by BackupPC.
 
 See [MSMTP documentation](http://msmtp.sourceforge.net/doc/msmtp.html), in particular its [configuration examples](http://msmtp.sourceforge.net/doc/msmtp.html#Examples), to see how to build the configuration which suits your needs.
 

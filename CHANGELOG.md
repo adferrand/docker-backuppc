@@ -3,7 +3,7 @@
 ## master - CURRENT
 ### Added
 * The system configuration file `/etc/msmtprc` for `msmtprc` is not overwritten
-  if it already exists at container initialization.
+  if it already exists at container initialization. Update documentation on that matter.
 
 ## 4.4.0-3 - 06/11/2020
 ### Modified
