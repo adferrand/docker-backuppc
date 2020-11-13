@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 4.4.0-4 - 13/11/2020
 ### Added
 * The system configuration file `/etc/msmtprc` for `msmtprc` is not overwritten
   if it already exists at container initialization. Update documentation on that matter.
