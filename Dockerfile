@@ -14,7 +14,7 @@ RUN apk --no-cache --update add \
         perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing perl-json-xs \
         expat samba-client iputils openssh openssl rrdtool ttf-dejavu \
         msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp \
- && apk --no-cache --update -X http://dl-cdn.alpinelinux.org/alpine/edge/testing add par2cmdline \
+ && apk --no-cache --update -X http://dl-cdn.alpinelinux.org/alpine/edge/community add par2cmdline \
 # Install backuppc build dependencies
  && apk --no-cache --update --virtual build-dependencies add \
         gcc g++ autoconf automake make git perl-dev acl-dev curl \
