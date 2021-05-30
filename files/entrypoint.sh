@@ -87,6 +87,7 @@ if [ -f /firstrun ]; then
 		# Reconfigure lighttpd to use ssl
 		echo "ssl.engine = \"enable\"" >> /etc/lighttpd/lighttpd.conf
 		echo "ssl.pemfile = \"/etc/lighttpd/server.pem\"" >> /etc/lighttpd/lighttpd.conf
+		sed -i -r '/^server\.modules/s# \)#, "mod_openssl" \)#' /etc/lighttpd/lighttpd.conf
 	fi
 
 	if [ "$AUTH_METHOD" == "ldap" ]; then
