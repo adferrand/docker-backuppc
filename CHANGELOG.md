@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 4.4.0-6 - 28/06/2021
 ### Modified
 * Update base image to Alpine 3.14.0
 * Explicitly enable `mod_openssl` lighttpd module when TLS is enabled (#56) 
