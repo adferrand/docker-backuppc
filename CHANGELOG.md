@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Fix Docker images deployment
 
 ## 4.4.0-4 - 13/11/2020
 ### Added
