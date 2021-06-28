@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 4.4.0-5 - 28/06/2021
 ### Modified
 * Fix Docker images deployment
 
