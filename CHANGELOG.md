@@ -2,6 +2,15 @@
 
 ## master - CURRENT
 
+## 4.4.0-6 - 28/06/2021
+### Modified
+* Update base image to Alpine 3.14.0
+* Explicitly enable `mod_openssl` lighttpd module when TLS is enabled (#56) 
+
+## 4.4.0-5 - 28/06/2021
+### Modified
+* Fix Docker images deployment
+
 ## 4.4.0-4 - 13/11/2020
 ### Added
 * The system configuration file `/etc/msmtprc` for `msmtprc` is not overwritten

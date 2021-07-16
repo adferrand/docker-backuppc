@@ -19,6 +19,9 @@ jobs:
           echo "Docker tag is: ${VERSION}"
           docker tag adferrand/backuppc adferrand/backuppc:4
           docker tag adferrand/backuppc "adferrand/backuppc:${VERSION}"
+          docker push "adferrand/backuppc:${VERSION}"
+          docker push adferrand/backuppc:4
+          docker push adferrand/backuppc
         displayName: Tag and push Docker images to DockerHub
   - job: github
     pool:
