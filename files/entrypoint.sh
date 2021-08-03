@@ -94,6 +94,7 @@ if [ -f /firstrun ]; then
 
 		sed -i 's#LDAP_HOSTNAME#'"$LDAP_HOSTNAME"'#g' /etc/lighttpd/auth-ldap.conf
 		sed -i 's#LDAP_BASE_DN#'"$LDAP_BASE_DN"'#g' /etc/lighttpd/auth-ldap.conf
+		LDAP_FILTER=$(sed 's#&#\\&#g' <<< "$LDAP_FILTER")
 		sed -i 's#LDAP_FILTER#'"$LDAP_FILTER"'#g' /etc/lighttpd/auth-ldap.conf
 		sed -i 's#LDAP_BIND_DN#'"$LDAP_BIND_DN"'#g' /etc/lighttpd/auth-ldap.conf
 		sed -i 's#LDAP_BIND_PW#'"$LDAP_BIND_PW"'#g' /etc/lighttpd/auth-ldap.conf
