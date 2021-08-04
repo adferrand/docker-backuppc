@@ -3,6 +3,7 @@
 ## master - CURRENT
 ### Modified
 * Update rsync-bpc to 3.1.3.0
+* Fix processing of LDAP filter from environment variables (#58)
 
 ## 4.4.0-6 - 28/06/2021
 ### Modified
