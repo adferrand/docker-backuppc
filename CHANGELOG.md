@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Update rsync-bpc to 3.1.3.0
 
 ## 4.4.0-6 - 28/06/2021
 ### Modified

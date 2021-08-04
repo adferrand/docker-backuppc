@@ -4,7 +4,7 @@ LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
 ENV BACKUPPC_VERSION 4.4.0
 ENV BACKUPPC_XS_VERSION 0.62
-ENV RSYNC_BPC_VERSION 3.1.2.2
+ENV RSYNC_BPC_VERSION 3.1.3.0
 ENV PAR2_VERSION v0.8.1
 
 # Install backuppc runtime dependencies
