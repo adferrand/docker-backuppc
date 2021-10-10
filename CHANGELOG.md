@@ -1,6 +1,11 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* Docker image is now supporting multiple architectures: AMD64, ARM64 and ARMv7
+
+### Modified
+* Update base image to Alpine 3.14.2
 
 ## 4.4.0-7 - 05/08/2021
 ### Modified
