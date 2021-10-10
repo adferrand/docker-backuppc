@@ -2,10 +2,13 @@ FROM alpine:3.14.2
 
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
-ENV BACKUPPC_VERSION 4.4.0
-ENV BACKUPPC_XS_VERSION 0.62
-ENV RSYNC_BPC_VERSION 3.1.3.0
-ENV PAR2_VERSION v0.8.1
+ARG BACKUPPC_VERSION="4.4.0"
+ARG BACKUPPC_XS_VERSION="0.62"
+ARG RSYNC_BPC_VERSION="3.1.3.0"
+
+ENV BACKUPPC_VERSION="${BACKUPPC_VERSION}"
+ENV BACKUPPC_XS_VERSION="${BACKUPPC_XS_VERSION}"
+ENV RSYNC_BPC_VERSION="${RSYNC_BPC_VERSION}"
 
 # Install backuppc runtime dependencies
 RUN apk --no-cache --update add \
@@ -32,7 +35,7 @@ RUN apk --no-cache --update add \
  && sed -i -e 's/^# Host \*/Host */g' /etc/ssh/ssh_config \
  && sed -i -e 's/^#   StrictHostKeyChecking ask/    StrictHostKeyChecking no/g' /etc/ssh/ssh_config \
 # Get BackupPC, it will be installed at runtime to allow dynamic upgrade of existing config/pool
- && curl -o /root/BackupPC-$BACKUPPC_VERSION.tar.gz -L https://github.com/backuppc/backuppc/releases/download/$BACKUPPC_VERSION/BackupPC-$BACKUPPC_VERSION.tar.gz \
+ && curl -o /root/BackupPC-$BACKUPPC_VERSION.tar.gz -L https://github.com/backuppc/backuppc/archive/$BACKUPPC_VERSION.tar.gz \
 # Prepare backuppc home
  && mkdir -p /home/backuppc && cd /home/backuppc \
 # Mark the docker as not run yet, to allow entrypoint to do its stuff
