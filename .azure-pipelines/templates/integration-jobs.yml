@@ -19,7 +19,7 @@ jobs:
   - job: unit_tests
     dependsOn: build
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: ubuntu-20.04
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:
@@ -36,7 +36,7 @@ jobs:
   - job: integration_tests
     dependsOn: build
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: ubuntu-20.04
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:

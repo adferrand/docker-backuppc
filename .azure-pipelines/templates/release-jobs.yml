@@ -1,7 +1,7 @@
 jobs:
   - job: docker
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: ubuntu-20.04
     steps:
       - task: Docker@2
         inputs:
@@ -18,7 +18,7 @@ jobs:
         displayName: Tag and push Docker images to DockerHub
   - job: github
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: ubuntu-20.04
     dependsOn: docker
     steps:
       - task: UsePythonVersion@0
