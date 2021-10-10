@@ -5,11 +5,11 @@ jobs:
     steps:
       - script: |
           set -e
-          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
           docker buildx create --use
           VERSION=`cat VERSION`
           echo "Docker tag is: ${VERSION}"
-          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/backuppc --output type=local,dest=test .
+          docker buildx build --platform linux/amd64 --tag adferrand/backuppc --load .
+          docker save adferrand/backuppc | gzip -c -1 > $(Build.ArtifactStagingDirectory)/docker-backuppc.tar.gz
         displayName: Build container
       - task: PublishPipelineArtifact@1
         inputs:
@@ -27,6 +27,7 @@ jobs:
           path: $(Build.SourcesDirectory)
         displayName: Retrieve Docker artifact
       - script: |
+          set -e
           docker load < docker-backuppc.tar.gz
           mkdir -p ./bin
           curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
@@ -43,6 +44,7 @@ jobs:
           path: $(Build.SourcesDirectory)
         displayName: Retrieve Docker artifact
       - script: |
+          set -e
           docker load < docker-backuppc.tar.gz
           docker run --name backuppc-integration --detach -p 8080:8080 adferrand/backuppc
           sleep 5
