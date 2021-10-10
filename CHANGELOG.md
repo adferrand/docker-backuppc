@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 4.4.0-8 - 10/10/2021
 ### Added
 * Docker image is now supporting multiple architectures: AMD64, ARM64 and ARMv7
 
