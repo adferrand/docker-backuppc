@@ -3,29 +3,25 @@ jobs:
     pool:
       vmImage: ubuntu-18.04
     steps:
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          artifact: docker
-          path: $(Build.SourcesDirectory)
-        displayName: Retrieve Docker artifact
       - task: Docker@2
         inputs:
           command: login
           containerRegistry: docker-hub
         displayName: Login to DockerHub
       - script: |
-          docker load < docker-backuppc.tar.gz
+          set -e
+          curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+          export DOCKER_CLI_EXPERIMENTAL=enabled
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+          docker buildx create --use
           VERSION=`cat VERSION`
           echo "Docker tag is: ${VERSION}"
-          docker tag adferrand/backuppc adferrand/backuppc:4
-          docker tag adferrand/backuppc "adferrand/backuppc:${VERSION}"
-          docker push "adferrand/backuppc:${VERSION}"
-          docker push adferrand/backuppc:4
-          docker push adferrand/backuppc
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/backuppc:${VERSION} --tag adferrand/backuppc:4 --tag adferrand/backuppc --push .
         displayName: Tag and push Docker images to DockerHub
   - job: github
     pool:
       vmImage: ubuntu-18.04
+    dependsOn: docker
     steps:
       - task: UsePythonVersion@0
         inputs:
@@ -46,10 +42,3 @@ jobs:
           releaseNotesFile: $(Build.SourcesDirectory)/release_$(ReleaseVersion).md
           addChangeLog: false
         displayName: Create GitHub Release
-  - job: trigger_dockerhub
-    pool:
-      vmImage: ubuntu-18.04
-    steps:
-      - script: |
-          curl -H "Content-Type: application/json" --data '{"docker_tag": "master"}' -X POST https://registry.hub.docker.com/u/adferrand/backuppc/trigger/$(DOCKERHUB_TRIGGER_ID)/
-        displayName: Trigger DockerHub build
