@@ -31,7 +31,7 @@ jobs:
           docker load < docker-backuppc.tar.gz
           mkdir -p ./bin
           curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
-          GOSS_PATH=./bin/goss GOSS_SLEEP=2 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/backuppc
+          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/backuppc
         displayName: Run unit tests
   - job: integration_tests
     dependsOn: build
