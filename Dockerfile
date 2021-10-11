@@ -2,13 +2,14 @@ FROM alpine:3.14.2
 
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
-ARG BACKUPPC_VERSION="4.4.0"
 ARG BACKUPPC_XS_VERSION="0.62"
+ARG BACKUPPC_XS_REPO="https://github.com/backuppc/backuppc-xs.git"
 ARG RSYNC_BPC_VERSION="3.1.3.0"
+ARG RSYNC_BPC_REPO="https://github.com/backuppc/rsync-bpc.git"
 
+ARG BACKUPPC_VERSION="4.4.0"
+ARG BACKUPPC_REPO="https://github.com/backuppc/backuppc.git"
 ENV BACKUPPC_VERSION="${BACKUPPC_VERSION}"
-ENV BACKUPPC_XS_VERSION="${BACKUPPC_XS_VERSION}"
-ENV RSYNC_BPC_VERSION="${RSYNC_BPC_VERSION}"
 
 # Install backuppc runtime dependencies
 RUN apk --no-cache --update add \
@@ -22,12 +23,12 @@ RUN apk --no-cache --update add \
  && apk --no-cache --update --virtual build-dependencies add \
         gcc g++ autoconf automake make git perl-dev acl-dev curl \
 # Compile and install BackupPC:XS
- && git clone https://github.com/backuppc/backuppc-xs.git /root/backuppc-xs --branch $BACKUPPC_XS_VERSION \
- && cd /root/backuppc-xs \
+ && git clone ${BACKUPPC_XS_REPO} /root/backuppc-xs && cd /root/backuppc-xs \
+ && git checkout $BACKUPPC_XS_VERSION \
  && perl Makefile.PL && make && make test && make install \
 # Compile and install Rsync (BPC version)
- && git clone https://github.com/backuppc/rsync-bpc.git /root/rsync-bpc --branch $RSYNC_BPC_VERSION \
- && cd /root/rsync-bpc && ./configure && make reconfigure && make && make install \
+ && git clone ${RSYNC_BPC_REPO} /root/rsync-bpc && cd /root/rsync-bpc \
+ && git checkout $RSYNC_BPC_VERSION && ./configure && make reconfigure && make && make install \
 # Configure MSMTP for mail delivery (initially sendmail is a sym link to busybox)
  && rm -f /usr/sbin/sendmail \
  && ln -s /usr/bin/msmtp /usr/sbin/sendmail \
@@ -35,13 +36,14 @@ RUN apk --no-cache --update add \
  && sed -i -e 's/^# Host \*/Host */g' /etc/ssh/ssh_config \
  && sed -i -e 's/^#   StrictHostKeyChecking ask/    StrictHostKeyChecking no/g' /etc/ssh/ssh_config \
 # Get BackupPC, it will be installed at runtime to allow dynamic upgrade of existing config/pool
- && curl -o /root/BackupPC-$BACKUPPC_VERSION.tar.gz -L https://github.com/backuppc/backuppc/archive/$BACKUPPC_VERSION.tar.gz \
+ && git clone ${BACKUPPC_REPO} /root/backuppc && cd /root/backuppc && git checkout $BACKUPPC_VERSION \
+ && ./makeDist --version $BACKUPPC_VERSION --nolangCheck --nosyntaxCheck && mv dist/BackupPC-$BACKUPPC_VERSION.tar.gz /root/BackupPC-$BACKUPPC_VERSION.tar.gz \
 # Prepare backuppc home
  && mkdir -p /home/backuppc && cd /home/backuppc \
 # Mark the docker as not run yet, to allow entrypoint to do its stuff
  && touch /firstrun \
 # Clean
- && rm -rf /root/backuppc-xs /root/rsync-bpc /root/par2cmdline \
+ && rm -rf /root/backuppc-xs /root/rsync-bpc /root/par2cmdline /root/backuppc \
  && apk del build-dependencies
 
 COPY files/lighttpd.conf /etc/lighttpd/lighttpd.conf
