@@ -1,4 +1,4 @@
-FROM alpine:3.14.2
+FROM alpine:3.15.0
 
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
@@ -16,7 +16,8 @@ RUN apk --no-cache --update add \
         supervisor \
         perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing perl-json-xs \
         expat samba-client iputils openssh openssl rrdtool ttf-dejavu \
-        msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp \
+        msmtp lighttpd lighttpd-mod_auth apache2-utils tzdata libstdc++ libgomp \
+        gzip pigz \
  && apk --no-cache --update -X http://dl-cdn.alpinelinux.org/alpine/edge/community add par2cmdline \
 # Install backuppc build dependencies
  && apk --no-cache --update --virtual build-dependencies add \
