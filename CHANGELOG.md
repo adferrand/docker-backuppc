@@ -1,6 +1,11 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* Provide `pigz` utility to do faster GZIP archives
+
+### Modified
+* Update base image to Alpine 3.15.0
 
 ## 4.4.0-8 - 10/10/2021
 ### Added
