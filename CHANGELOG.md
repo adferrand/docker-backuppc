@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 4.4.0-9 - 23/12/2021
 ### Added
 * Provide `pigz` utility to do faster GZIP archives
 
