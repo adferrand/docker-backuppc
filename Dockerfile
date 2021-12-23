@@ -1,4 +1,4 @@
-FROM alpine:3.14.3
+FROM alpine:3.15.0
 
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
@@ -36,7 +36,7 @@ RUN apk --no-cache --update add \
  && sed -i -e 's/^# Host \*/Host */g' /etc/ssh/ssh_config \
  && sed -i -e 's/^#   StrictHostKeyChecking ask/    StrictHostKeyChecking no/g' /etc/ssh/ssh_config \
 # Get BackupPC, it will be installed at runtime to allow dynamic upgrade of existing config/pool
- && curl -o /root/BackupPC-$BACKUPPC_VERSION.tar.gz -L https://github.com/backuppc/backuppc/archive/$BACKUPPC_VERSION.tar.gz \
+ && curl -o /root/BackupPC-$BACKUPPC_VERSION.tar.gz -L https://github.com/backuppc/backuppc/releases/download/$BACKUPPC_VERSION/BackupPC-$BACKUPPC_VERSION.tar.gz \
 # Prepare backuppc home
  && mkdir -p /home/backuppc && cd /home/backuppc \
 # Mark the docker as not run yet, to allow entrypoint to do its stuff
