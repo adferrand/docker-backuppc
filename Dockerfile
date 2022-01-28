@@ -14,7 +14,7 @@ ENV RSYNC_BPC_VERSION="${RSYNC_BPC_VERSION}"
 RUN apk --no-cache --update add \
         rsync tar bash shadow ca-certificates \
         supervisor \
-        perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing perl-json-xs \
+        perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing perl-json-xs perl-time-parsedate \
         expat samba-client iputils openssh openssl rrdtool ttf-dejavu \
         msmtp lighttpd lighttpd-mod_auth apache2-utils tzdata libstdc++ libgomp \
         gzip pigz \
