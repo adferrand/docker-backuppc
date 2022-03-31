@@ -17,7 +17,7 @@ if [ -f /firstrun ]; then
 
 	# Configure timezone if needed
 	if [ -n "$TZ" ]; then
-		cp /usr/share/zoneinfo/$TZ /etc/localtime 
+		cp /usr/share/zoneinfo/$TZ /etc/localtime
 	fi
 
 	# Create backuppc user/group if needed
@@ -108,6 +108,8 @@ if [ -f /firstrun ]; then
 	touch /var/log/lighttpd/error.log && chown -R "$BACKUPPC_USERNAME":"$BACKUPPC_GROUPNAME" /var/log/lighttpd
 
 	# Configure standard mail delivery parameters (may be overriden by backuppc user-wide config)
+	touch /var/log/msmtp.log
+	chown "${BACKUPPC_USERNAME}:${BACKUPPC_GROUPNAME}" /var/log/msmtp.log
 	if [ ! -f /etc/msmtprc ]; then
 		echo "account default" > /etc/msmtprc
 		echo "logfile /var/log/msmtp.log" >> /etc/msmtprc
@@ -115,8 +117,6 @@ if [ -f /firstrun ]; then
 		if [ "${SMTP_MAIL_DOMAIN:-}" != "" ]; then
 			echo "from %U@${SMTP_MAIL_DOMAIN}" >> /etc/msmtprc
 		fi
-		touch /var/log/msmtp.log
-		chown "${BACKUPPC_USERNAME}:${BACKUPPC_GROUPNAME}" /var/log/msmtp.log
 	fi
 
 	# Clean
