@@ -2,6 +2,25 @@
 
 ## master - CURRENT
 
+## 4.4.0-9 - 23/12/2021
+### Added
+* Provide `pigz` utility to do faster GZIP archives
+
+### Modified
+* Update base image to Alpine 3.15.0
+
+## 4.4.0-8 - 10/10/2021
+### Added
+* Docker image is now supporting multiple architectures: AMD64, ARM64 and ARMv7
+
+### Modified
+* Update base image to Alpine 3.14.2
+
+## 4.4.0-7 - 05/08/2021
+### Modified
+* Update rsync-bpc to 3.1.3.0
+* Fix processing of LDAP filter from environment variables (#58)
+
 ## 4.4.0-6 - 28/06/2021
 ### Modified
 * Update base image to Alpine 3.14.0

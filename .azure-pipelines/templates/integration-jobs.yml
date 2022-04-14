@@ -1,11 +1,14 @@
 jobs:
   - job: build
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: ubuntu-20.04
     steps:
       - script: |
-          docker pull adferrand/backuppc || true
-          docker build --pull --cache-from adferrand/backuppc -t adferrand/backuppc .
+          set -e
+          docker buildx create --use
+          VERSION=`cat VERSION`
+          echo "Docker tag is: ${VERSION}"
+          docker buildx build --platform linux/amd64 --tag adferrand/backuppc --load .
           docker save adferrand/backuppc | gzip -c -1 > $(Build.ArtifactStagingDirectory)/docker-backuppc.tar.gz
         displayName: Build container
       - task: PublishPipelineArtifact@1
@@ -16,7 +19,7 @@ jobs:
   - job: unit_tests
     dependsOn: build
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: ubuntu-20.04
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:
@@ -24,15 +27,16 @@ jobs:
           path: $(Build.SourcesDirectory)
         displayName: Retrieve Docker artifact
       - script: |
+          set -e
           docker load < docker-backuppc.tar.gz
           mkdir -p ./bin
           curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
-          GOSS_PATH=./bin/goss GOSS_SLEEP=2 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/backuppc
+          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/backuppc
         displayName: Run unit tests
   - job: integration_tests
     dependsOn: build
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: ubuntu-20.04
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:
@@ -40,6 +44,7 @@ jobs:
           path: $(Build.SourcesDirectory)
         displayName: Retrieve Docker artifact
       - script: |
+          set -e
           docker load < docker-backuppc.tar.gz
           docker run --name backuppc-integration --detach -p 8080:8080 adferrand/backuppc
           sleep 5
