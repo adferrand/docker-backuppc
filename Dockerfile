@@ -1,20 +1,24 @@
-FROM alpine:3.12.0
+FROM alpine:3.15.0
 
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
-ENV BACKUPPC_VERSION 4.3.2
-ENV BACKUPPC_XS_VERSION 0.60
-ENV RSYNC_BPC_VERSION 3.1.2.1
-ENV PAR2_VERSION v0.8.1
+ARG BACKUPPC_VERSION="4.4.0"
+ARG BACKUPPC_XS_VERSION="0.62"
+ARG RSYNC_BPC_VERSION="3.1.3.0"
+
+ENV BACKUPPC_VERSION="${BACKUPPC_VERSION}"
+ENV BACKUPPC_XS_VERSION="${BACKUPPC_XS_VERSION}"
+ENV RSYNC_BPC_VERSION="${RSYNC_BPC_VERSION}"
 
 # Install backuppc runtime dependencies
 RUN apk --no-cache --update add \
         rsync tar bash shadow ca-certificates \
         supervisor \
-        perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing \
+        perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing perl-json-xs \
         expat samba-client iputils openssh openssl rrdtool ttf-dejavu \
-        msmtp lighttpd lighttpd-mod_auth gzip apache2-utils tzdata libstdc++ libgomp \
- && apk --no-cache --update -X http://dl-cdn.alpinelinux.org/alpine/edge/testing add par2cmdline \
+        msmtp lighttpd lighttpd-mod_auth apache2-utils tzdata libstdc++ libgomp \
+        gzip pigz \
+ && apk --no-cache --update -X http://dl-cdn.alpinelinux.org/alpine/edge/community add par2cmdline \
 # Install backuppc build dependencies
  && apk --no-cache --update --virtual build-dependencies add \
         gcc g++ autoconf automake make git perl-dev acl-dev curl \

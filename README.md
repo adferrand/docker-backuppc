@@ -1,5 +1,5 @@
 # &nbsp;![](https://raw.githubusercontent.com/adferrand/docker-backuppc/master/images/logo_200px.png) adferrand/backuppc
-![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/backuppc:4.3.2-6.svg) ![](https://images.microbadger.com/badges/image/adferrand/backuppc:4.3.2-6.svg)](https://microbadger.com/images/adferrand/backuppc:4.3.2-6) [![CircleCI](https://circleci.com/gh/adferrand/docker-backuppc/tree/master.svg?style=shield)](https://circleci.com/gh/adferrand/docker-backuppc/tree/master)
+![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://img.shields.io/github/v/release/adferrand/docker-backuppc) ![](https://images.microbadger.com/badges/image/adferrand/backuppc.svg)](https://microbadger.com/images/adferrand/backuppc) [![Azure Pipelines](https://img.shields.io/azure-devops/build/adferrand/fd132650-8300-439c-b04a-d6899e77aa22/27)](https://dev.azure.com/adferrand/backuppc/_build?definitionId=27)
 
 * [Container functionalities](#container-functionalities)
 * [About BackupPC](#about-backuppc)
@@ -53,7 +53,7 @@ docker run \
 ```
 
 Latest BackupPC 4.x docker image will be downloaded if needed, and started. 
-After starting, browse http://YOUR_SERVER_IP:8080 to access the BackupPC web Admin UI. 
+After starting, browse http://YOUR_SERVER_IP:8080 to access the BackupPC Admin Web UI. 
 
 The default credentials are:
 - **username:** backuppc
@@ -112,7 +112,7 @@ docker run \
 ## UI authentication/authorization
 
 BackupPC can use different methods to authenticate and authorize users to access the BackupPC Admin Web UI. The method
-used is controlled by the value of the `AUTHENTICATION_METHOD (default file)` environment variable.
+used is controlled by the value of the `AUTH_METHOD (default file)` environment variable.
 
 At this time there are two methods:
 * Credentials are defined in a httpasswd-like file. This is the default one.
@@ -123,7 +123,7 @@ In all cases the authentication process is done through the HTTP Basic Auth. If 
 
 ### File authentication
 
-This method is enabled with `AUTHENTICATION_METHOD=file`.
+This method is enabled with `AUTH_METHOD=file`.
 
 Out of the box with this authentication method enabled, a single user with admin rights is created during the first start of
 the container. Its username is *backuppc* and its password is *password*. The credentials are stored in the file `/etc/backuppc/htpasswd` to allow the embedded lighttpd server to handle Basic Authentication, and the Backuppc config variable `$Conf{CgiAdminUsers}` is setted to this username to instruct BackupPC to give it admin rights. 
@@ -134,7 +134,7 @@ The admin user credentials can be modified on an existing container by modifying
 
 ### Active Directory / LDAP
 
-This method is enabled with `AUTHENTICATION_METHOD=ldap`.
+This method is enabled with `AUTH_METHOD=ldap`.
 
 You can also authorize against an Active Directory / LDAP. The following Parameter are required to use this authorize method:
 
@@ -223,7 +223,7 @@ docker run \
 
 ### Advanced SMTP configuration
 
-In more complex scenarios, like sending notifications through a TLS-secured SMTP server with authentication (eg. Google SMTP), you can use any advanced configuration supported by MSMTP. To do so, mount or copy a user-wide SMTP configuration file `.msmtprc` in the volume `/home/backuppc`. This configuration will be used for any email sended by BackupPC.
+In more complex scenarios, like sending notifications through a TLS-secured SMTP server with authentication (eg. Google SMTP), you can use any advanced configuration supported by MSMTP. To do so, mount your custom `msmtprc` configuration file on the Docker path `/etc/msmtprc`. This configuration will be used for any email sent by BackupPC.
 
 See [MSMTP documentation](http://msmtp.sourceforge.net/doc/msmtp.html), in particular its [configuration examples](http://msmtp.sourceforge.net/doc/msmtp.html#Examples), to see how to build the configuration which suits your needs.
 
@@ -277,6 +277,13 @@ docker run \
     --publish 80:8080 \
     adferrand/backuppc
 ```
+
+### Metrics
+
+Metrics are available on a dedicated endpoint. For example, if the URL to access the BackupPC Admin Web UI is `http://YOUR_SERVER_IP:8080`, then use:
+* `http://YOUR_SERVER_IP:8080/BackupPC_Admin?action=metrics&format=json` to get the metrics in JSON format
+* `http://YOUR_SERVER_IP:8080/BackupPC_Admin?action=metrics&format=rss` to get the metrics in RSS format
+* `http://YOUR_SERVER_IP:8080/BackupPC_Admin?action=metrics&format=prometheus` to get the metrics in Prometheus format
 
 ### Timezone
 

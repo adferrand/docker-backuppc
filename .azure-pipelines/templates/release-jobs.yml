@@ -1,0 +1,44 @@
+jobs:
+  - job: docker
+    pool:
+      vmImage: ubuntu-20.04
+    steps:
+      - task: Docker@2
+        inputs:
+          command: login
+          containerRegistry: docker-hub
+        displayName: Login to DockerHub
+      - script: |
+          set -e
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+          docker buildx create --use
+          VERSION=`cat VERSION`
+          echo "Docker tag is: ${VERSION}"
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/backuppc:${VERSION} --tag adferrand/backuppc:4 --tag adferrand/backuppc --push .
+        displayName: Tag and push Docker images to DockerHub
+  - job: github
+    pool:
+      vmImage: ubuntu-20.04
+    dependsOn: docker
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: 3.8
+          addToPath: true
+        displayName: Install Python
+      - script: |
+          set -e
+          VERSION=`cat VERSION`
+          echo "Version is: $version"
+          echo "##vso[task.setvariable variable=ReleaseVersion;]${VERSION}"
+        displayName: Get version
+      - script: |
+          set -e
+          python utils/extract_changelog.py $(ReleaseVersion) > release_$(ReleaseVersion).md
+      - task: GithubRelease@0
+        inputs:
+          gitHubConnection: github.com_adferrand
+          title: Docker BackupPC $(ReleaseVersion)
+          releaseNotesFile: $(Build.SourcesDirectory)/release_$(ReleaseVersion).md
+          addChangeLog: false
+        displayName: Create GitHub Release
