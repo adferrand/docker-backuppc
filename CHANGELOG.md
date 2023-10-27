@@ -2,6 +2,8 @@
 
 ## master - CURRENT
 
+## 4.4.0-10 - 27/10/2023
+
 ## 4.4.0-9 - 23/12/2021
 ### Added
 * Provide `pigz` utility to do faster GZIP archives
