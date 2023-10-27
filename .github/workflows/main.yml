@@ -19,8 +19,6 @@ jobs:
       - name: Build container image
         run: |
           docker buildx create --use
-          VERSION=`cat VERSION`
-          echo "Docker tag is: ${VERSION}"
           docker buildx build --platform linux/amd64 --tag adferrand/backuppc --load .
           mkdir -p dist
           docker save adferrand/backuppc | gzip -c -1 > dist/docker-backuppc.tar.gz
@@ -62,4 +60,3 @@ jobs:
           echo "Expect the backupp configuration page without errors"
           grep "The servers PID is" <(echo $output)
           docker rm -f backuppc-integration    
-  
