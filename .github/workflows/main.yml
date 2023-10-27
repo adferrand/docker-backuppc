@@ -1,0 +1,63 @@
+name: main
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build container image
+        run: |
+          docker buildx create --use
+          VERSION=`cat VERSION`
+          echo "Docker tag is: ${VERSION}"
+          docker buildx build --platform linux/amd64 --tag adferrand/backuppc --load .
+          mkdir -p dist
+          docker save adferrand/backuppc | gzip -c -1 > dist/docker-backuppc.tar.gz
+      - name: Upload container image as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-image
+          path: dist
+  unit-tests:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download container image artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-image
+      - name: Run unit tests
+        run: |
+          docker load < docker-backuppc.tar.gz
+          mkdir -p ./bin
+          curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
+          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/backuppc
+  integration-tests:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download container image artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-image
+      - name: Run integration tests
+        run: |
+          docker load < docker-backuppc.tar.gz
+          docker run --name backuppc-integration --detach -p 8080:8080 adferrand/backuppc
+          sleep 5
+          output="$(curl http://backuppc:password@localhost:8080/BackupPC_Admin)"
+          echo "Expect the backupp configuration page without errors"
+          grep "The servers PID is" <(echo $output)
+          docker rm -f backuppc-integration    
+  
