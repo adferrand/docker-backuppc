@@ -6,7 +6,7 @@ on:
 
 jobs:
   main:
-    uses: adferrand/docker-backuppc/.github/workflows/main.yml@${{ vars.GITHUB_SHA }}
+    uses: ./.github/workflows/main.yml
   docker:
     runs-on: ubuntu-latest
     steps:
