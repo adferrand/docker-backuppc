@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 4.4.0-10 - 27/10/2023
 ### Modified
 * Update base image to Alpine 3.18.4
 
