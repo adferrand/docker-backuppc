@@ -8,6 +8,7 @@ jobs:
   main:
     uses: ./.github/workflows/main.yml
   docker:
+    needs: main
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -25,6 +26,7 @@ jobs:
           echo "Docker tag is: ${VERSION}"
           docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/backuppc:${VERSION} --tag adferrand/backuppc:4 --tag adferrand/backuppc --push .
   github:
+    needs: docker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -36,7 +38,7 @@ jobs:
       - name: Get version and changelog
         id: get-version
         run: |
-          VERSION="${cat VERSION}"
+          VERSION="$(cat VERSION)"
           echo "Version is: ${VERSION}"
           echo "VERSION=${VERSION}" >> "${GITHUB_OUTPUT}"
           python utils/extract_changelog.py "${VERSION}" > extracted_changelog.md
