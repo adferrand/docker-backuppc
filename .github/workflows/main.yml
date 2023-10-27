@@ -47,6 +47,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Download container image artifact
         uses: actions/download-artifact@v3
         with:
