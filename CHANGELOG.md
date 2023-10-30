@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Add a fix to make BackupPC runable with Data::Dumper >= 2.182
 
 ## 4.4.0-10 - 27/10/2023
 ### Modified
