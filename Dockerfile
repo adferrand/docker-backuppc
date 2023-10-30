@@ -14,6 +14,8 @@ ENV RSYNC_BPC_VERSION="${RSYNC_BPC_VERSION}"
 RUN apk --no-cache --update add \
         rsync tar bash shadow ca-certificates \
         supervisor \
+        # TODO: Remove patch when appliance of datadumper.path is not needed anymore
+        patch \
         perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing perl-json-xs \
         expat samba-client iputils openssh openssl rrdtool ttf-dejavu \
         msmtp lighttpd lighttpd-mod_auth apache2-utils tzdata libstdc++ libgomp \
@@ -50,6 +52,8 @@ COPY files/auth.conf /etc/lighttpd/auth.conf
 COPY files/auth-ldap.conf /etc/lighttpd/auth-ldap.conf
 COPY files/entrypoint.sh /entrypoint.sh
 COPY files/supervisord.conf /etc/supervisord.conf
+# TODO: Remove when this patch is not applied anymore in entrypoint.sh
+COPY files/datadumper.patch /datadumper.patch
 
 EXPOSE 8080
 

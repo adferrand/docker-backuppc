@@ -43,6 +43,10 @@ if [ -f /firstrun ]; then
 	tar xf "BackupPC-$BACKUPPC_VERSION.tar.gz"
 	cd "/root/BackupPC-$BACKUPPC_VERSION"
 
+	# Fix BackupPC code to make it run with Data::Dumper >= 2.182.
+	# TODO: Remove this patch once https://github.com/backuppc/backuppc/issues/466 has been merged in a new BackupPC release.
+	patch -p1 < /datadumper.patch && rm -f /datadumper.patch
+
 	# Configure WEB UI access
 	configure_admin=""
 	if [ ! -f /etc/backuppc/htpasswd ]; then
