@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 4.4.0-12 - 13/11/2023
 ### Modified
 * Fix deprecation warnings in lighttpd
 
