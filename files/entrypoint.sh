@@ -47,6 +47,10 @@ if [ -f /firstrun ]; then
 	# TODO: Remove this patch once https://github.com/backuppc/backuppc/issues/466 has been merged in a new BackupPC release.
 	patch -p1 < /datadumper.patch && rm -f /datadumper.patch
 
+	# Backport XSS fix in CGI/View.pm from BackupPC master (commit 58b0bb4).
+	# TODO: Remove once BACKUPPC_VERSION is bumped to 4.4.1.
+	patch -p1 < /xss-cgi-view.patch && rm -f /xss-cgi-view.patch
+
 	# Configure WEB UI access
 	configure_admin=""
 	if [ ! -f /etc/backuppc/htpasswd ]; then

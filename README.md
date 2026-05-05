@@ -1,5 +1,39 @@
-# &nbsp;![](https://raw.githubusercontent.com/adferrand/docker-backuppc/master/images/logo_200px.png) adferrand/backuppc
-![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://img.shields.io/github/v/release/adferrand/docker-backuppc) ![](https://images.microbadger.com/badges/image/adferrand/backuppc.svg)](https://microbadger.com/images/adferrand/backuppc) [![Azure Pipelines](https://img.shields.io/azure-devops/build/adferrand/fd132650-8300-439c-b04a-d6899e77aa22/27)](https://dev.azure.com/adferrand/backuppc/_build?definitionId=27)
+# &nbsp;![BackupPC logo](https://raw.githubusercontent.com/mjechow/docker-backuppc/master/images/logo_200px.png) mjechow/docker-backuppc
+
+[![Build status](https://github.com/mjechow/docker-backuppc/actions/workflows/main.yml/badge.svg)](https://github.com/mjechow/docker-backuppc/actions)
+
+> **Fork of [adferrand/docker-backuppc](https://github.com/adferrand/docker-backuppc).**
+> Rebased on a current Alpine, with build fixes for modern toolchains and a
+> backported XSS security fix. See [Fork changes](#fork-changes) for the diff.
+>
+> Image: `ghcr.io/mjechow/docker-backuppc:4` (or pin to `4.4.0-13`).
+
+## Fork changes
+
+This fork preserves the original architecture, configuration surface, and
+behaviour of `adferrand/docker-backuppc`. The deltas against upstream `4.4.0-12`:
+
+* Base image bumped from `alpine:3.18.4` to `alpine:3.23.4` (fixes
+  CVE-2024-38475 in `apache2-utils` (KEV), CVE-2024-6387 (regreSSHion) and
+  the XZ backdoor CVE-2024-3094).
+* `rsync-bpc` pinned to upstream commit
+  [`1ad3f70`](https://github.com/backuppc/rsync-bpc/commit/1ad3f70) (GCC
+  14/15 build fixes; the `3.1.3.0` release tag from 2020 no longer compiles
+  on modern toolchains and upstream has not cut a new release). Optional
+  features added on master after `3.1.3.0` (md2man, openssl, xxhash, zstd,
+  lz4) are explicitly disabled because BackupPC does not use them.
+* Backports the XSS fix in `lib/BackupPC/CGI/View.pm` for the `num` query
+  parameter from BackupPC master
+  ([commit `58b0bb4`](https://github.com/backuppc/backuppc/commit/58b0bb4)).
+  Originally fixed in 2012, accidentally dropped in 3.3.0 (2013), re-applied
+  upstream Nov 2025 for the unreleased 4.4.1.
+* Compile steps parallelised with `make -j"$(nproc)"`.
+* Published to GHCR (`ghcr.io/mjechow/docker-backuppc`) instead of Docker Hub.
+
+All upstream documentation below continues to apply — substitute the image
+name `ghcr.io/mjechow/docker-backuppc` for `adferrand/backuppc`.
+
+## Table of contents
 
 * [Container functionalities](#container-functionalities)
 * [About BackupPC](#about-backuppc)
@@ -49,7 +83,7 @@ For testing purpose, you can create a new BackupPC instance with following comma
 docker run \
     --name backuppc \
     --publish 80:8080 \
-    adferrand/backuppc
+    ghcr.io/mjechow/docker-backuppc
 ```
 
 Latest BackupPC 4.x docker image will be downloaded if needed, and started. 
@@ -82,7 +116,7 @@ docker run \
     --volume /var/docker-data/backuppc/etc:/etc/backuppc \
     --volume /var/docker-data/backuppc/home:/home/backuppc \
     --volume /var/docker-data/backuppc/data:/data/backuppc \
-    adferrand/backuppc
+    ghcr.io/mjechow/docker-backuppc
 ```
 
 All your backuppc configuration, backup and keys will survive the container destroy/re-creation.
@@ -106,7 +140,7 @@ docker run \
     --volume /var/docker-data/backuppc/data:/data/backuppc \
     --env 'BACKUPPC_UUID=1200' \
     --env 'BACKUPPC_GUID=1300' \
-    adferrand/backuppc  
+    ghcr.io/mjechow/docker-backuppc  
 ```
 
 ## UI authentication/authorization
@@ -170,7 +204,7 @@ docker run \
     --volume /var/docker-data/backuppc/etc:/etc/backuppc \
     --volume /var/docker-data/backuppc/home:/home/backuppc \
     --volume /var/docker-data/backuppc/data:/data/backuppc \
-    adferrand/backuppc  
+    ghcr.io/mjechow/docker-backuppc  
 ```
 
 ## UI SSL encryption
@@ -218,7 +252,7 @@ docker run \
     --publish 80:8080 \
     --env SMTP_HOST=smtp.my-domain.org \
     --env SMTP_MAIL_DOMAIN=my-domain.org \
-    adferrand/backuppc
+    ghcr.io/mjechow/docker-backuppc
 ```
 
 ### Advanced SMTP configuration
@@ -259,7 +293,7 @@ docker run \
     --volume /home/backuppc:/home/backuppc \
     --volume /var/lib/backuppc:/data/backuppc \
     --volume /var/log/backuppc:/data/backuppc/log \
-    adferrand/backuppc  
+    ghcr.io/mjechow/docker-backuppc  
 ```
 
 The configure.pl script will detect a v3.x version under /etc/backuppc, and will run appropriate upgrade operations (in particular enabling legacy v3.x pool to access it from a BackupPC v4.x).
@@ -275,7 +309,7 @@ docker run \
     --name backuppc \
     --hostname backuppc.example.org \
     --publish 80:8080 \
-    adferrand/backuppc
+    ghcr.io/mjechow/docker-backuppc
 ```
 
 ### Metrics
@@ -295,7 +329,7 @@ docker run \
     --name backuppc \
     --publish 80:8080 \
     --env TZ=Europe/Paris \
-    adferrand/backuppc
+    ghcr.io/mjechow/docker-backuppc
 ```
 
 Alternatively, depending on the host OS, you can sync the container timezone to its host by mounting the host file `/etc/localtime` to the container path `/etc/localtime`.
@@ -305,7 +339,7 @@ docker run \
     --name backuppc \
     --publish 80:8080 \
     --mount /etc/localtime:/etc/localtime:ro \
-    adferrand/backuppc
+    ghcr.io/mjechow/docker-backuppc
 ```
 
 ### Shell access
@@ -320,11 +354,5 @@ You will obtain a shell with the standard tools of an Alpine distribution.
 
 ### Legacy version
 
-Legacy version of BackupPC (v3.x) is available on the legacy tag `3`, or with explicit version tag (eg. `3.3.2`).
-
-```bash
-docker run \
-    --name backuppc \
-    --publish 80:8080 \
-    adferrand/backuppc:3
-```
+This fork only ships BackupPC 4.x. If you need the legacy 3.x image, use
+`adferrand/backuppc:3` from upstream — that branch is not maintained here.

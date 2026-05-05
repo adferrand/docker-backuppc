@@ -2,6 +2,21 @@
 
 ## master - CURRENT
 
+## 4.4.0-13 - 06/05/2026
+### Security
+* Update base image to Alpine 3.23.4 (fixes CVE-2024-38475 in apache2-utils, KEV;
+  regreSSHion CVE-2024-6387; XZ backdoor CVE-2024-3094).
+* Backport XSS fix in `CGI/View.pm` for the `num` query parameter from BackupPC
+  master (commit 58b0bb4); originally patched in 2012, dropped in 3.3.0,
+  re-applied upstream for the unreleased 4.4.1.
+
+### Modified
+* Pin `rsync-bpc` to upstream commit `1ad3f70` (2025-08-18) instead of release
+  tag `3.1.3.0` (2020-11). The release tag does not build on GCC 14+
+  (Alpine 3.20+) due to two source bugs that have been fixed on master without
+  a new release. Pinned commit includes all GCC 14/15 fixes and ~5 years of
+  memory-safety bug fixes from upstream.
+
 ## 4.4.0-12 - 13/11/2023
 ### Modified
 * Fix deprecation warnings in lighttpd

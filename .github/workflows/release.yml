@@ -10,21 +10,29 @@ jobs:
   docker:
     needs: main
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Login to Docker Hub
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build, tag and push Docker multi-arch manifest to Docker Hub
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build, tag and push Docker multi-arch manifest to GHCR
         run: |
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
           docker buildx create --use
           VERSION="$(cat VERSION)"
           echo "Docker tag is: ${VERSION}"
-          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/backuppc:${VERSION} --tag adferrand/backuppc:4 --tag adferrand/backuppc --push .
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 \
+            --tag ghcr.io/mjechow/docker-backuppc:${VERSION} \
+            --tag ghcr.io/mjechow/docker-backuppc:4 \
+            --tag ghcr.io/mjechow/docker-backuppc:latest \
+            --push .
   github:
     needs: docker
     runs-on: ubuntu-latest
