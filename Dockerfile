@@ -2,6 +2,7 @@ FROM alpine:3.23.4
 
 LABEL maintainer="Mirko Jechow"
 LABEL org.opencontainers.image.source="https://github.com/mjechow/docker-backuppc"
+LABEL org.opencontainers.image.description="BackupPC on Alpine Linux with rsync-bpc, XS, and msmtp"
 
 ARG BACKUPPC_VERSION="4.4.0"
 ARG BACKUPPC_XS_VERSION="0.62"
