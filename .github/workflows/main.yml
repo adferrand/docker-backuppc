@@ -102,5 +102,5 @@ jobs:
           sleep 5
           output="$(curl http://backuppc:password@localhost:8080/BackupPC_Admin)"
           echo "Expect the backupp configuration page without errors"
-          grep "The servers PID is" <(echo $output)
+          grep "The servers PID is" <(echo "$output")
           docker rm -f backuppc-integration

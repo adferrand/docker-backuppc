@@ -17,7 +17,7 @@ if [ -f /firstrun ]; then
 
 	# Configure timezone if needed
 	if [ -n "$TZ" ]; then
-		cp /usr/share/zoneinfo/$TZ /etc/localtime 
+		cp /usr/share/zoneinfo/"$TZ" /etc/localtime
 	fi
 
 	# Create backuppc user/group if needed
@@ -52,14 +52,14 @@ if [ -f /firstrun ]; then
 	patch -p1 < /xss-cgi-view.patch && rm -f /xss-cgi-view.patch
 
 	# Configure WEB UI access
-	configure_admin=""
+	configure_admin=()
 	if [ ! -f /etc/backuppc/htpasswd ]; then
 		htpasswd -b -c /etc/backuppc/htpasswd "${BACKUPPC_WEB_USER:-backuppc}" "${BACKUPPC_WEB_PASSWD:-password}"
-		configure_admin="--config-override CgiAdminUsers='${BACKUPPC_WEB_USER:-backuppc}'"
+		configure_admin=(--config-override "CgiAdminUsers=${BACKUPPC_WEB_USER:-backuppc}")
 	elif [[ -n "$BACKUPPC_WEB_USER" && -n "$BACKUPPC_WEB_PASSWD" ]]; then
 		touch /etc/backuppc/htpasswd
 		htpasswd -b /etc/backuppc/htpasswd "${BACKUPPC_WEB_USER}" "${BACKUPPC_WEB_PASSWD}"
-		configure_admin="--config-override CgiAdminUsers='$BACKUPPC_WEB_USER'"
+		configure_admin=(--config-override "CgiAdminUsers=$BACKUPPC_WEB_USER")
 	fi
 
 	# Install BackupPC (existing configuration will be reused and upgraded)
@@ -74,7 +74,7 @@ if [ -f /firstrun ]; then
 		--html-dir-url /BackupPC \
 		--install-dir /usr/local/BackupPC \
 		--backuppc-user "$BACKUPPC_USERNAME" \
-		$configure_admin
+		"${configure_admin[@]}"
 
 	# Prepare lighttpd
 	if [ "$USE_SSL" = true ]; then
@@ -102,7 +102,7 @@ if [ -f /firstrun ]; then
 
 		sed -i 's#LDAP_HOSTNAME#'"$LDAP_HOSTNAME"'#g' /etc/lighttpd/auth-ldap.conf
 		sed -i 's#LDAP_BASE_DN#'"$LDAP_BASE_DN"'#g' /etc/lighttpd/auth-ldap.conf
-		LDAP_FILTER=$(sed 's#&#\\&#g' <<< "$LDAP_FILTER")
+		LDAP_FILTER="${LDAP_FILTER//&/\\&}"
 		sed -i 's#LDAP_FILTER#'"$LDAP_FILTER"'#g' /etc/lighttpd/auth-ldap.conf
 		sed -i 's#LDAP_BIND_DN#'"$LDAP_BIND_DN"'#g' /etc/lighttpd/auth-ldap.conf
 		sed -i 's#LDAP_BIND_PW#'"$LDAP_BIND_PW"'#g' /etc/lighttpd/auth-ldap.conf
