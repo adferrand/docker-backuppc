@@ -2,6 +2,28 @@
 
 ## master - CURRENT
 
+## 4.4.0-14 - 06/05/2026
+
+### Fixed
+
+* Quote `$TZ` and `$output` variables in shell scripts (SC2086).
+* Convert `configure_admin` from string to array to handle quoted arguments
+  correctly (SC2089/SC2090).
+* Replace sed with bash parameter expansion for LDAP filter escaping (SC2001).
+
+### CI
+
+* Add lint job: hadolint, shellcheck, rhysd/actionlint, ibiqlik/action-yamllint.
+* Add grype security scan (anchore/scan-action); fails on critical fixable CVEs.
+* Switch to official Docker actions: docker/build-push-action,
+  docker/setup-buildx-action, docker/setup-qemu-action.
+* Bump all GitHub Actions to latest pinned versions; add Dependabot for Actions.
+
+### Changed
+
+* Remove `VERSION` file; release tag is now the single source of version truth.
+* Remove `utils/create_release.py`; release process documented in README.
+
 ## 4.4.0-13 - 06/05/2026
 ### Security
 * Update base image to Alpine 3.23.4 (fixes CVE-2024-38475 in apache2-utils, KEV;
