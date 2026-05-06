@@ -45,9 +45,6 @@ updating their Python package set in 3.23.x. No action is possible from
 this image until that upstream update ships; the image will be rebuilt when
 it does.
 
-All upstream documentation below continues to apply — substitute the image
-name `ghcr.io/mjechow/docker-backuppc` for `adferrand/backuppc`.
-
 ## Table of contents
 
 * [Container functionalities](#container-functionalities)
@@ -66,7 +63,7 @@ name `ghcr.io/mjechow/docker-backuppc` for `adferrand/backuppc`.
 	* [Relay notifications to a local SMTP](#relay-notifications-to-a-local-smtp)
 	* [Advanced SMTP configuration](#advanced-smtp-configuration)
 * [Upgrading](#upgrading)
-	* [Dockerising an existing BackupPC v3.x](#dockerising-an-existing-backuppc-v3x)
+* [Cutting a release](#cutting-a-release)
 * [Miscellaneous](#miscellaneous)
     * [Hostname](#hostname)
     * [Timezone](#timezone)
@@ -80,7 +77,7 @@ This docker is designed to provide a ready-to-go and maintainable BackupPC insta
 * Provides a full-featured and functional BackupPC version 4.x/3.x. In particular, all backup protocols handled by BackupPC are supported.
 * BackupPC Admin Web UI is exposed on 8080 port by an embedded lighttpd server. Available protocols are HTTP or HTTPS through a self-signed SSL certificate.
 * Existing BackupPC configuration & pool are self-upgraded at first run of a newly created container instance. It allows for instance dockerisation of a pre-existing BackupPC v3.x instance.
-* Container image is constructed on top of an Alpine distribution to reduce the footprint. Image size is below 80MB.
+* Container image is constructed on top of an Alpine distribution to reduce the footprint.
 
 ## About BackupPC
 
@@ -284,34 +281,18 @@ To update the BackupPC version of this container:
 
 At first start, `configure.pl` script of BackupPC will be called. It will detect your existing configuration (under `/etc/backuppc`), your existing backup pool (under `/data/backuppc`), and will proceed any changes needed to match the new BackupPC version requirement.
 
-### Dockerising an existing BackupPC v3.x
+## Cutting a release
 
-This sub-section is under Upgrading section because the process is very similar to a container upgrade.
-
-Because configure.pl script is called on first run of your container instance, you can dockerise and upgrade to v4.X a pre-existing BackupPC v3.x installation.
-
-To do so, let's assume that your BackupPC v3.x installed on your host:
-* has its configuration in `/etc/backuppc`
-* has its backup pool in `/var/lib/backuppc`
-* has the user home running your BackupPC (typically backuppc) in `/home/backuppc`
-* has its log files in `/var/log/backuppc`
-
-Check UUID/GUID of your backuppc user on host. If they are not 1000/1000, you will need to put environment variables to customize theses values in the container instance (see [POSIX rights](#posix-rights)).
-
-Then launch a container instance, mounting your existing BackupPC installation assets in the relevant volumes.
+1. Update `CHANGELOG.md`: rename `## master - CURRENT` to `## <version> - DD/MM/YYYY` and add a new `## master - CURRENT` section at the top.
+2. Commit and merge to master via pull request.
+3. Tag the merged commit and push the tag:
 
 ```bash
-docker run \
-    --name backuppc \
-    --publish 80:8080 \
-    --volume /etc/backuppc:/etc/backuppc \
-    --volume /home/backuppc:/home/backuppc \
-    --volume /var/lib/backuppc:/data/backuppc \
-    --volume /var/log/backuppc:/data/backuppc/log \
-    ghcr.io/mjechow/docker-backuppc  
+git tag <version>
+git push origin <version>
 ```
 
-The configure.pl script will detect a v3.x version under /etc/backuppc, and will run appropriate upgrade operations (in particular enabling legacy v3.x pool to access it from a BackupPC v4.x).
+The tag push triggers the CI release workflow, which builds the multi-arch image, pushes it to GHCR, and creates the GitHub release with the changelog body extracted automatically.
 
 ## Miscellaneous
 
