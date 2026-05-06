@@ -44,6 +44,8 @@ jobs:
           platforms: linux/amd64
           load: true
           tags: mjechow/backuppc
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Save image artifact
         run: |
           mkdir -p dist

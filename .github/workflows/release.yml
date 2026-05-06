@@ -36,6 +36,8 @@ jobs:
             ghcr.io/mjechow/docker-backuppc:${{ github.ref_name }}
             ghcr.io/mjechow/docker-backuppc:4
             ghcr.io/mjechow/docker-backuppc:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
   github:
     needs: docker
     runs-on: ubuntu-latest

@@ -12,6 +12,7 @@ ENV BACKUPPC_XS_VERSION="${BACKUPPC_XS_VERSION}"
 ENV RSYNC_BPC_COMMIT="${RSYNC_BPC_COMMIT}"
 
 # Install backuppc runtime dependencies
+# hadolint ignore=DL3018,DL3003
 RUN apk --no-cache --update add \
         rsync tar bash shadow ca-certificates \
         supervisor \
