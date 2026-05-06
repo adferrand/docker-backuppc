@@ -12,6 +12,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3
+        with:
+          dockerfile: Dockerfile
+      - name: Lint shell scripts
+        run: shellcheck files/entrypoint.sh
+      - name: Lint GitHub Actions workflows
+        run: |
+          curl -sSf https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash | bash
+          ./actionlint
+      - name: Lint YAML files
+        run: |
+          pip install --quiet yamllint
+          yamllint .github/ tests/goss.yaml
   build:
     runs-on: ubuntu-latest
     steps:
@@ -51,6 +70,18 @@ jobs:
           mkdir -p ./bin
           curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
           GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run mjechow/backuppc
+  scan:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download container image artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: dist-image
+      - name: Run Grype vulnerability scan
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+          grype docker-archive:docker-backuppc.tar.gz --fail-on critical
   integration-tests:
     needs: build
     runs-on: ubuntu-latest
