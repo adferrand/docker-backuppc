@@ -30,6 +30,21 @@ behaviour of `adferrand/docker-backuppc`. The deltas against upstream `4.4.0-12`
 * Compile steps parallelised with `make -j"$(nproc)"`.
 * Published to GHCR (`ghcr.io/mjechow/docker-backuppc`) instead of Docker Hub.
 
+### Known open findings
+
+Grype reports two High-severity findings in Python packages pulled in
+transitively by the `supervisor` runtime dependency:
+
+| Package | Installed | Fixed in | Advisory |
+| --- | --- | --- | --- |
+| `jaraco-context` | 5.3.0 | 6.1.0 | GHSA-58pv-8j8x-9vj2 |
+| `wheel` | 0.45.1 | 0.46.2 | GHSA-8rrh-rw8j-w5fx |
+
+Both have EPSS < 0.1% and risk score < 0.1. The fix depends on Alpine
+updating their Python package set in 3.23.x. No action is possible from
+this image until that upstream update ships; the image will be rebuilt when
+it does.
+
 All upstream documentation below continues to apply — substitute the image
 name `ghcr.io/mjechow/docker-backuppc` for `adferrand/backuppc`.
 
