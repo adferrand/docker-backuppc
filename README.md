@@ -31,7 +31,7 @@ This docker is designed to provide a ready-to-go and maintainable BackupPC insta
 * Provides a full-featured and functional BackupPC version 4.x/3.x. In particular, all backup protocols handled by BackupPC are supported.
 * BackupPC Admin Web UI is exposed on 8080 port by an embedded lighttpd server. Available protocols are HTTP or HTTPS through a self-signed SSL certificate.
 * Existing BackupPC configuration & pool are self-upgraded at first run of a newly created container instance. It allows for instance dockerisation of a pre-existing BackupPC v3.x instance.
-* Container image is constructed on top of an Alpine distribution to reduce the footprint. Image size is below 80MB.
+* Container image is constructed on top of an Alpine distribution to reduce the footprint.
 
 ## About BackupPC
 
@@ -49,7 +49,7 @@ For testing purpose, you can create a new BackupPC instance with following comma
 docker run \
     --name backuppc \
     --publish 80:8080 \
-    adferrand/backuppc
+    docker.io/adferrand/docker-backuppc
 ```
 
 Latest BackupPC 4.x docker image will be downloaded if needed, and started. 
@@ -82,7 +82,7 @@ docker run \
     --volume /var/docker-data/backuppc/etc:/etc/backuppc \
     --volume /var/docker-data/backuppc/home:/home/backuppc \
     --volume /var/docker-data/backuppc/data:/data/backuppc \
-    adferrand/backuppc
+    docker.io/adferrand/docker-backuppc
 ```
 
 All your backuppc configuration, backup and keys will survive the container destroy/re-creation.
@@ -106,7 +106,7 @@ docker run \
     --volume /var/docker-data/backuppc/data:/data/backuppc \
     --env 'BACKUPPC_UUID=1200' \
     --env 'BACKUPPC_GUID=1300' \
-    adferrand/backuppc  
+    docker.io/adferrand/docker-backuppc  
 ```
 
 ## UI authentication/authorization
@@ -170,7 +170,7 @@ docker run \
     --volume /var/docker-data/backuppc/etc:/etc/backuppc \
     --volume /var/docker-data/backuppc/home:/home/backuppc \
     --volume /var/docker-data/backuppc/data:/data/backuppc \
-    adferrand/backuppc  
+    docker.io/adferrand/docker-backuppc  
 ```
 
 ## UI SSL encryption
@@ -218,7 +218,7 @@ docker run \
     --publish 80:8080 \
     --env SMTP_HOST=smtp.my-domain.org \
     --env SMTP_MAIL_DOMAIN=my-domain.org \
-    adferrand/backuppc
+    docker.io/adferrand/docker-backuppc
 ```
 
 ### Advanced SMTP configuration
@@ -275,7 +275,7 @@ docker run \
     --name backuppc \
     --hostname backuppc.example.org \
     --publish 80:8080 \
-    adferrand/backuppc
+    docker.io/adferrand/docker-backuppc
 ```
 
 ### Metrics
@@ -295,7 +295,7 @@ docker run \
     --name backuppc \
     --publish 80:8080 \
     --env TZ=Europe/Paris \
-    adferrand/backuppc
+    docker.io/adferrand/docker-backuppc
 ```
 
 Alternatively, depending on the host OS, you can sync the container timezone to its host by mounting the host file `/etc/localtime` to the container path `/etc/localtime`.
@@ -305,7 +305,7 @@ docker run \
     --name backuppc \
     --publish 80:8080 \
     --mount /etc/localtime:/etc/localtime:ro \
-    adferrand/backuppc
+    docker.io/adferrand/docker-backuppc
 ```
 
 ### Shell access
@@ -326,5 +326,5 @@ Legacy version of BackupPC (v3.x) is available on the legacy tag `3`, or with ex
 docker run \
     --name backuppc \
     --publish 80:8080 \
-    adferrand/backuppc:3
+    docker.io/adferrand/backuppc:3
 ```

@@ -1,0 +1,10 @@
+ignore:
+  # DL3003: RUN uses `cd` to switch directories inside a multi-command chain.
+  # Refactoring to WORKDIR would require splitting into multiple RUN layers,
+  # which increases image size. The pattern is intentional.
+  - DL3003
+  # DL3018: apk packages are intentionally unpinned. Pinning specific versions
+  # causes build failures when Alpine moves packages between releases, which
+  # would break the image for users who rebuild from source. Alpine's package
+  # signing already ensures integrity.
+  - DL3018
