@@ -2,6 +2,10 @@
 
 ## master - CURRENT
 
+### Added
+
+* STARTTLS is now supported on LDAP-based authentication (#100)
+
 ### Fixed
 
 * Update base image to Alpine 3.23.4 (fixes CVE-2024-38475 in apache2-utils, KEV;
