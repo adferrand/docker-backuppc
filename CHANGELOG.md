@@ -2,6 +2,8 @@
 
 ## master - CURRENT
 
+## 4.4.0-13 - 13/05/2026
+
 ### Added
 
 * STARTTLS is now supported on LDAP-based authentication (#100)
