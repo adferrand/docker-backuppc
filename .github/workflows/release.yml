@@ -29,10 +29,10 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v4
         with:
-          registry: docker.io
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build, tag and push to GHCR
+      - name: Build, tag and push to GHCR/DockerHub
         uses: docker/build-push-action@v7
         with:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
