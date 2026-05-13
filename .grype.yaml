@@ -1,0 +1,15 @@
+# Grype reports two High-severity findings in Python packages pulled in
+# transitively by the `supervisor` runtime dependency:
+# 
+# NAME            INSTALLED  FIXED IN  TYPE    VULNERABILITY        SEVERITY  EPSS           RISK   
+# jaraco-context  5.3.0      6.1.0     python  GHSA-58pv-8j8x-9vj2  High      < 0.1% (25th)  < 0.1  
+# wheel           0.45.1     0.46.2    python  GHSA-8rrh-rw8j-w5fx  High      < 0.1% (1st)   < 0.1  
+# 
+# Both have EPSS < 0.1% and risk score < 0.1. The fix depends on Alpine
+# updating their Python package set in 3.23.x. No action is possible from
+# this image until that upstream update ships; the image will be rebuilt when
+# it does.
+ignore:
+  - vulnerability: GHSA-58pv-8j8x-9vj2
+  - vulnerability: GHSA-8rrh-rw8j-w5fx
+show-suppressed: true

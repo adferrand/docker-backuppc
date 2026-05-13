@@ -1,0 +1,20 @@
+Backport of XSS fix from BackupPC master (commit 58b0bb4, Nov 2025).
+
+The CGI View action passed the user-supplied `num` query parameter into the
+page without HTML escaping. The fix wraps it in EscHTML(). Originally fixed in
+2012, accidentally dropped in 3.3.0 (2013), tracked by Debian maintainers for
+years, and re-applied upstream for the 4.4.1 release.
+
+Remove this patch once BACKUPPC_VERSION is bumped to 4.4.1.
+
+--- a/lib/BackupPC/CGI/View.pm
++++ b/lib/BackupPC/CGI/View.pm
+@@ -47,7 +47,7 @@ sub action
+     my $compress   = 0;
+     my $fh;
+     my $host      = $In{host};
+-    my $num       = $In{num};
++    my $num       = ${EscHTML($In{num})};
+     my $type      = $In{type};
+     my $linkHosts = 0;
+     my($file, $comment);

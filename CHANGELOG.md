@@ -2,6 +2,32 @@
 
 ## master - CURRENT
 
+### Fixed
+
+* Update base image to Alpine 3.23.4 (fixes CVE-2024-38475 in apache2-utils, KEV;
+  regreSSHion CVE-2024-6387; XZ backdoor CVE-2024-3094).
+* Backport XSS fix in `CGI/View.pm` for the `num` query parameter from BackupPC
+  master (commit 58b0bb4); originally patched in 2012, dropped in 3.3.0,
+  re-applied upstream for the unreleased 4.4.1.
+* Quote `$TZ` and `$output` variables in shell scripts (SC2086).
+* Convert `configure_admin` from string to array to handle quoted arguments
+  correctly (SC2089/SC2090).
+* Replace sed with bash parameter expansion for LDAP filter escaping (SC2001).
+
+### Changed
+
+* Remove `VERSION` file; release tag is now the single source of version truth.
+* Pin `rsync-bpc` to upstream commit `1ad3f70` (2025-08-18) instead of release
+  tag `3.1.3.0` (2020-11). The release tag does not build on GCC 14+
+  (Alpine 3.20+) due to two source bugs that have been fixed on master without
+  a new release. Pinned commit includes all GCC 14/15 fixes and ~5 years of
+  memory-safety bug fixes from upstream.
+* Add lint jobs to the CI pipeline: hadolint, shellcheck.
+* Add grype security scan (anchore/scan-action); fails on critical fixable CVEs.
+* Switch to official Docker actions: docker/build-push-action,
+  docker/setup-buildx-action, docker/setup-qemu-action.
+* Bump all GitHub Actions to latest pinned versions; add Dependabot for Actions.
+
 ## 4.4.0-12 - 13/11/2023
 ### Modified
 * Fix deprecation warnings in lighttpd

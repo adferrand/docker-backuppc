@@ -7,24 +7,44 @@ on:
     branches: [master]
   workflow_call:
 
-concurrency: 
+concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: Dockerfile
+          # failure-threshold: error
+      - name: Lint shell scripts
+        run: shellcheck files/entrypoint.sh
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
       - name: Build container image
+        uses: docker/build-push-action@v7
+        with:
+          platforms: linux/amd64
+          load: true
+          tags: adferrand/backuppc
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Save image artifact
         run: |
-          docker buildx create --use
-          docker buildx build --platform linux/amd64 --tag adferrand/backuppc --load .
           mkdir -p dist
           docker save adferrand/backuppc | gzip -c -1 > dist/docker-backuppc.tar.gz
       - name: Upload container image as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dist-image
           path: dist
@@ -33,9 +53,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Download container image artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v8
         with:
           name: dist-image
       - name: Run unit tests
@@ -44,12 +64,31 @@ jobs:
           mkdir -p ./bin
           curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
           GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/backuppc
+  scan:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Download container image artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: dist-image
+      - name: Load image
+        run: docker load < docker-backuppc.tar.gz
+      - name: Run Grype vulnerability scan
+        id: scan
+        uses: anchore/scan-action@v7
+        with:
+          image: adferrand/backuppc
+          only-fixed: true
+          output-format: table
   integration-tests:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download container image artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: dist-image
       - name: Run integration tests
@@ -59,5 +98,5 @@ jobs:
           sleep 5
           output="$(curl http://backuppc:password@localhost:8080/BackupPC_Admin)"
           echo "Expect the backupp configuration page without errors"
-          grep "The servers PID is" <(echo $output)
-          docker rm -f backuppc-integration    
+          grep "The servers PID is" <(echo "$output")
+          docker rm -f backuppc-integration

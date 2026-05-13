@@ -2,7 +2,6 @@
 import datetime
 import os
 import subprocess
-import sys
 from distutils.version import LooseVersion
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -14,9 +13,10 @@ def main():
     ).strip()
     if git_clean:
         raise RuntimeError("Error, git workspace is not clean: \n{0}".format(git_clean))
-
-    with open(os.path.join(PROJECT_ROOT, "VERSION")) as file_h:
-        current_version = file_h.read().strip()
+    
+    current_version = subprocess.check_output(
+        "git describe --tags --abbrev=0", shell=True, universal_newlines=True,
+    ).strip()
 
     print("Current version is: {0}".format(current_version))
     print("Please insert new version:")
@@ -47,9 +47,6 @@ def main():
 
         with open(os.path.join(PROJECT_ROOT, "CHANGELOG.md"), "w") as file_h:
             file_h.write(changelog)
-
-        with open(os.path.join(PROJECT_ROOT, "VERSION"), "w") as file_h:
-            file_h.write(new_version)
 
         subprocess.check_call(
             'git commit -a -m "Version {0}"'.format(new_version), shell=True
