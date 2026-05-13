@@ -102,6 +102,13 @@ if [ -f /firstrun ]; then
 	if [ "$AUTH_METHOD" == "ldap" ]; then
 
 		sed -i 's#LDAP_HOSTNAME#'"$LDAP_HOSTNAME"'#g' /etc/lighttpd/auth-ldap.conf
+
+		if [ "$LDAP_STARTTLS" == "1" ]; then
+			sed -i 's#LDAP_STARTTLS#1#g' /etc/lighttpd/auth-ldap.conf
+		else
+			sed -i 's#LDAP_STARTTLS#0#g' /etc/lighttpd/auth-ldap.conf
+		fi
+
 		sed -i 's#LDAP_BASE_DN#'"$LDAP_BASE_DN"'#g' /etc/lighttpd/auth-ldap.conf
 		LDAP_FILTER="${LDAP_FILTER//&/\\&}"
 		sed -i 's#LDAP_FILTER#'"$LDAP_FILTER"'#g' /etc/lighttpd/auth-ldap.conf

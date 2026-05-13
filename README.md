@@ -147,6 +147,20 @@ You can also authorize against an Active Directory / LDAP. The following Paramet
 | `LDAP_BIND_PW` | LDAP Password | SuperSecretPassword |
 | `LDAP_BACKUPPC_ADMIN` | LDAP user with with backuppc admin rights | backuppcadmin |
 
+#### STARTTLS with LDAP
+
+You can also use STARTTLS for the LDAP connection. In order to do so, set the optional parameter `LDAP_STARTTLS=1` and mount the CA file, which is used by the server, as a volume into the container.
+
+```bash
+docker run \
+    --name backuppc \
+    --publish 80:8080 \
+    --volume /path/to/cafile/ca.pem:/etc/ldap/ca.pem:ro \
+    --env 'LDAP_STARTTLS=1' \
+    --env […other LDAP parameter…] \
+    adferrand/backuppc 
+```
+
 ### Advanced configuration
 
 One may need more advanced authentication/authorization on Backuppc Web UI, for instance several *normal* users allowing operations on backups, and an *admin* user to parameterize BackupPC.
