@@ -1,5 +1,7 @@
 # &nbsp;![](https://raw.githubusercontent.com/adferrand/docker-backuppc/master/images/logo_200px.png) adferrand/backuppc
-![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg) [![](https://img.shields.io/github/v/release/adferrand/docker-backuppc) ![](https://images.microbadger.com/badges/image/adferrand/backuppc.svg)](https://microbadger.com/images/adferrand/backuppc) [![Azure Pipelines](https://img.shields.io/azure-devops/build/adferrand/fd132650-8300-439c-b04a-d6899e77aa22/27)](https://dev.azure.com/adferrand/backuppc/_build?definitionId=27)
+[![](https://img.shields.io/badge/tags-4%20latest-lightgrey.svg)](https://github.com/adferrand/docker-backuppc)
+[![](https://img.shields.io/github/v/release/adferrand/docker-backuppc)](https://github.com/adferrand/docker-backuppc/releases)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/adferrand/docker-backuppc/main.yml)](https://github.com/adferrand/docker-backuppc/actions/workflows/main.yml?query=branch%3Amaster)
 
 * [Container functionalities](#container-functionalities)
 * [About BackupPC](#about-backuppc)
