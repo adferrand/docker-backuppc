@@ -17,7 +17,7 @@ ENV RSYNC_BPC_COMMIT="${RSYNC_BPC_COMMIT}"
 RUN apk --no-cache --update add \
         rsync tar bash shadow ca-certificates \
         supervisor \
-        # TODO: Remove patch when appliance of datadumper.path is not needed anymore
+        # TODO: Remove patch when appliance of datadumper.patch is not needed anymore
         patch \
         perl perl-archive-zip perl-xml-rss perl-cgi perl-file-listing perl-json-xs \
         expat samba-client iputils openssh openssl rrdtool ttf-dejavu \
