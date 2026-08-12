@@ -2,7 +2,8 @@
 import datetime
 import os
 import subprocess
-from distutils.version import LooseVersion
+import sys
+from packaging import version
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
@@ -12,7 +13,8 @@ def main():
         "git status --porcelain", shell=True, universal_newlines=True,
     ).strip()
     if git_clean:
-        raise RuntimeError("Error, git workspace is not clean: \n{0}".format(git_clean))
+        print("Error, git workspace is not clean: \n{0}".format(git_clean), file = sys.stderr)
+        sys.exit(1)
     
     current_version = subprocess.check_output(
         "git describe --tags --abbrev=0", shell=True, universal_newlines=True,
@@ -22,12 +24,11 @@ def main():
     print("Please insert new version:")
     new_version = str(input())
 
-    if LooseVersion(new_version) <= LooseVersion(current_version):
-        raise RuntimeError(
-            "Error new version is below current version: {0} < {1}".format(
-                new_version, current_version
-            )
-        )
+    if version.parse(new_version) <= version.parse(current_version):
+        print("Error, new version is below current version: {0} < {1}".format(
+            new_version, current_version
+        ), file = sys.stderr)
+        sys.exit(1)
 
     try:
         with open(os.path.join(PROJECT_ROOT, "CHANGELOG.md")) as file_h:
