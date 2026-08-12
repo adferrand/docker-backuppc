@@ -53,7 +53,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
       - name: Install python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
       - name: Get changelog
         run: |
           python utils/extract_changelog.py "${{ github.ref_name }}" > extracted_changelog.md
