@@ -35,9 +35,9 @@ def main():
 
         today = datetime.datetime.today()
         changelog = changelog.replace(
-            "## master - CURRENT\n",
+            "## main - CURRENT\n",
             """\
-## master - CURRENT
+## main - CURRENT
 
 ## {0} - {1}
 """.format(

@@ -1,6 +1,6 @@
 # Changelog
 
-## master - CURRENT
+## main - CURRENT
 
 ## 4.4.0-13 - 13/05/2026
 
