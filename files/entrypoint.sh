@@ -43,15 +43,6 @@ if [ -f /firstrun ]; then
 	tar xf "BackupPC-$BACKUPPC_VERSION.tar.gz"
 	cd "/root/BackupPC-$BACKUPPC_VERSION"
 
-	# Fix BackupPC code to make it run with Data::Dumper >= 2.182.
-	# TODO: Remove once BACKUPPC_VERSION is bumped to 4.4.1.
-	patch -p1 < /datadumper.patch && rm -f /datadumper.patch
-
-	# Backport XSS fix in CGI/View.pm from BackupPC master (commit 58b0bb4).
-	# Originally fixed in 2012, lost in 3.3.0, re-applied upstream Nov 2025 for 4.4.1.
-	# TODO: Remove once BACKUPPC_VERSION is bumped to 4.4.1.
-	patch -p1 < /xss-cgi-view.patch && rm -f /xss-cgi-view.patch
-
 	# Configure WEB UI access
 	configure_admin=()
 	if [ ! -f /etc/backuppc/htpasswd ]; then
