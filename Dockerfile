@@ -1,4 +1,4 @@
-FROM docker.io/alpine:3.24.1
+FROM docker.io/alpine:3.24.2
 
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 LABEL org.opencontainers.image.source="https://github.com/adferrand/docker-backuppc"
