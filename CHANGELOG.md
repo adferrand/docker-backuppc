@@ -2,6 +2,10 @@
 
 ## main - CURRENT
 
+### Added
+
+* Add perl `time-parsedate` to allow `BackupPC_fixupBackupSummary` to run properly (#114)
+
 ### Changed
 
 * Update Alpine base image to 3.24.4 to remove critical CVEs
