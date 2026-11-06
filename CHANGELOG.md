@@ -2,6 +2,10 @@
 
 ## main - CURRENT
 
+### Changed
+
+* Update Alpine base image to 3.24.4 to remove critical CVEs
+
 ## 4.4.0-13 - 13/05/2026
 
 ### Added
